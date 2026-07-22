@@ -126,6 +126,28 @@
   .note-del{background:none;border:none;color:var(--muted-soft);font-size:12px;font-weight:700;}
   .note-del:hover{color:#B23A2E;}
   .note-empty{text-align:center;color:var(--muted-soft);font-size:13px;padding:24px 0;}
+
+  .brand{cursor:pointer;}
+  .cover-tags{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .cover-tags span{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:700;}
+
+  .city-banner{height:56px;border-radius:10px;margin-bottom:10px;display:flex;align-items:flex-end;padding:6px 8px;font-size:20px;}
+  .banner-almaty{background:linear-gradient(135deg,#3E7C7A,#12293B);}
+  .banner-astana{background:linear-gradient(135deg,#C98A2C,#5A3E7A);}
+  .banner-turkistan{background:linear-gradient(135deg,#B2853B,#6B4A2A);}
+  .banner-shymkent{background:linear-gradient(135deg,#8A4A9E,#2F8F86);}
+
+  .sights-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;margin-top:14px;}
+  .sight-chip{flex:0 0 auto;width:120px;border-radius:12px;padding:12px 10px;color:#fff;font-family:'Manrope';font-weight:700;font-size:12px;}
+  .sight-chip .sc-em{font-size:18px;display:block;margin-bottom:6px;}
+  .sc-charyn{background:linear-gradient(160deg,#D9722C,#8A3A1E);}
+  .sc-kolsai{background:linear-gradient(160deg,#2F8F86,#12293B);}
+  .sc-kaindy{background:linear-gradient(160deg,#3E7CC9,#1A3A50);}
+  .sc-bozzhyra{background:linear-gradient(160deg,#C98A2C,#7A3E2A);}
+  .sc-shymbulak{background:linear-gradient(160deg,#8FA8C9,#2C3E6F);}
+
+  .fab-wa{position:fixed;right:16px;bottom:78px;z-index:30;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:22px;box-shadow:0 10px 24px -6px rgba(0,0,0,0.4);}
+  @media (min-width:640px){.fab-wa{right:calc(50% - 460px + 16px);}}
 </style>
 </head>
 <body>
@@ -135,13 +157,19 @@
   <div class="cover-sun"></div>
   <h1 data-i18n="coverTitle">Казахстан у вас в кармане</h1>
   <p data-i18n="coverSub">Города, курс валют, безопасность и ваши заметки — в одной панели.</p>
+  <div class="cover-tags">
+    <span data-i18n="tagRoutes">Маршруты</span>
+    <span data-i18n="tagAttractions">Достопримечательности</span>
+    <span data-i18n="tagSafety">Безопасность</span>
+    <span data-i18n="tagTips">Советы</span>
+  </div>
   <button class="cover-btn" onclick="document.getElementById('cover').classList.add('hide')" data-i18n="coverBtn">Войти →</button>
 </div>
 
 <div class="app">
 
   <div class="topbar">
-    <div class="brand">
+    <div class="brand" onclick="document.getElementById('cover').classList.remove('hide')">
       <div class="brand-ic">🧭</div>
       <div class="brand-text">
         <div class="t1" data-i18n="appTitle">Центр управления</div>
@@ -206,23 +234,35 @@
       <div class="greet" data-i18n="guideEyebrow">Путеводитель</div>
       <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
 
+      <div class="sights-strip">
+        <div class="sight-chip sc-charyn"><span class="sc-em">🏜️</span>Charyn Canyon</div>
+        <div class="sight-chip sc-kolsai"><span class="sc-em">🏔️</span>Kolsai Lakes</div>
+        <div class="sight-chip sc-kaindy"><span class="sc-em">🌲</span>Kaindy Lake</div>
+        <div class="sight-chip sc-bozzhyra"><span class="sc-em">⛰️</span>Bozzhyra</div>
+        <div class="sight-chip sc-shymbulak"><span class="sc-em">🎿</span>Shymbulak</div>
+      </div>
+
       <div class="city-grid">
         <div class="city-tile live" onclick="document.getElementById('almaty-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner banner-almaty">🏔️</div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Алматы</div>
           <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
         </div>
         <div class="city-tile">
+          <div class="city-banner banner-astana">🏙️</div>
           <div class="city-tag" data-i18n="tagSoon">Скоро</div>
           <div class="city-name">Астана</div>
           <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
         </div>
         <div class="city-tile">
+          <div class="city-banner banner-turkistan">🕌</div>
           <div class="city-tag" data-i18n="tagSoon">Скоро</div>
           <div class="city-name">Туркестан</div>
           <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
         </div>
         <div class="city-tile">
+          <div class="city-banner banner-shymkent">🌇</div>
           <div class="city-tag" data-i18n="tagSoon">Скоро</div>
           <div class="city-name">Шымкент</div>
           <div class="city-note" data-i18n="shymkentNote">Юг, история, еда</div>
@@ -334,6 +374,8 @@
   </div>
 
 </div>
+
+<a href="https://wa.me/77017438061?text=Здравствуйте! Смотрел прототип путеводителя по Казахстану, хочу поделиться идеей / вопросом" target="_blank" rel="noopener" class="fab-wa" title="WhatsApp">💬</a>
 
 <script>
   function showScreen(name, btn){
@@ -477,6 +519,10 @@
     coverTitle:{ru:"Казахстан у вас в кармане",en:"Kazakhstan, right in your pocket"},
     coverSub:{ru:"Города, курс валют, безопасность и ваши заметки — в одной панели.",en:"Cities, exchange rates, safety and your own notes — in one dashboard."},
     coverBtn:{ru:"Войти →",en:"Enter →"},
+    tagRoutes:{ru:"Маршруты",en:"Routes"},
+    tagAttractions:{ru:"Достопримечательности",en:"Attractions"},
+    tagSafety:{ru:"Безопасность",en:"Safety"},
+    tagTips:{ru:"Советы",en:"Local tips"},
 
     notesEyebrow:{ru:"Заметки",en:"Notes"},
     notesTitle:{ru:"Идеи в дороге",en:"Ideas on the road"},
@@ -499,6 +545,13 @@
     document.getElementById('btnRu').classList.toggle('active', lang==='ru');
     document.getElementById('btnEn').classList.toggle('active', lang==='en');
   }
+
+  // Auto-detect: Russian-language browsers get RU, everyone else gets EN by default.
+  (function(){
+    var browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    var initial = browserLang.indexOf('ru') === 0 ? 'ru' : 'en';
+    setLang(initial);
+  })();
 </script>
 
 </body>
