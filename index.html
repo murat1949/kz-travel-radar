@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Центр управления — Путешествие по Казахстану</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#12293B; --night-2:#1A3A50; --steppe:#F7F3EA; --paper:#FFFFFF;
+    --ink:#16202A; --muted:#5C6B75; --muted-soft:#94A2AB;
+    --gold:#C98A2C; --gold-dark:#A66F1F; --teal:#2F8F86; --line:#E4DFD1;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--steppe);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-0.01em;margin:0;}
+  button{font-family:inherit;cursor:pointer;}
+
+  .app{max-width:920px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);box-shadow:0 0 60px rgba(0,0,0,0.08);}
+
+  .topbar{background:var(--night);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;}
+  .topbar .brand{display:flex;align-items:center;gap:10px;}
+  .topbar .brand-ic{width:36px;height:36px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .topbar .brand-text{line-height:1.2;}
+  .topbar .brand-text .t1{font-family:'Manrope';font-weight:800;font-size:14.5px;}
+  .topbar .brand-text .t2{font-size:11px;color:#9FB0BA;}
+  .topbar-right{display:flex;align-items:center;gap:10px;}
+  .live-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border-radius:999px;padding:6px 11px;font-size:10.5px;font-weight:700;color:#7FD9C9;}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:#3AD9A8;animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .lang-switch{display:flex;background:rgba(255,255,255,0.08);border-radius:999px;padding:3px;}
+  .lang-switch button{border:none;background:transparent;color:#9FB0BA;font-weight:700;font-size:11.5px;padding:6px 12px;border-radius:999px;transition:background .15s;}
+  .lang-switch button.active{background:var(--gold);color:#fff;}
+
+  .content{flex:1;padding:20px 18px 100px;}
+  .screen{display:none;}
+  .screen.active{display:block; animation:fade .2s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .greet{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+  .greet-h{font-size:21px;margin-top:6px;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
+  .kpi{background:var(--steppe);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;}
+  .kpi .num{font-family:'Manrope';font-weight:800;font-size:20px;color:var(--night);}
+  .kpi .lbl{font-size:10.5px;color:var(--muted);margin-top:3px;}
+
+  .card{background:var(--steppe);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px;}
+  .card-title{display:flex;align-items:center;gap:8px;font-family:'Manrope';font-weight:700;font-size:14.5px;margin-bottom:10px;}
+  .card-title .em{font-size:17px;}
+
+  .conv-row{display:flex;gap:8px;align-items:center;margin-top:4px;}
+  .conv-row input{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;font-family:inherit;}
+  .conv-row select{border:1px solid var(--line);border-radius:10px;padding:10px 8px;font-size:14px;font-family:inherit;background:#fff;}
+  .conv-result{margin-top:12px;font-size:14px;color:var(--muted);}
+  .conv-result b{color:var(--night);font-family:'Manrope';font-size:16px;}
+
+  .feed-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);}
+  .feed-row:last-child{border-bottom:none;}
+  .feed-row .who{font-weight:600;}
+  .feed-row .tag{color:var(--muted-soft);font-size:11px;}
+
+  .city-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+  @media (max-width:480px){.city-grid{grid-template-columns:1fr;}}
+  .city-tile{border-radius:14px;padding:16px;border:1px solid var(--line);background:var(--paper);cursor:pointer;transition:transform .15s;}
+  .city-tile:hover{transform:translateY(-2px);}
+  .city-tile.live{background:var(--night);color:#fff;border-color:var(--night);}
+  .city-tag{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-soft);}
+  .city-tile.live .city-tag{color:#8FB0C4;}
+  .city-name{font-family:'Manrope';font-weight:700;font-size:15.5px;margin-top:6px;}
+  .city-note{font-size:12px;color:var(--muted);margin-top:5px;}
+  .city-tile.live .city-note{color:#C4D3DA;}
+
+  .spot{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:10px;}
+  .spot-name{font-family:'Manrope';font-weight:700;font-size:13.5px;}
+  .spot-note{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5;}
+
+  .emg-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .emg-row:last-child{border-bottom:none;}
+  .emg-row b{color:var(--gold-dark);font-family:'Manrope';}
+
+  .phrase-row{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:6px;padding:9px 0;border-bottom:1px solid var(--line);font-size:12.5px;align-items:center;}
+  .phrase-row:last-child{border-bottom:none;}
+  .phrase-row span:first-child{color:var(--muted);}
+  .phrase-row span:nth-child(2){font-weight:700;}
+  .phrase-row span:last-child{color:var(--teal);font-style:italic;font-size:11.5px;}
+
+  .cta-mini{margin-top:18px;text-align:center;}
+  .cta-mini a{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#fff;border-radius:999px;padding:12px 22px;font-weight:700;font-size:13.5px;text-decoration:none;}
+  .cta-mini a:hover{background:var(--gold-dark);}
+  .cta-mini p{font-size:12px;color:var(--muted);margin:8px 0 0;}
+
+  .bottomnav{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 4px;z-index:20;}
+  .nav-btn{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;color:var(--muted-soft);font-size:10.5px;font-weight:700;flex:1;border-radius:10px;}
+  .nav-btn .em{font-size:18px;}
+  .nav-btn.active{color:var(--night);background:var(--steppe);}
+
+  /* COVER / SPLASH */
+  .cover{
+    position:fixed;inset:0;z-index:100;
+    background:
+      radial-gradient(700px 500px at 15% -10%, rgba(255,255,255,0.18), transparent 60%),
+      radial-gradient(600px 500px at 100% 110%, rgba(47,143,134,0.55), transparent 60%),
+      linear-gradient(150deg, #C98A2C 0%, #8A4A9E 45%, #12293B 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#fff;text-align:center;padding:32px;
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  .cover.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .cover-sun{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE9B0,#F4B942 60%,#C98A2C);margin-bottom:22px;box-shadow:0 0 40px rgba(255,200,90,0.5);}
+  .cover h1{font-size:clamp(28px,7vw,40px);line-height:1.15;max-width:340px;}
+  .cover p{margin-top:14px;font-size:15px;color:rgba(255,255,255,0.85);max-width:300px;}
+  .cover-mountains{position:absolute;bottom:0;left:0;right:0;height:120px;opacity:0.35;}
+  .cover-btn{margin-top:32px;background:#fff;color:var(--night);border:none;border-radius:999px;padding:14px 30px;font-weight:800;font-size:15px;box-shadow:0 12px 30px -8px rgba(0,0,0,0.4);}
+
+  /* NOTES */
+  .note-input-row{display:flex;gap:8px;margin-top:6px;}
+  .note-input-row textarea{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;font-family:inherit;resize:none;min-height:44px;}
+  .note-add-btn{background:var(--gold);color:#fff;border:none;border-radius:12px;padding:0 18px;font-weight:700;font-size:13px;}
+  .note-item{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;position:relative;}
+  .note-item .note-text{font-size:14px;white-space:pre-wrap;word-break:break-word;}
+  .note-item .note-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+  .note-item .note-date{font-size:10.5px;color:var(--muted-soft);}
+  .note-del{background:none;border:none;color:var(--muted-soft);font-size:12px;font-weight:700;}
+  .note-del:hover{color:#B23A2E;}
+  .note-empty{text-align:center;color:var(--muted-soft);font-size:13px;padding:24px 0;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover" id="cover">
+  <div class="cover-sun"></div>
+  <h1 data-i18n="coverTitle">Казахстан у вас в кармане</h1>
+  <p data-i18n="coverSub">Города, курс валют, безопасность и ваши заметки — в одной панели.</p>
+  <button class="cover-btn" onclick="document.getElementById('cover').classList.add('hide')" data-i18n="coverBtn">Войти →</button>
+</div>
+
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-ic">🧭</div>
+      <div class="brand-text">
+        <div class="t1" data-i18n="appTitle">Центр управления</div>
+        <div class="t2" data-i18n="appSubtitle">Путешествие по Казахстану</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="live-pill"><i class="live-dot"></i> <span data-i18n="live">LIVE</span></span>
+      <div class="lang-switch">
+        <button id="btnRu" class="active" onclick="setLang('ru')">RU</button>
+        <button id="btnEn" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="screen active" id="screen-home">
+      <div class="greet" data-i18n="homeEyebrow">Сегодня в поездке</div>
+      <div class="greet-h" data-i18n="homeGreeting">Ваша поездка на одном экране</div>
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="num">3/7</div><div class="lbl" data-i18n="kpiDay">День поездки</div></div>
+        <div class="kpi"><div class="num">2</div><div class="lbl" data-i18n="kpiCities">Города в плане</div></div>
+        <div class="kpi"><div class="num">6</div><div class="lbl" data-i18n="kpiSaved">Мест сохранено</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">🤖</span><span data-i18n="tipTitle">Совет на сегодня</span></div>
+        <p style="margin:0;font-size:13.5px;color:var(--muted);" data-i18n="tipText">Едете в Чарынский каньон — возьмите воду и головной убор, тени там почти нет. Лучшее время — раннее утро.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">💱</span><span data-i18n="quickConvert">Быстрый обмен</span></div>
+        <div class="conv-row">
+          <input type="number" id="amt" value="100" oninput="convert()">
+          <select id="from" onchange="convert()">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="CNY">CNY</option>
+          </select>
+        </div>
+        <div class="conv-result">≈ <b id="result">48 000</b> <span data-i18n="tenge">тенге</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">📌</span><span data-i18n="savedSpots">Сохранённые места</span></div>
+        <div class="feed-row"><span class="who">Алматы · Кок-Тобе</span><span class="tag" data-i18n="tagSaved">сохранено</span></div>
+        <div class="feed-row"><span class="who">Алматы · Зелёный базар</span><span class="tag" data-i18n="tagSaved">сохранено</span></div>
+        <div class="feed-row"><span class="who" data-i18n="charyn">Чарынский каньон</span><span class="tag" data-i18n="tagTrip">поездка на день</span></div>
+      </div>
+
+      <div class="cta-mini">
+        <a href="https://wa.me/77017438061?text=Здравствуйте! Смотрел прототип путеводителя по Казахстану, хочу поделиться идеей / вопросом" target="_blank" rel="noopener">
+          <span data-i18n="ctaBtn">Написать в WhatsApp →</span>
+        </a>
+        <p data-i18n="ctaNote">Это бета — что добавить или поправить, пишите прямо сюда.</p>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-guide">
+      <div class="greet" data-i18n="guideEyebrow">Путеводитель</div>
+      <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
+
+      <div class="city-grid">
+        <div class="city-tile live" onclick="document.getElementById('almaty-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Алматы</div>
+          <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
+        </div>
+        <div class="city-tile">
+          <div class="city-tag" data-i18n="tagSoon">Скоро</div>
+          <div class="city-name">Астана</div>
+          <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
+        </div>
+        <div class="city-tile">
+          <div class="city-tag" data-i18n="tagSoon">Скоро</div>
+          <div class="city-name">Туркестан</div>
+          <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
+        </div>
+        <div class="city-tile">
+          <div class="city-tag" data-i18n="tagSoon">Скоро</div>
+          <div class="city-name">Шымкент</div>
+          <div class="city-note" data-i18n="shymkentNote">Юг, история, еда</div>
+        </div>
+      </div>
+
+      <div id="almaty-detail" class="card" style="margin-top:20px;">
+        <div class="card-title"><span class="em">📍</span><span data-i18n="almatyDetailTitle">Алматы — первые 48 часов</span></div>
+
+        <div class="spot">
+          <div class="spot-name">Кок-Тобе</div>
+          <div class="spot-note" data-i18n="spotKokTobe">Канатная дорога наверх к закату. Лёгкая половина дня, хороший первый пункт.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="spotGreenBazaarName">Зелёный базар</div>
+          <div class="spot-note" data-i18n="spotGreenBazaar">Местный рынок — сухофрукты, мёд, ощущение настоящей жизни города.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="spotBigLakeName">Большое Алматинское озеро</div>
+          <div class="spot-note" data-i18n="spotBigLake">Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name">Чарынский каньон</div>
+          <div class="spot-note" data-i18n="spotCharyn">Мини-версия Гранд-Каньона. Долгий день, планировать заранее.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-rates">
+      <div class="greet" data-i18n="ratesEyebrow">Курс и цены</div>
+      <div class="greet-h" data-i18n="ratesTitle">Сколько что стоит</div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">💱</span><span data-i18n="convertTitle">Конвертер</span></div>
+        <div class="conv-row">
+          <input type="number" id="amt2" value="100" oninput="convert2()">
+          <select id="from2" onchange="convert2()">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="CNY">CNY</option>
+          </select>
+        </div>
+        <div class="conv-result">≈ <b id="result2">48 000</b> <span data-i18n="tenge">тенге</span></div>
+        <p style="font-size:11.5px;color:var(--muted-soft);margin-top:8px;" data-i18n="rateNote">Демонстрационный курс — актуальный курс проверяйте по прилёту.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">🧾</span><span data-i18n="pricesTitle">Ориентировочные цены</span></div>
+        <div class="emg-row"><span data-i18n="priceTaxi">Такси по городу</span><b>800–1500 ₸</b></div>
+        <div class="emg-row"><span data-i18n="priceCoffee">Кофе навынос</span><b>700–1200 ₸</b></div>
+        <div class="emg-row"><span data-i18n="priceLunch">Обед в кафе</span><b>2000–4000 ₸</b></div>
+        <div class="emg-row"><span data-i18n="priceSim">SIM-карта с интернетом</span><b>2000–3500 ₸</b></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-safety">
+      <div class="greet" data-i18n="safetyEyebrow">Безопасность</div>
+      <div class="greet-h" data-i18n="safetyTitle">На всякий случай</div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">🚨</span><span data-i18n="emgTitle">Экстренные номера</span></div>
+        <div class="emg-row"><span data-i18n="emgAll">Все службы</span><b>112</b></div>
+        <div class="emg-row"><span data-i18n="emgPolice">Полиция</span><b>102</b></div>
+        <div class="emg-row"><span data-i18n="emgAmbulance">Скорая помощь</span><b>103</b></div>
+        <div class="emg-row"><span data-i18n="emgFire">Пожарная служба</span><b>101</b></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="em">🛂</span><span data-i18n="embassyTitle">Если что-то пошло не так</span></div>
+        <p style="margin:0;font-size:13px;color:var(--muted);" data-i18n="embassyText">Сохраните контакты посольства вашей страны заранее — на случай потери документов.</p>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-phrases">
+      <div class="greet" data-i18n="phrasesEyebrow">Разговорник</div>
+      <div class="greet-h" data-i18n="phrasesTitle">Часто нужные фразы</div>
+
+      <div class="card">
+        <div class="phrase-row"><span data-i18n="phHello">Здравствуйте</span><span>Sälem</span><span>сэ-ЛЕМ</span></div>
+        <div class="phrase-row"><span data-i18n="phThanks">Спасибо</span><span>Rakhmet</span><span>рах-МЕТ</span></div>
+        <div class="phrase-row"><span data-i18n="phYesNo">Да / Нет</span><span>Иä / Жоқ</span><span>и-Я / жок</span></div>
+        <div class="phrase-row"><span data-i18n="phExcuse">Извините</span><span>Кешіріңіз</span><span>ке-ши-ри-НИЗ</span></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-notes">
+      <div class="greet" data-i18n="notesEyebrow">Заметки</div>
+      <div class="greet-h" data-i18n="notesTitle">Идеи в дороге</div>
+
+      <div class="card">
+        <div class="note-input-row">
+          <textarea id="noteInput" data-i18n-ph="notePlaceholder" placeholder="Записать идею или мысль..."></textarea>
+          <button class="note-add-btn" onclick="addNote()" data-i18n="noteAdd">+</button>
+        </div>
+        <p style="font-size:11px;color:var(--muted-soft);margin:8px 0 0;" data-i18n="notesHint">Сохраняется прямо на этом телефоне, без интернета.</p>
+      </div>
+
+      <div id="notesList"></div>
+    </div>
+
+  </div>
+
+  <div class="bottomnav">
+    <button class="nav-btn active" onclick="showScreen('home',this)"><span class="em">📊</span><span data-i18n="navHome">Главная</span></button>
+    <button class="nav-btn" onclick="showScreen('guide',this)"><span class="em">🧭</span><span data-i18n="navGuide">Путеводитель</span></button>
+    <button class="nav-btn" onclick="showScreen('rates',this)"><span class="em">💱</span><span data-i18n="navRates">Курс</span></button>
+    <button class="nav-btn" onclick="showScreen('safety',this)"><span class="em">🚨</span><span data-i18n="navSafety">Безопасность</span></button>
+    <button class="nav-btn" onclick="showScreen('phrases',this)"><span class="em">💬</span><span data-i18n="navPhrases">Фразы</span></button>
+    <button class="nav-btn" onclick="showScreen('notes',this)"><span class="em">📝</span><span data-i18n="navNotes">Заметки</span></button>
+  </div>
+
+</div>
+
+<script>
+  function showScreen(name, btn){
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('screen-'+name).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  var rates = { USD: 480, EUR: 520, CNY: 67 };
+  function convert(){
+    var amt = parseFloat(document.getElementById('amt').value) || 0;
+    var from = document.getElementById('from').value;
+    document.getElementById('result').textContent = Math.round(amt*rates[from]).toLocaleString('ru-RU');
+  }
+  function convert2(){
+    var amt = parseFloat(document.getElementById('amt2').value) || 0;
+    var from = document.getElementById('from2').value;
+    document.getElementById('result2').textContent = Math.round(amt*rates[from]).toLocaleString('ru-RU');
+  }
+  convert(); convert2();
+
+  // NOTES
+  function loadNotes(){
+    try{ return JSON.parse(localStorage.getItem('kz_notes') || '[]'); }
+    catch(e){ return []; }
+  }
+  function saveNotes(list){
+    try{ localStorage.setItem('kz_notes', JSON.stringify(list)); }catch(e){}
+  }
+  function renderNotes(){
+    var list = loadNotes();
+    var box = document.getElementById('notesList');
+    if(!list.length){
+      box.innerHTML = '<div class="note-empty" data-i18n="notesEmpty">Пока нет заметок — запишите первую мысль выше.</div>';
+      return;
+    }
+    box.innerHTML = list.slice().reverse().map(function(n, revIdx){
+      var idx = list.length - 1 - revIdx;
+      var d = new Date(n.t);
+      var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      return '<div class="note-item">'
+        + '<div class="note-text"></div>'
+        + '<div class="note-meta"><span class="note-date">'+dateStr+'</span>'
+        + '<button class="note-del" onclick="deleteNote('+idx+')" data-i18n="noteDelete">Удалить</button></div>'
+        + '</div>';
+    }).join('');
+    // set text safely (avoid HTML injection)
+    var items = box.querySelectorAll('.note-item .note-text');
+    list.slice().reverse().forEach(function(n, i){ items[i].textContent = n.text; });
+  }
+  function addNote(){
+    var input = document.getElementById('noteInput');
+    var val = input.value.trim();
+    if(!val) return;
+    var list = loadNotes();
+    list.push({text:val, t:Date.now()});
+    saveNotes(list);
+    input.value = '';
+    renderNotes();
+  }
+  function deleteNote(idx){
+    var list = loadNotes();
+    list.splice(idx,1);
+    saveNotes(list);
+    renderNotes();
+  }
+  renderNotes();
+
+  var dict = {
+    appTitle:{ru:"Центр управления",en:"Control Center"},
+    appSubtitle:{ru:"Путешествие по Казахстану",en:"Kazakhstan Trip"},
+    live:{ru:"LIVE",en:"LIVE"},
+    homeEyebrow:{ru:"Сегодня в поездке",en:"Today on your trip"},
+    homeGreeting:{ru:"Ваша поездка на одном экране",en:"Your trip on one screen"},
+    kpiDay:{ru:"День поездки",en:"Trip day"},
+    kpiCities:{ru:"Города в плане",en:"Cities planned"},
+    kpiSaved:{ru:"Мест сохранено",en:"Spots saved"},
+    tipTitle:{ru:"Совет на сегодня",en:"Tip for today"},
+    tipText:{ru:"Едете в Чарынский каньон — возьмите воду и головной убор, тени там почти нет. Лучшее время — раннее утро.",en:"Heading to Charyn Canyon — bring water and a hat, there's almost no shade. Early morning is best."},
+    quickConvert:{ru:"Быстрый обмен",en:"Quick convert"},
+    tenge:{ru:"тенге",en:"tenge (KZT)"},
+    savedSpots:{ru:"Сохранённые места",en:"Saved spots"},
+    tagSaved:{ru:"сохранено",en:"saved"},
+    tagTrip:{ru:"поездка на день",en:"day trip"},
+    charyn:{ru:"Чарынский каньон",en:"Charyn Canyon"},
+    ctaBtn:{ru:"Написать в WhatsApp →",en:"Message on WhatsApp →"},
+    ctaNote:{ru:"Это бета — что добавить или поправить, пишите прямо сюда.",en:"This is a beta — send feedback right here."},
+
+    guideEyebrow:{ru:"Путеводитель",en:"Guide"},
+    guideTitle:{ru:"Города Казахстана",en:"Cities of Kazakhstan"},
+    tagLive:{ru:"Готово",en:"Live"},
+    tagSoon:{ru:"Скоро",en:"Coming soon"},
+    almatyNote:{ru:"Горы, базары, кофейни",en:"Mountains, bazaars, coffee"},
+    astanaNote:{ru:"Байтерек, Хан Шатыр",en:"Baiterek, Khan Shatyr"},
+    turkistanNote:{ru:"Мавзолей Ясави",en:"Yasawi Mausoleum"},
+    shymkentNote:{ru:"Юг, история, еда",en:"South, history, food"},
+    almatyDetailTitle:{ru:"Алматы — первые 48 часов",en:"Almaty — first 48 hours"},
+    spotKokTobe:{ru:"Канатная дорога наверх к закату. Лёгкая половина дня, хороший первый пункт.",en:"Cable car up for sunset. An easy half-day, good first stop."},
+    spotGreenBazaarName:{ru:"Зелёный базар",en:"Green Bazaar"},
+    spotGreenBazaar:{ru:"Местный рынок — сухофрукты, мёд, ощущение настоящей жизни города.",en:"Local market — dried fruit, honey, a real feel for city life."},
+    spotBigLakeName:{ru:"Большое Алматинское озеро",en:"Big Almaty Lake"},
+    spotBigLake:{ru:"Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.",en:"A day trip into the mountains — turquoise water, best by car or tour."},
+    spotCharyn:{ru:"Мини-версия Гранд-Каньона. Долгий день, планировать заранее.",en:"Kazakhstan's mini Grand Canyon. A long day, plan ahead."},
+
+    ratesEyebrow:{ru:"Курс и цены",en:"Rates & prices"},
+    ratesTitle:{ru:"Сколько что стоит",en:"What things cost"},
+    convertTitle:{ru:"Конвертер",en:"Converter"},
+    rateNote:{ru:"Демонстрационный курс — актуальный курс проверяйте по прилёту.",en:"Demo rate — check the live rate on arrival."},
+    pricesTitle:{ru:"Ориентировочные цены",en:"Typical prices"},
+    priceTaxi:{ru:"Такси по городу",en:"Taxi across town"},
+    priceCoffee:{ru:"Кофе навынос",en:"Coffee to go"},
+    priceLunch:{ru:"Обед в кафе",en:"Lunch at a café"},
+    priceSim:{ru:"SIM-карта с интернетом",en:"SIM card with data"},
+
+    safetyEyebrow:{ru:"Безопасность",en:"Safety"},
+    safetyTitle:{ru:"На всякий случай",en:"Just in case"},
+    emgTitle:{ru:"Экстренные номера",en:"Emergency numbers"},
+    emgAll:{ru:"Все службы",en:"All emergencies"},
+    emgPolice:{ru:"Полиция",en:"Police"},
+    emgAmbulance:{ru:"Скорая помощь",en:"Ambulance"},
+    emgFire:{ru:"Пожарная служба",en:"Fire"},
+    embassyTitle:{ru:"Если что-то пошло не так",en:"If something goes wrong"},
+    embassyText:{ru:"Сохраните контакты посольства вашей страны заранее — на случай потери документов.",en:"Save your embassy's contact details ahead of time, in case of lost documents."},
+
+    phrasesEyebrow:{ru:"Разговорник",en:"Phrasebook"},
+    phrasesTitle:{ru:"Часто нужные фразы",en:"Phrases you'll actually use"},
+    phHello:{ru:"Здравствуйте",en:"Hello"},
+    phThanks:{ru:"Спасибо",en:"Thank you"},
+    phYesNo:{ru:"Да / Нет",en:"Yes / No"},
+    phExcuse:{ru:"Извините",en:"Excuse me"},
+
+    navHome:{ru:"Главная",en:"Home"},
+    navGuide:{ru:"Путеводитель",en:"Guide"},
+    navRates:{ru:"Курс",en:"Rates"},
+    navSafety:{ru:"Безопасность",en:"Safety"},
+    navPhrases:{ru:"Фразы",en:"Phrases"},
+    navNotes:{ru:"Заметки",en:"Notes"},
+
+    coverTitle:{ru:"Казахстан у вас в кармане",en:"Kazakhstan, right in your pocket"},
+    coverSub:{ru:"Города, курс валют, безопасность и ваши заметки — в одной панели.",en:"Cities, exchange rates, safety and your own notes — in one dashboard."},
+    coverBtn:{ru:"Войти →",en:"Enter →"},
+
+    notesEyebrow:{ru:"Заметки",en:"Notes"},
+    notesTitle:{ru:"Идеи в дороге",en:"Ideas on the road"},
+    notePlaceholder:{ru:"Записать идею или мысль...",en:"Jot down an idea or thought..."},
+    noteAdd:{ru:"+",en:"+"},
+    notesHint:{ru:"Сохраняется прямо на этом телефоне, без интернета.",en:"Saved right on this phone, no internet needed."},
+    notesEmpty:{ru:"Пока нет заметок — запишите первую мысль выше.",en:"No notes yet — jot down your first thought above."},
+    noteDelete:{ru:"Удалить",en:"Delete"}
+  };
+
+  function setLang(lang){
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key] && dict[key][lang]) el.textContent = dict[key][lang];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-ph');
+      if(dict[key] && dict[key][lang]) el.setAttribute('placeholder', dict[key][lang]);
+    });
+    document.getElementById('btnRu').classList.toggle('active', lang==='ru');
+    document.getElementById('btnEn').classList.toggle('active', lang==='en');
+  }
+</script>
+
+</body>
+</html>
