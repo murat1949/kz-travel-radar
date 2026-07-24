@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<meta name="theme-color" content="#0F766E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KZ Travel">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+#installApp{display:none;position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;border:0;border-radius:14px;padding:14px 16px;background:#0F766E;color:#fff;font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;align-items:center;justify-content:center;gap:9px;box-shadow:0 10px 24px rgba(0,0,0,.28);cursor:pointer}
+#installApp.show{display:flex}
+#installHelp{display:none;position:fixed;left:16px;right:16px;bottom:74px;z-index:9999;margin:0;padding:10px 14px;background:#fff;border-radius:10px;text-align:center;color:#333;font-size:12.5px;line-height:1.4;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+#installHelp.show{display:block}
+</style>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Центр управления — Путешествие по Казахстану</title>
@@ -554,5 +567,10 @@
   })();
 </script>
 
+<button id="installApp" type="button" aria-label="Установить приложение на телефон">
+ <span>📲</span><span>Установить на телефон</span>
+</button>
+<p id="installHelp"></p>
+<script src="pwa-install.js"></script>
 </body>
 </html>
