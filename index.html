@@ -184,7 +184,6 @@
   .fab-wa{position:fixed;right:16px;bottom:78px;z-index:30;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:22px;box-shadow:0 10px 24px -6px rgba(0,0,0,0.4);}
   @media (min-width:640px){.fab-wa{right:calc(50% - 460px + 16px);}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -193,47 +192,18 @@
   <div class="gate-card">
     <div class="gate-ic">🧭</div>
     <h2 data-i18n="gateTitle">Вход в ваш путеводитель</h2>
-    <p data-i18n="gateSub">Email и пароль, который вы придумали при первом входе.</p>
-
-    <div class="gate-tabs">
-      <button class="gate-tab active" id="tabPass" data-i18n="tabPass">Пароль</button>
-      <button class="gate-tab" id="tabCode" data-i18n="tabCode">Код из письма</button>
-    </div>
+    <p data-i18n="gateSub">Email и код из письма после покупки на Gumroad.</p>
 
     <div class="gate-field">
       <label data-i18n="gateEmailLabel">Email</label>
       <input id="gateEmail" type="email" placeholder="you@example.com" autocomplete="email">
     </div>
-
-    <!-- Password mode: returning visitors -->
-    <div id="modePass">
-      <div class="gate-field">
-        <label data-i18n="passLabel">Пароль</label>
-        <input id="gatePass" type="password" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
-      <div class="gate-buy"><a href="#" id="forgotLink" data-i18n="forgotLink">Забыли пароль или первый раз здесь?</a></div>
+    <div class="gate-field">
+      <label data-i18n="gateCodeLabel">Код доступа</label>
+      <input id="gateInput" type="text" placeholder="XXXXXXXX-XXXXXXXX-XXXX" autocomplete="off" autocapitalize="off" spellcheck="false">
     </div>
 
-    <!-- Code mode: first-time (invite) or password reset — no links, no bots involved -->
-    <div id="modeCode" style="display:none;">
-      <p class="gate-hint" data-i18n="codeHint">Нажмите «Прислать код», затем впишите его из письма и придумайте пароль.</p>
-      <button class="gate-btn gate-btn-outline" id="sendCodeBtn" data-i18n="sendCodeBtn" type="button">Прислать код на почту</button>
-      <div class="gate-field">
-        <label data-i18n="codeLabel">Код из письма</label>
-        <input id="codeInput" type="text" inputmode="numeric" placeholder="123456" autocomplete="one-time-code">
-      </div>
-      <div class="gate-field">
-        <label data-i18n="passLabel">Новый пароль</label>
-        <input id="codePass" type="password" placeholder="••••••••" autocomplete="new-password">
-      </div>
-      <div class="gate-field">
-        <label data-i18n="pass2Label">Повторите пароль</label>
-        <input id="codePass2" type="password" placeholder="••••••••" autocomplete="new-password">
-      </div>
-      <button class="gate-btn" id="codeBtn" data-i18n="codeBtn">Установить пароль и войти</button>
-    </div>
-
+    <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
     <div class="gate-msg" id="gateMsg"></div>
     <div class="gate-buy" data-i18n="gateBuy">Ещё нет доступа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить</a></div>
   </div>
@@ -620,30 +590,16 @@
     noteDelete:{ru:"Удалить",en:"Delete"},
 
     gateTitle:{ru:"Вход в ваш путеводитель",en:"Sign in to your guide"},
-    gateSub:{ru:"Email и пароль, который вы придумали при первом входе.",en:"Email and the password you set on your first visit."},
+    gateSub:{ru:"Email и код из письма после покупки на Gumroad.",en:"Email and code from your Gumroad receipt."},
     gateEmailLabel:{ru:"Email",en:"Email"},
-    passLabel:{ru:"Пароль",en:"Password"},
-    pass2Label:{ru:"Повторите пароль",en:"Repeat password"},
+    gateCodeLabel:{ru:"Код доступа",en:"Access code"},
     gateBtn:{ru:"Войти",en:"Sign in"},
     gateBuy:{ru:"Ещё нет доступа? Купить",en:"No access yet? Buy here"},
-    gateChecking:{ru:"Проверяем…",en:"Checking…"},
-    gateErrInvalid:{ru:"Неверный email или пароль.",en:"Wrong email or password."},
-    gateErrEmpty:{ru:"Заполните email и пароль.",en:"Please fill in email and password."},
-    gateErrNetwork:{ru:"Не удалось подключиться. Проверьте интернет и попробуйте снова.",en:"Couldn't connect. Check your connection and try again."},
-
-    tabPass:{ru:"Пароль",en:"Password"},
-    tabCode:{ru:"Код из письма",en:"Code from email"},
-    forgotLink:{ru:"Забыли пароль или первый раз здесь?",en:"Forgot password or first time here?"},
-    codeHint:{ru:"Нажмите «Прислать код», затем впишите его из письма и придумайте пароль.",en:"Tap \"Send code\", then enter it from the email and choose a password."},
-    sendCodeBtn:{ru:"Прислать код на почту",en:"Send code to email"},
-    codeLabel:{ru:"Код из письма",en:"Code from the email"},
-    codeBtn:{ru:"Установить пароль и войти",en:"Set password and continue"},
-    codeSent:{ru:"Код отправлен, проверьте почту.",en:"Code sent — check your email."},
-    codeNeedEmail:{ru:"Сначала впишите email выше.",en:"Please enter your email above first."},
-    codeErrShort:{ru:"Пароль должен быть не короче 6 символов.",en:"Password must be at least 6 characters."},
-    codeErrMismatch:{ru:"Пароли не совпадают.",en:"Passwords don't match."},
-    codeErrEmpty:{ru:"Заполните email, код и пароль.",en:"Please fill in email, code and password."},
-    codeErrInvalid:{ru:"Код неверный или устарел. Запросите новый.",en:"Code is invalid or expired. Please request a new one."}
+    gateChecking:{ru:"Проверяем данные…",en:"Checking your details…"},
+    gateOk:{ru:"Готово, открываем…",en:"All set, unlocking…"},
+    gateErrInvalid:{ru:"Email или код не подходят. Проверьте письмо с покупкой.",en:"Email or code doesn't match. Please check your purchase email."},
+    gateErrEmpty:{ru:"Заполните email и код.",en:"Please fill in both email and code."},
+    gateErrNetwork:{ru:"Не удалось проверить данные. Проверьте интернет и попробуйте снова.",en:"Couldn't verify. Check your connection and try again."}
   };
 
   function setLang(lang){
@@ -668,37 +624,19 @@
     setLang(__currentLang);
   })();
 
-  // ===== ACCESS SCREEN (Supabase Auth — password or emailed code, no links) =====
+  // ===== ACCESS SCREEN (email + Gumroad code, verified via our own function — no email links, no bots) =====
   (function(){
-    var SUPABASE_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co';
-    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3cG5weGhvYXhjbmxsaWVlanNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTA2OTMsImV4cCI6MjEwMDM2NjY5M30.vpAREIJqgM3SdfqzavSWYJ7uKblcYLdSVZ5iG6KsMc0';
-
-    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: { detectSessionInUrl: false, persistSession: true, autoRefreshToken: true }
-    });
-
+    var VERIFY_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co/functions/v1/verify-license';
+    var STORAGE_KEY = 'kztr_license_key';
     var gate = document.getElementById('gate');
-    var gateEmail = document.getElementById('gateEmail');
-    var gateMsg = document.getElementById('gateMsg');
-
-    var tabPass = document.getElementById('tabPass');
-    var tabCode = document.getElementById('tabCode');
-    var modePass = document.getElementById('modePass');
-    var modeCode = document.getElementById('modeCode');
-
-    var gatePass = document.getElementById('gatePass');
-    var gateBtn = document.getElementById('gateBtn');
-    var forgotLink = document.getElementById('forgotLink');
-
-    var sendCodeBtn = document.getElementById('sendCodeBtn');
-    var codeInput = document.getElementById('codeInput');
-    var codePass = document.getElementById('codePass');
-    var codePass2 = document.getElementById('codePass2');
-    var codeBtn = document.getElementById('codeBtn');
+    var emailInput = document.getElementById('gateEmail');
+    var codeInput = document.getElementById('gateInput');
+    var btn = document.getElementById('gateBtn');
+    var msg = document.getElementById('gateMsg');
 
     function showMsg(text, cls){
-      gateMsg.textContent = text || '';
-      gateMsg.className = 'gate-msg' + (cls ? ' ' + cls : '');
+      msg.textContent = text || '';
+      msg.className = 'gate-msg' + (cls ? ' ' + cls : '');
     }
 
     function unlock(){
@@ -707,100 +645,54 @@
       if(cover) cover.classList.add('hide');
     }
 
-    function switchTab(toCode){
-      tabPass.classList.toggle('active', !toCode);
-      tabCode.classList.toggle('active', toCode);
-      modePass.style.display = toCode ? 'none' : 'block';
-      modeCode.style.display = toCode ? 'block' : 'none';
-      showMsg('', '');
+    // Already verified on this device before — skip straight to the app.
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if(saved){
+      unlock();
     }
-    tabPass.addEventListener('click', function(){ switchTab(false); });
-    tabCode.addEventListener('click', function(){ switchTab(true); });
-    forgotLink.addEventListener('click', function(e){ e.preventDefault(); switchTab(true); });
 
-    (async function boot(){
-      var { data } = await sb.auth.getSession();
-      if(data && data.session) unlock();
-    })();
-
-    gateBtn.addEventListener('click', async function(){
-      var email = (gateEmail.value || '').trim();
-      var pass = gatePass.value || '';
-      if(!email || !pass){ showMsg(dict.gateErrEmpty[__currentLang], 'err'); return; }
-      gateBtn.disabled = true;
+    async function tryVerify(email, code){
+      btn.disabled = true;
       showMsg(dict.gateChecking[__currentLang], '');
       try{
-        var { error } = await sb.auth.signInWithPassword({ email: email, password: pass });
-        if(error){ showMsg(dict.gateErrInvalid[__currentLang], 'err'); }
-        else { unlock(); }
-      } catch(e){
+        var resp = await fetch(VERIFY_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({license_key: code, email: email})
+        });
+        var data = await resp.json();
+        if(data && data.ok){
+          localStorage.setItem(STORAGE_KEY, code);
+          showMsg(dict.gateOk[__currentLang], 'ok');
+          setTimeout(unlock, 400);
+        } else {
+          showMsg(dict.gateErrInvalid[__currentLang], 'err');
+        }
+      } catch(err){
         showMsg(dict.gateErrNetwork[__currentLang], 'err');
       } finally {
-        gateBtn.disabled = false;
+        btn.disabled = false;
       }
-    });
+    }
 
-    sendCodeBtn.addEventListener('click', async function(){
-      var email = (gateEmail.value || '').trim();
-      if(!email){ showMsg(dict.codeNeedEmail[__currentLang], 'err'); return; }
-      sendCodeBtn.disabled = true;
-      showMsg(dict.gateChecking[__currentLang], '');
-      try{
-        // Always safe to call: if the account already exists this resends a
-        // recovery code, if not it's harmlessly ignored — either way the
-        // buyer's invite code (sent automatically after purchase) still works.
-        await sb.auth.resetPasswordForEmail(email);
-        showMsg(dict.codeSent[__currentLang], 'ok');
-      } catch(e){
-        showMsg(dict.gateErrNetwork[__currentLang], 'err');
-      } finally {
-        sendCodeBtn.disabled = false;
-      }
-    });
-
-    codeBtn.addEventListener('click', async function(){
-      var email = (gateEmail.value || '').trim();
+    btn.addEventListener('click', function(){
+      var email = (emailInput.value || '').trim();
       var code = (codeInput.value || '').trim();
-      var p1 = codePass.value || '';
-      var p2 = codePass2.value || '';
-      if(!email || !code || !p1){ showMsg(dict.codeErrEmpty[__currentLang], 'err'); return; }
-      if(p1.length < 6){ showMsg(dict.codeErrShort[__currentLang], 'err'); return; }
-      if(p1 !== p2){ showMsg(dict.codeErrMismatch[__currentLang], 'err'); return; }
-
-      codeBtn.disabled = true;
-      showMsg(dict.gateChecking[__currentLang], '');
-      try{
-        // The code could be from either the automatic purchase invite or a
-        // "send code" recovery request — try both token types.
-        var result = await sb.auth.verifyOtp({ email: email, token: code, type: 'invite' });
-        if(result.error){
-          result = await sb.auth.verifyOtp({ email: email, token: code, type: 'recovery' });
-        }
-        if(result.error){
-          showMsg(dict.codeErrInvalid[__currentLang], 'err');
-          return;
-        }
-        var { error: updateErr } = await sb.auth.updateUser({ password: p1 });
-        if(updateErr){
-          showMsg(dict.codeErrInvalid[__currentLang], 'err');
-          return;
-        }
-        unlock();
-      } catch(e){
-        showMsg(dict.gateErrNetwork[__currentLang], 'err');
-      } finally {
-        codeBtn.disabled = false;
+      if(!email || !code){
+        showMsg(dict.gateErrEmpty[__currentLang], 'err');
+        return;
       }
+      tryVerify(email, code);
     });
 
-    [gateEmail, gatePass].forEach(function(el){
-      el.addEventListener('keydown', function(e){ if(e.key === 'Enter') gateBtn.click(); });
-    });
-    [codeInput, codePass, codePass2].forEach(function(el){
-      el.addEventListener('keydown', function(e){ if(e.key === 'Enter') codeBtn.click(); });
+    [emailInput, codeInput].forEach(function(el){
+      el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter') btn.click();
+      });
     });
   })();
 </script>
+
 
 
 </body>
