@@ -678,19 +678,30 @@
 
     function unlock(){
       gate.classList.add('hide');
+      var cover = document.getElementById('cover');
+      if(cover) cover.classList.add('hide');
     }
 
-    function isInviteLink(){
-      var hash = window.location.hash || '';
-      return hash.indexOf('type=invite') !== -1 || hash.indexOf('type=recovery') !== -1;
+    function showSetPasswordStep(){
+      stepInvite.style.display = 'block';
+      stepLogin.style.display = 'none';
     }
+
+    // Supabase strips the URL hash as soon as it parses the invite/recovery
+    // token, so checking window.location.hash ourselves is unreliable — we
+    // listen for its own event instead, which fires reliably either way.
+    sb.auth.onAuthStateChange(function(event, session){
+      if(event === 'PASSWORD_RECOVERY'){
+        showSetPasswordStep();
+      }
+    });
 
     async function boot(){
-      if(isInviteLink()){
-        stepInvite.style.display = 'block';
-        stepLogin.style.display = 'none';
-        return;
-      }
+      // Give onAuthStateChange a brief moment to fire PASSWORD_RECOVERY
+      // (it runs asynchronously right after the client is created).
+      await new Promise(function(r){ setTimeout(r, 150); });
+      if(stepInvite.style.display === 'block') return;
+
       var { data } = await sb.auth.getSession();
       if(data && data.session){
         unlock();
