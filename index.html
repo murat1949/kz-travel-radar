@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta name="theme-color" content="#0F766E">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="KZ Travel">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<style>
-#installApp{display:none;position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;border:0;border-radius:14px;padding:14px 16px;background:#0F766E;color:#fff;font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;align-items:center;justify-content:center;gap:9px;box-shadow:0 10px 24px rgba(0,0,0,.28);cursor:pointer}
-#installApp.show{display:flex}
-#installHelp{display:none;position:fixed;left:16px;right:16px;bottom:74px;z-index:9999;margin:0;padding:10px 14px;background:#fff;border-radius:10px;text-align:center;color:#333;font-size:12.5px;line-height:1.4;box-shadow:0 6px 18px rgba(0,0,0,.22)}
-#installHelp.show{display:block}
-</style>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Центр управления — Путешествие по Казахстану</title>
@@ -110,6 +97,28 @@
   .nav-btn .em{font-size:18px;}
   .nav-btn.active{color:var(--night);background:var(--steppe);}
 
+  /* LICENSE GATE */
+  .gate{
+    position:fixed;inset:0;z-index:200;
+    background:linear-gradient(150deg, #12293B 0%, #1A3A50 60%, #0D1E2B 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#fff;text-align:center;padding:32px;
+    transition:opacity .4s ease, visibility .4s ease;
+  }
+  .gate.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .gate-ic{width:56px;height:56px;border-radius:16px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px;}
+  .gate h2{font-size:22px;max-width:320px;line-height:1.3;}
+  .gate p{margin-top:10px;font-size:13.5px;color:rgba(255,255,255,0.7);max-width:300px;}
+  .gate-input{margin-top:26px;width:100%;max-width:300px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);color:#fff;border-radius:12px;padding:13px 14px;font-size:15px;font-family:inherit;text-align:center;letter-spacing:.03em;}
+  .gate-input::placeholder{color:rgba(255,255,255,0.4);}
+  .gate-btn{margin-top:14px;background:#fff;color:var(--night);border:none;border-radius:999px;padding:13px 30px;font-weight:800;font-size:14.5px;width:100%;max-width:300px;}
+  .gate-btn:disabled{opacity:.6;}
+  .gate-msg{margin-top:14px;font-size:12.5px;min-height:16px;}
+  .gate-msg.err{color:#FF8A80;}
+  .gate-msg.ok{color:#7FD9C9;}
+  .gate-buy{margin-top:22px;font-size:12px;color:rgba(255,255,255,0.55);}
+  .gate-buy a{color:#F4B942;font-weight:700;text-decoration:none;}
+
   /* COVER / SPLASH */
   .cover{
     position:fixed;inset:0;z-index:100;
@@ -164,6 +173,17 @@
 </style>
 </head>
 <body>
+
+<!-- LICENSE GATE -->
+<div class="gate" id="gate">
+  <div class="gate-ic">🔑</div>
+  <h2 data-i18n="gateTitle">Введите лицензионный ключ</h2>
+  <p data-i18n="gateSub">Ключ пришёл вам на почту после покупки на Gumroad.</p>
+  <input class="gate-input" id="gateInput" type="text" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
+  <div class="gate-msg" id="gateMsg"></div>
+  <div class="gate-buy" data-i18n="gateBuy">Ещё нет ключа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить на Gumroad</a></div>
+</div>
 
 <!-- COVER -->
 <div class="cover" id="cover">
@@ -543,10 +563,21 @@
     noteAdd:{ru:"+",en:"+"},
     notesHint:{ru:"Сохраняется прямо на этом телефоне, без интернета.",en:"Saved right on this phone, no internet needed."},
     notesEmpty:{ru:"Пока нет заметок — запишите первую мысль выше.",en:"No notes yet — jot down your first thought above."},
-    noteDelete:{ru:"Удалить",en:"Delete"}
+    noteDelete:{ru:"Удалить",en:"Delete"},
+
+    gateTitle:{ru:"Введите лицензионный ключ",en:"Enter your license key"},
+    gateSub:{ru:"Ключ пришёл вам на почту после покупки на Gumroad.",en:"You received this key by email after purchasing on Gumroad."},
+    gateBtn:{ru:"Войти",en:"Unlock"},
+    gateBuy:{ru:"Ещё нет ключа? Купить на Gumroad",en:"Don't have a key yet? Buy on Gumroad"},
+    gateChecking:{ru:"Проверяем ключ…",en:"Checking key…"},
+    gateOk:{ru:"Готово, открываем…",en:"All set, unlocking…"},
+    gateErrInvalid:{ru:"Ключ не найден. Проверьте, правильно ли скопирован.",en:"Key not found. Please check it was copied correctly."},
+    gateErrEmpty:{ru:"Введите ключ.",en:"Please enter a key."},
+    gateErrNetwork:{ru:"Не удалось проверить ключ. Проверьте интернет и попробуйте снова.",en:"Couldn't verify the key. Check your connection and try again."}
   };
 
   function setLang(lang){
+    __currentLang = lang;
     document.querySelectorAll('[data-i18n]').forEach(function(el){
       var key = el.getAttribute('data-i18n');
       if(dict[key] && dict[key][lang]) el.textContent = dict[key][lang];
@@ -560,17 +591,75 @@
   }
 
   // Auto-detect: Russian-language browsers get RU, everyone else gets EN by default.
+  var __currentLang = 'en';
   (function(){
     var browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-    var initial = browserLang.indexOf('ru') === 0 ? 'ru' : 'en';
-    setLang(initial);
+    __currentLang = browserLang.indexOf('ru') === 0 ? 'ru' : 'en';
+    setLang(__currentLang);
+  })();
+
+  // ===== LICENSE GATE =====
+  (function(){
+    var VERIFY_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co/functions/v1/verify-license';
+    var STORAGE_KEY = 'kztr_license_key';
+    var gate = document.getElementById('gate');
+    var input = document.getElementById('gateInput');
+    var btn = document.getElementById('gateBtn');
+    var msg = document.getElementById('gateMsg');
+
+    function showMsg(text, cls){
+      msg.textContent = text || '';
+      msg.className = 'gate-msg' + (cls ? ' ' + cls : '');
+    }
+
+    function unlock(){
+      gate.classList.add('hide');
+    }
+
+    // Already verified on this device before — skip straight to the app.
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if(saved){
+      unlock();
+    }
+
+    async function tryVerify(key){
+      btn.disabled = true;
+      showMsg(dict.gateChecking[__currentLang], '');
+      try{
+        var resp = await fetch(VERIFY_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({license_key: key})
+        });
+        var data = await resp.json();
+        if(data && data.ok){
+          localStorage.setItem(STORAGE_KEY, key);
+          showMsg(dict.gateOk[__currentLang], 'ok');
+          setTimeout(unlock, 500);
+        } else {
+          showMsg(dict.gateErrInvalid[__currentLang], 'err');
+        }
+      } catch(err){
+        showMsg(dict.gateErrNetwork[__currentLang], 'err');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    btn.addEventListener('click', function(){
+      var key = (input.value || '').trim();
+      if(!key){
+        showMsg(dict.gateErrEmpty[__currentLang], 'err');
+        return;
+      }
+      tryVerify(key);
+    });
+
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') btn.click();
+    });
   })();
 </script>
 
-<button id="installApp" type="button" aria-label="Установить приложение на телефон">
- <span>📲</span><span>Установить на телефон</span>
-</button>
-<p id="installHelp"></p>
-<script src="pwa-install.js"></script>
 </body>
 </html>
