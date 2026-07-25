@@ -178,6 +178,7 @@
   .fab-wa{position:fixed;right:16px;bottom:78px;z-index:30;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:22px;box-shadow:0 10px 24px -6px rgba(0,0,0,0.4);}
   @media (min-width:640px){.fab-wa{right:calc(50% - 460px + 16px);}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -185,21 +186,39 @@
 <div class="gate" id="gate">
   <div class="gate-card">
     <div class="gate-ic">🧭</div>
-    <h2 data-i18n="gateTitle">Вход в ваш путеводитель</h2>
-    <p data-i18n="gateSub">Email и код из письма после покупки на Gumroad.</p>
 
-    <div class="gate-field">
-      <label data-i18n="gateEmailLabel">Email</label>
-      <input id="gateEmail" type="email" placeholder="you@example.com" autocomplete="email">
-    </div>
-    <div class="gate-field">
-      <label data-i18n="gateCodeLabel">Код доступа</label>
-      <input id="gateInput" type="text" placeholder="XXXXXXXX-XXXXXXXX-XXXX" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <!-- Step shown for first-time visitors coming from the invite email link -->
+    <div id="gateStepInvite" style="display:none;">
+      <h2 data-i18n="inviteTitle">Придумайте пароль</h2>
+      <p data-i18n="inviteSub">Это разовая настройка — дальше входите с ним же.</p>
+      <div class="gate-field">
+        <label data-i18n="passLabel">Пароль</label>
+        <input id="invitePass" type="password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div class="gate-field">
+        <label data-i18n="pass2Label">Повторите пароль</label>
+        <input id="invitePass2" type="password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <button class="gate-btn" id="inviteBtn" data-i18n="inviteBtn">Сохранить и войти</button>
+      <div class="gate-msg" id="inviteMsg"></div>
     </div>
 
-    <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
-    <div class="gate-msg" id="gateMsg"></div>
-    <div class="gate-buy" data-i18n="gateBuy">Ещё нет доступа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить</a></div>
+    <!-- Step shown for returning visitors -->
+    <div id="gateStepLogin">
+      <h2 data-i18n="gateTitle">Вход в ваш путеводитель</h2>
+      <p data-i18n="gateSub">Email и пароль, который вы придумали при первом входе.</p>
+      <div class="gate-field">
+        <label data-i18n="gateEmailLabel">Email</label>
+        <input id="gateEmail" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="gate-field">
+        <label data-i18n="passLabel">Пароль</label>
+        <input id="gatePass" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
+      <div class="gate-msg" id="gateMsg"></div>
+      <div class="gate-buy" data-i18n="gateBuy">Ещё нет доступа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить</a></div>
+    </div>
   </div>
 </div>
 
@@ -584,16 +603,23 @@
     noteDelete:{ru:"Удалить",en:"Delete"},
 
     gateTitle:{ru:"Вход в ваш путеводитель",en:"Sign in to your guide"},
-    gateSub:{ru:"Email и код из письма после покупки на Gumroad.",en:"Email and code from your Gumroad receipt."},
+    gateSub:{ru:"Email и пароль, который вы придумали при первом входе.",en:"Email and the password you set on your first visit."},
     gateEmailLabel:{ru:"Email",en:"Email"},
-    gateCodeLabel:{ru:"Код доступа",en:"Access code"},
+    passLabel:{ru:"Пароль",en:"Password"},
+    pass2Label:{ru:"Повторите пароль",en:"Repeat password"},
     gateBtn:{ru:"Войти",en:"Sign in"},
     gateBuy:{ru:"Ещё нет доступа? Купить",en:"No access yet? Buy here"},
-    gateChecking:{ru:"Проверяем данные…",en:"Checking your details…"},
-    gateOk:{ru:"Готово, открываем…",en:"All set, unlocking…"},
-    gateErrInvalid:{ru:"Email или код не подходят. Проверьте письмо с покупкой.",en:"Email or code doesn't match. Please check your purchase email."},
-    gateErrEmpty:{ru:"Заполните email и код.",en:"Please fill in both email and code."},
-    gateErrNetwork:{ru:"Не удалось проверить данные. Проверьте интернет и попробуйте снова.",en:"Couldn't verify. Check your connection and try again."}
+    gateChecking:{ru:"Проверяем…",en:"Checking…"},
+    gateErrInvalid:{ru:"Неверный email или пароль.",en:"Wrong email or password."},
+    gateErrEmpty:{ru:"Заполните email и пароль.",en:"Please fill in email and password."},
+    gateErrNetwork:{ru:"Не удалось подключиться. Проверьте интернет и попробуйте снова.",en:"Couldn't connect. Check your connection and try again."},
+
+    inviteTitle:{ru:"Придумайте пароль",en:"Choose a password"},
+    inviteSub:{ru:"Это разовая настройка — дальше входите с ним же.",en:"One-time setup — you'll use it to sign in from now on."},
+    inviteBtn:{ru:"Сохранить и войти",en:"Save and continue"},
+    inviteErrMismatch:{ru:"Пароли не совпадают.",en:"Passwords don't match."},
+    inviteErrShort:{ru:"Пароль должен быть не короче 6 символов.",en:"Password must be at least 6 characters."},
+    inviteErrGeneric:{ru:"Не получилось сохранить пароль. Попробуйте ещё раз.",en:"Couldn't save the password. Please try again."}
   };
 
   function setLang(lang){
@@ -618,69 +644,106 @@
     setLang(__currentLang);
   })();
 
-  // ===== ACCESS SCREEN =====
+  // ===== ACCESS SCREEN (Supabase Auth) =====
   (function(){
-    var VERIFY_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co/functions/v1/verify-license';
-    var STORAGE_KEY = 'kztr_license_key';
-    var gate = document.getElementById('gate');
-    var emailInput = document.getElementById('gateEmail');
-    var codeInput = document.getElementById('gateInput');
-    var btn = document.getElementById('gateBtn');
-    var msg = document.getElementById('gateMsg');
+    var SUPABASE_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co';
+    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3cG5weGhvYXhjbmxsaWVlanNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTA2OTMsImV4cCI6MjEwMDM2NjY5M30.vpAREIJqgM3SdfqzavSWYJ7uKblcYLdSVZ5iG6KsMc0';
 
-    function showMsg(text, cls){
-      msg.textContent = text || '';
-      msg.className = 'gate-msg' + (cls ? ' ' + cls : '');
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+    });
+
+    var gate = document.getElementById('gate');
+    var stepInvite = document.getElementById('gateStepInvite');
+    var stepLogin = document.getElementById('gateStepLogin');
+
+    var invitePass = document.getElementById('invitePass');
+    var invitePass2 = document.getElementById('invitePass2');
+    var inviteBtn = document.getElementById('inviteBtn');
+    var inviteMsg = document.getElementById('inviteMsg');
+
+    var gateEmail = document.getElementById('gateEmail');
+    var gatePass = document.getElementById('gatePass');
+    var gateBtn = document.getElementById('gateBtn');
+    var gateMsg = document.getElementById('gateMsg');
+
+    function showMsg(el, text, cls){
+      el.textContent = text || '';
+      el.className = 'gate-msg' + (cls ? ' ' + cls : '');
     }
 
     function unlock(){
       gate.classList.add('hide');
     }
 
-    // Already verified on this device before — skip straight to the app.
-    var saved = localStorage.getItem(STORAGE_KEY);
-    if(saved){
-      unlock();
+    function isInviteLink(){
+      var hash = window.location.hash || '';
+      return hash.indexOf('type=invite') !== -1 || hash.indexOf('type=recovery') !== -1;
     }
 
-    async function tryVerify(email, code){
-      btn.disabled = true;
-      showMsg(dict.gateChecking[__currentLang], '');
-      try{
-        var resp = await fetch(VERIFY_URL, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({license_key: code, email: email})
-        });
-        var data = await resp.json();
-        if(data && data.ok){
-          localStorage.setItem(STORAGE_KEY, code);
-          showMsg(dict.gateOk[__currentLang], 'ok');
-          setTimeout(unlock, 500);
-        } else {
-          showMsg(dict.gateErrInvalid[__currentLang], 'err');
-        }
-      } catch(err){
-        showMsg(dict.gateErrNetwork[__currentLang], 'err');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    btn.addEventListener('click', function(){
-      var email = (emailInput.value || '').trim();
-      var code = (codeInput.value || '').trim();
-      if(!email || !code){
-        showMsg(dict.gateErrEmpty[__currentLang], 'err');
+    async function boot(){
+      if(isInviteLink()){
+        stepInvite.style.display = 'block';
+        stepLogin.style.display = 'none';
         return;
       }
-      tryVerify(email, code);
+      var { data } = await sb.auth.getSession();
+      if(data && data.session){
+        unlock();
+      }
+    }
+    boot();
+
+    inviteBtn.addEventListener('click', async function(){
+      var p1 = invitePass.value || '';
+      var p2 = invitePass2.value || '';
+      if(p1.length < 6){ showMsg(inviteMsg, dict.inviteErrShort[__currentLang], 'err'); return; }
+      if(p1 !== p2){ showMsg(inviteMsg, dict.inviteErrMismatch[__currentLang], 'err'); return; }
+      inviteBtn.disabled = true;
+      showMsg(inviteMsg, dict.gateChecking[__currentLang], '');
+      try{
+        var { error } = await sb.auth.updateUser({ password: p1 });
+        if(error){
+          showMsg(inviteMsg, dict.inviteErrGeneric[__currentLang], 'err');
+        } else {
+          history.replaceState(null, '', window.location.pathname);
+          unlock();
+        }
+      } catch(e){
+        showMsg(inviteMsg, dict.gateErrNetwork[__currentLang], 'err');
+      } finally {
+        inviteBtn.disabled = false;
+      }
     });
 
-    [emailInput, codeInput].forEach(function(el){
-      el.addEventListener('keydown', function(e){
-        if(e.key === 'Enter') btn.click();
-      });
+    gateBtn.addEventListener('click', async function(){
+      var email = (gateEmail.value || '').trim();
+      var pass = gatePass.value || '';
+      if(!email || !pass){
+        showMsg(gateMsg, dict.gateErrEmpty[__currentLang], 'err');
+        return;
+      }
+      gateBtn.disabled = true;
+      showMsg(gateMsg, dict.gateChecking[__currentLang], '');
+      try{
+        var { error } = await sb.auth.signInWithPassword({ email: email, password: pass });
+        if(error){
+          showMsg(gateMsg, dict.gateErrInvalid[__currentLang], 'err');
+        } else {
+          unlock();
+        }
+      } catch(e){
+        showMsg(gateMsg, dict.gateErrNetwork[__currentLang], 'err');
+      } finally {
+        gateBtn.disabled = false;
+      }
+    });
+
+    [gateEmail, gatePass].forEach(function(el){
+      el.addEventListener('keydown', function(e){ if(e.key === 'Enter') gateBtn.click(); });
+    });
+    [invitePass, invitePass2].forEach(function(el){
+      el.addEventListener('keydown', function(e){ if(e.key === 'Enter') inviteBtn.click(); });
     });
   })();
 </script>
