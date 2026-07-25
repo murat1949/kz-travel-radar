@@ -217,6 +217,7 @@
       </div>
       <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
       <div class="gate-msg" id="gateMsg"></div>
+      <div class="gate-buy"><a href="#" id="forgotLink" data-i18n="forgotLink">Забыли пароль?</a></div>
       <div class="gate-buy" data-i18n="gateBuy">Ещё нет доступа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить</a></div>
     </div>
   </div>
@@ -609,6 +610,9 @@
     pass2Label:{ru:"Повторите пароль",en:"Repeat password"},
     gateBtn:{ru:"Войти",en:"Sign in"},
     gateBuy:{ru:"Ещё нет доступа? Купить",en:"No access yet? Buy here"},
+    forgotLink:{ru:"Забыли пароль?",en:"Forgot password?"},
+    forgotNeedEmail:{ru:"Сначала впишите email выше.",en:"Please enter your email above first."},
+    forgotSent:{ru:"Проверьте почту — прислали ссылку для входа.",en:"Check your email — we sent a sign-in link."},
     gateChecking:{ru:"Проверяем…",en:"Checking…"},
     gateErrInvalid:{ru:"Неверный email или пароль.",en:"Wrong email or password."},
     gateErrEmpty:{ru:"Заполните email и пароль.",en:"Please fill in email and password."},
@@ -741,6 +745,22 @@
 
     [gateEmail, gatePass].forEach(function(el){
       el.addEventListener('keydown', function(e){ if(e.key === 'Enter') gateBtn.click(); });
+    });
+
+    var forgotLink = document.getElementById('forgotLink');
+    forgotLink.addEventListener('click', async function(e){
+      e.preventDefault();
+      var email = (gateEmail.value || '').trim();
+      if(!email){
+        showMsg(gateMsg, dict.forgotNeedEmail[__currentLang], 'err');
+        return;
+      }
+      try{
+        await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
+        showMsg(gateMsg, dict.forgotSent[__currentLang], 'ok');
+      } catch(e){
+        showMsg(gateMsg, dict.gateErrNetwork[__currentLang], 'err');
+      }
     });
     [invitePass, invitePass2].forEach(function(el){
       el.addEventListener('keydown', function(e){ if(e.key === 'Enter') inviteBtn.click(); });
