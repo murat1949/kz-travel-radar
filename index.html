@@ -650,6 +650,14 @@
 
   // ===== ACCESS SCREEN (Supabase Auth) =====
   (function(){
+    // Capture this BEFORE creating the client — Supabase reads and strips
+    // the hash asynchronously right after the client exists, so by the time
+    // any of our own async code runs, window.location.hash may already be
+    // empty. Grabbing it synchronously, first thing, is the only reliable way.
+    var rawHash = window.location.hash || '';
+    var cameFromAuthLink = rawHash.indexOf('access_token=') !== -1 &&
+      (rawHash.indexOf('type=invite') !== -1 || rawHash.indexOf('type=recovery') !== -1);
+
     var SUPABASE_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co';
     var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3cG5weGhvYXhjbmxsaWVlanNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTA2OTMsImV4cCI6MjEwMDM2NjY5M30.vpAREIJqgM3SdfqzavSWYJ7uKblcYLdSVZ5iG6KsMc0';
 
@@ -687,21 +695,12 @@
       stepLogin.style.display = 'none';
     }
 
-    // Supabase strips the URL hash as soon as it parses the invite/recovery
-    // token, so checking window.location.hash ourselves is unreliable — we
-    // listen for its own event instead, which fires reliably either way.
-    sb.auth.onAuthStateChange(function(event, session){
-      if(event === 'PASSWORD_RECOVERY'){
-        showSetPasswordStep();
-      }
-    });
+    if(cameFromAuthLink){
+      showSetPasswordStep();
+    }
 
     async function boot(){
-      // Give onAuthStateChange a brief moment to fire PASSWORD_RECOVERY
-      // (it runs asynchronously right after the client is created).
-      await new Promise(function(r){ setTimeout(r, 150); });
-      if(stepInvite.style.display === 'block') return;
-
+      if(cameFromAuthLink) return;
       var { data } = await sb.auth.getSession();
       if(data && data.session){
         unlock();
