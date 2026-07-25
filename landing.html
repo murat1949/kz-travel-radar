@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KZ Travel Radar — Казахстан у вас в кармане</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#12293B; --night-2:#1A3A50; --steppe:#F7F3EA; --paper:#fff;
+    --ink:#16202A; --muted:#5C6B75; --gold:#C98A2C; --gold-dark:#A66F1F; --teal:#2F8F86; --line:#E4DFD1;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--steppe);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;}
+  h1,h2,h3{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-.01em;margin:0;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+  section{padding:60px 0;}
+  .eyebrow{font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:16px 30px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;background:var(--gold);color:#1A1300;box-shadow:0 10px 24px -8px rgba(201,138,44,.5);}
+  .btn:hover{background:var(--gold-dark);color:#fff;}
+
+  .hero{background:linear-gradient(160deg,var(--night),var(--night-2) 60%,#0D1E2B);color:#fff;padding:72px 0 60px;text-align:center;}
+  .hero .sun{width:52px;height:52px;border-radius:16px;background:var(--gold);margin:0 auto 18px;}
+  .hero h1{font-size:clamp(28px,4.6vw,42px);line-height:1.15;max-width:680px;margin:0 auto;}
+  .hero .sub{margin-top:18px;color:#C9CFE0;font-size:17px;max-width:540px;margin-left:auto;margin-right:auto;}
+  .hero .btn{margin-top:32px;}
+
+  .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
+  @media (max-width:640px){.pain-grid{grid-template-columns:1fr;}}
+  .pain-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .pain-card .em{font-size:22px;}
+  .pain-card h3{font-size:15.5px;margin-top:10px;}
+  .pain-card p{font-size:13.5px;color:var(--muted);margin-top:6px;}
+
+  .arrow-block{text-align:center;padding:14px 0;font-size:28px;color:var(--gold-dark);}
+
+  .solution{background:var(--night);color:#fff;border-radius:24px;padding:44px 32px;text-align:center;}
+  .solution h2{font-size:clamp(22px,3.2vw,30px);}
+  .solution p{color:#C9CFE0;margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;}
+  .solution .btn{margin-top:26px;}
+
+  .feature-row{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;align-items:center;margin-top:20px;padding:30px 0;border-top:1px solid var(--line);}
+  .feature-row:first-of-type{border-top:none;}
+  .feature-row.rev{grid-template-columns:1.1fr .9fr;}
+  @media (max-width:760px){.feature-row,.feature-row.rev{grid-template-columns:1fr;}}
+  .feature-row h3{font-size:19px;}
+  .feature-row p{color:var(--muted);margin-top:10px;font-size:14.5px;}
+  .mini-shot{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;}
+  .mini-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .mini-row:last-child{border-bottom:none;}
+  .mini-row b{font-family:'Manrope';color:var(--night);}
+
+  .timer-row{display:flex;justify-content:center;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .timer-step{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;min-width:110px;}
+  .timer-step .n{font-family:'Manrope';font-weight:800;font-size:18px;color:var(--gold);}
+  .timer-step .l{font-size:11px;color:#9AA3BC;margin-top:4px;}
+
+  .price-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:36px;text-align:center;margin-top:16px;}
+  .price-card .amount{font-family:'Manrope';font-weight:800;font-size:44px;color:var(--night);}
+  .price-card .amount span{font-size:16px;color:var(--muted);font-weight:600;}
+  .price-card ul{list-style:none;padding:0;margin:20px 0 0;font-size:14px;color:var(--muted);text-align:left;max-width:340px;margin-left:auto;margin-right:auto;}
+  .price-card li{padding:6px 0;}
+  .price-card .btn{margin-top:22px;}
+
+  footer{text-align:center;padding:36px 0;color:var(--muted);font-size:13px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="sun"></div>
+    <p class="eyebrow" style="color:#D9B073;">KZ Travel Radar</p>
+    <h1>Первая поездка в Казахстан — а разбираться приходится на ходу?</h1>
+    <p class="sub">Города, курс валют, экстренные номера и разговорник — вместо десятка открытых вкладок и групп в чатах.</p>
+    <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn">Получить доступ →</a>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Знакомо?</div>
+    <h2 style="margin-top:10px;font-size:clamp(22px,3vw,30px);">Так выглядит поездка без подготовки</h2>
+
+    <div class="pain-grid">
+      <div class="pain-card"><div class="em">🌐</div><h3>10 вкладок в браузере</h3><p>Один сайт — про города, другой — про курс валют, третий — форум с советами трёхлетней давности.</p></div>
+      <div class="pain-card"><div class="em">💱</div><h3>Непонятно, сколько что стоит</h3><p>Такси, кофе, обед — цены на глаз, легко переплатить, не зная ориентиров.</p></div>
+      <div class="pain-card"><div class="em">🗣️</div><h3>Языковой барьер</h3><p>Простое «спасибо» или «сколько стоит» — а искать в интернете каждый раз неудобно.</p></div>
+      <div class="pain-card"><div class="em">📶</div><h3>Не всегда есть интернет</h3><p>В горах или в дороге связь пропадает — а важные номера и заметки нужны именно тогда.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="arrow-block">↓</div></div>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="solution">
+      <div class="eyebrow" style="color:#D9B073;">Решение</div>
+      <h2 style="margin-top:12px;">Один путеводитель — и всё под рукой</h2>
+      <p>Города Казахстана, курс валют, безопасность и мини-разговорник — в одной панели на телефоне. Работает даже без интернета.</p>
+      <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn">Открыть путеводитель →</a>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+
+    <div class="feature-row">
+      <div>
+        <div class="eyebrow">Путеводитель</div>
+        <h3>Города — как от местного друга</h3>
+        <p>Алматы разобран подробно: куда сходить в первые 48 часов, что смотреть, куда ехать на день. Без воды, только по делу.</p>
+      </div>
+      <div class="mini-shot">
+        <div class="mini-row"><span>Кок-Тобе</span><b>Закат, канатка</b></div>
+        <div class="mini-row"><span>Зелёный базар</span><b>Мёд, сухофрукты</b></div>
+        <div class="mini-row"><span>Чарынский каньон</span><b>Поездка на день</b></div>
+      </div>
+    </div>
+
+    <div class="feature-row rev">
+      <div class="mini-shot">
+        <div class="mini-row"><span>Такси по городу</span><b>800–1500 ₸</b></div>
+        <div class="mini-row"><span>Кофе навынос</span><b>700–1200 ₸</b></div>
+        <div class="mini-row"><span>SIM с интернетом</span><b>2000–3500 ₸</b></div>
+      </div>
+      <div>
+        <div class="eyebrow">Курс и цены</div>
+        <h3>Не переплачивать по незнанию</h3>
+        <p>Конвертер валют и ориентировочные цены на всё привычное — такси, кофе, обед, связь.</p>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div>
+        <div class="eyebrow">Безопасность</div>
+        <h3>На всякий случай — под рукой</h3>
+        <p>Экстренные номера и что делать, если что-то пошло не так — без поиска в панике в последний момент.</p>
+      </div>
+      <div class="mini-shot">
+        <div class="mini-row"><span>Все службы</span><b>112</b></div>
+        <div class="mini-row"><span>Полиция</span><b>102</b></div>
+        <div class="mini-row"><span>Скорая помощь</span><b>103</b></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="eyebrow">Как это работает</div>
+    <h2 style="margin-top:10px;font-size:clamp(22px,3vw,30px);">Оплатили — и уже пользуетесь</h2>
+
+    <div class="timer-row">
+      <div class="timer-step"><div class="n">~1 мин</div><div class="l">Оплата на Gumroad</div></div>
+      <div class="timer-step"><div class="n">~10 сек</div><div class="l">Письмо с доступом</div></div>
+      <div class="timer-step"><div class="n">~1 мин</div><div class="l">Свой пароль и вход</div></div>
+      <div class="timer-step"><div class="n">Готово</div><div class="l">Путеводитель открыт</div></div>
+    </div>
+
+    <div class="price-card">
+      <div class="eyebrow">Доступ навсегда</div>
+      <div class="amount" style="margin-top:10px;">$12</div>
+      <ul>
+        <li>✓ Полный путеводитель по Казахстану</li>
+        <li>✓ RU / EN переключение языка</li>
+        <li>✓ Работает даже без интернета</li>
+        <li>✓ Свои заметки в дороге</li>
+      </ul>
+      <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn">Купить и открыть →</a>
+    </div>
+  </div>
+</section>
+
+<footer>MN Systems · KZ Travel Radar</footer>
+
+</body>
+</html>
