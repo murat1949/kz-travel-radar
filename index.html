@@ -97,27 +97,34 @@
   .nav-btn .em{font-size:18px;}
   .nav-btn.active{color:var(--night);background:var(--steppe);}
 
-  /* LICENSE GATE */
+  /* LOGIN / ACCESS SCREEN */
   .gate{
     position:fixed;inset:0;z-index:200;
-    background:linear-gradient(150deg, #12293B 0%, #1A3A50 60%, #0D1E2B 100%);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    color:#fff;text-align:center;padding:32px;
+    background:
+      radial-gradient(700px 500px at 15% -10%, rgba(255,255,255,0.14), transparent 60%),
+      radial-gradient(600px 500px at 100% 110%, rgba(47,143,134,0.45), transparent 60%),
+      linear-gradient(150deg, #C98A2C 0%, #8A4A9E 45%, #12293B 100%);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
     transition:opacity .4s ease, visibility .4s ease;
   }
   .gate.hide{opacity:0;visibility:hidden;pointer-events:none;}
-  .gate-ic{width:56px;height:56px;border-radius:16px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px;}
-  .gate h2{font-size:22px;max-width:320px;line-height:1.3;}
-  .gate p{margin-top:10px;font-size:13.5px;color:rgba(255,255,255,0.7);max-width:300px;}
-  .gate-input{margin-top:26px;width:100%;max-width:300px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);color:#fff;border-radius:12px;padding:13px 14px;font-size:15px;font-family:inherit;text-align:center;letter-spacing:.03em;}
-  .gate-input::placeholder{color:rgba(255,255,255,0.4);}
-  .gate-btn{margin-top:14px;background:#fff;color:var(--night);border:none;border-radius:999px;padding:13px 30px;font-weight:800;font-size:14.5px;width:100%;max-width:300px;}
+  .gate-card{width:100%;max-width:340px;background:#fff;border-radius:22px;padding:32px 26px;box-shadow:0 30px 60px -20px rgba(0,0,0,0.4);text-align:center;}
+  .gate-ic{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#F4B942,#C98A2C);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 18px;}
+  .gate-card h2{font-size:19px;color:var(--night);line-height:1.3;}
+  .gate-card p{margin-top:8px;font-size:13px;color:var(--muted);}
+  .gate-field{margin-top:18px;text-align:left;}
+  .gate-field label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .gate-field input{width:100%;border:1px solid var(--line);background:var(--steppe);color:var(--ink);border-radius:11px;padding:12px 13px;font-size:14.5px;font-family:inherit;}
+  .gate-field input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  .gate-field input::placeholder{color:var(--muted-soft);}
+  .gate-btn{margin-top:20px;background:var(--night);color:#fff;border:none;border-radius:12px;padding:13px 20px;font-weight:800;font-size:14.5px;width:100%;}
   .gate-btn:disabled{opacity:.6;}
-  .gate-msg{margin-top:14px;font-size:12.5px;min-height:16px;}
-  .gate-msg.err{color:#FF8A80;}
-  .gate-msg.ok{color:#7FD9C9;}
-  .gate-buy{margin-top:22px;font-size:12px;color:rgba(255,255,255,0.55);}
-  .gate-buy a{color:#F4B942;font-weight:700;text-decoration:none;}
+  .gate-msg{margin-top:12px;font-size:12.5px;min-height:16px;}
+  .gate-msg.err{color:#B23A2E;}
+  .gate-msg.ok{color:#2F8F86;}
+  .gate-buy{margin-top:18px;font-size:12px;color:var(--muted);}
+  .gate-buy a{color:var(--gold-dark);font-weight:700;text-decoration:none;}
 
   /* COVER / SPLASH */
   .cover{
@@ -174,15 +181,26 @@
 </head>
 <body>
 
-<!-- LICENSE GATE -->
+<!-- ACCESS SCREEN -->
 <div class="gate" id="gate">
-  <div class="gate-ic">🔑</div>
-  <h2 data-i18n="gateTitle">Введите лицензионный ключ</h2>
-  <p data-i18n="gateSub">Ключ пришёл вам на почту после покупки на Gumroad.</p>
-  <input class="gate-input" id="gateInput" type="text" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off" autocapitalize="off" spellcheck="false">
-  <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
-  <div class="gate-msg" id="gateMsg"></div>
-  <div class="gate-buy" data-i18n="gateBuy">Ещё нет ключа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить на Gumroad</a></div>
+  <div class="gate-card">
+    <div class="gate-ic">🧭</div>
+    <h2 data-i18n="gateTitle">Вход в ваш путеводитель</h2>
+    <p data-i18n="gateSub">Email и код из письма после покупки на Gumroad.</p>
+
+    <div class="gate-field">
+      <label data-i18n="gateEmailLabel">Email</label>
+      <input id="gateEmail" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="gate-field">
+      <label data-i18n="gateCodeLabel">Код доступа</label>
+      <input id="gateInput" type="text" placeholder="XXXXXXXX-XXXXXXXX-XXXX" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+
+    <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
+    <div class="gate-msg" id="gateMsg"></div>
+    <div class="gate-buy" data-i18n="gateBuy">Ещё нет доступа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить</a></div>
+  </div>
 </div>
 
 <!-- COVER -->
@@ -565,15 +583,17 @@
     notesEmpty:{ru:"Пока нет заметок — запишите первую мысль выше.",en:"No notes yet — jot down your first thought above."},
     noteDelete:{ru:"Удалить",en:"Delete"},
 
-    gateTitle:{ru:"Введите лицензионный ключ",en:"Enter your license key"},
-    gateSub:{ru:"Ключ пришёл вам на почту после покупки на Gumroad.",en:"You received this key by email after purchasing on Gumroad."},
-    gateBtn:{ru:"Войти",en:"Unlock"},
-    gateBuy:{ru:"Ещё нет ключа? Купить на Gumroad",en:"Don't have a key yet? Buy on Gumroad"},
-    gateChecking:{ru:"Проверяем ключ…",en:"Checking key…"},
+    gateTitle:{ru:"Вход в ваш путеводитель",en:"Sign in to your guide"},
+    gateSub:{ru:"Email и код из письма после покупки на Gumroad.",en:"Email and code from your Gumroad receipt."},
+    gateEmailLabel:{ru:"Email",en:"Email"},
+    gateCodeLabel:{ru:"Код доступа",en:"Access code"},
+    gateBtn:{ru:"Войти",en:"Sign in"},
+    gateBuy:{ru:"Ещё нет доступа? Купить",en:"No access yet? Buy here"},
+    gateChecking:{ru:"Проверяем данные…",en:"Checking your details…"},
     gateOk:{ru:"Готово, открываем…",en:"All set, unlocking…"},
-    gateErrInvalid:{ru:"Ключ не найден. Проверьте, правильно ли скопирован.",en:"Key not found. Please check it was copied correctly."},
-    gateErrEmpty:{ru:"Введите ключ.",en:"Please enter a key."},
-    gateErrNetwork:{ru:"Не удалось проверить ключ. Проверьте интернет и попробуйте снова.",en:"Couldn't verify the key. Check your connection and try again."}
+    gateErrInvalid:{ru:"Email или код не подходят. Проверьте письмо с покупкой.",en:"Email or code doesn't match. Please check your purchase email."},
+    gateErrEmpty:{ru:"Заполните email и код.",en:"Please fill in both email and code."},
+    gateErrNetwork:{ru:"Не удалось проверить данные. Проверьте интернет и попробуйте снова.",en:"Couldn't verify. Check your connection and try again."}
   };
 
   function setLang(lang){
@@ -598,12 +618,13 @@
     setLang(__currentLang);
   })();
 
-  // ===== LICENSE GATE =====
+  // ===== ACCESS SCREEN =====
   (function(){
     var VERIFY_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co/functions/v1/verify-license';
     var STORAGE_KEY = 'kztr_license_key';
     var gate = document.getElementById('gate');
-    var input = document.getElementById('gateInput');
+    var emailInput = document.getElementById('gateEmail');
+    var codeInput = document.getElementById('gateInput');
     var btn = document.getElementById('gateBtn');
     var msg = document.getElementById('gateMsg');
 
@@ -622,18 +643,18 @@
       unlock();
     }
 
-    async function tryVerify(key){
+    async function tryVerify(email, code){
       btn.disabled = true;
       showMsg(dict.gateChecking[__currentLang], '');
       try{
         var resp = await fetch(VERIFY_URL, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({license_key: key})
+          body: JSON.stringify({license_key: code, email: email})
         });
         var data = await resp.json();
         if(data && data.ok){
-          localStorage.setItem(STORAGE_KEY, key);
+          localStorage.setItem(STORAGE_KEY, code);
           showMsg(dict.gateOk[__currentLang], 'ok');
           setTimeout(unlock, 500);
         } else {
@@ -647,16 +668,19 @@
     }
 
     btn.addEventListener('click', function(){
-      var key = (input.value || '').trim();
-      if(!key){
+      var email = (emailInput.value || '').trim();
+      var code = (codeInput.value || '').trim();
+      if(!email || !code){
         showMsg(dict.gateErrEmpty[__currentLang], 'err');
         return;
       }
-      tryVerify(key);
+      tryVerify(email, code);
     });
 
-    input.addEventListener('keydown', function(e){
-      if(e.key === 'Enter') btn.click();
+    [emailInput, codeInput].forEach(function(el){
+      el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter') btn.click();
+      });
     });
   })();
 </script>
