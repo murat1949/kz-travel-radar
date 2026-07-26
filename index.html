@@ -173,7 +173,8 @@
   .city-banner .banner-em{position:relative;z-index:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));}
 
   .sights-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;margin-top:14px;}
-  .sight-chip{position:relative;flex:0 0 auto;width:120px;height:96px;border-radius:12px;padding:12px 10px;color:#fff;font-family:'Manrope';font-weight:700;font-size:12px;overflow:hidden;}
+  .sight-chip{position:relative;flex:0 0 auto;width:120px;height:96px;border-radius:12px;padding:12px 10px;color:#fff;font-family:'Manrope';font-weight:700;font-size:12px;overflow:hidden;cursor:pointer;transition:transform .15s;}
+  .sight-chip:hover{transform:translateY(-3px);}
   .sight-chip svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
   .sight-chip::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 5%,rgba(0,0,0,0) 65%);}
   .sight-chip .sc-em,.sight-chip .sc-label{position:relative;z-index:1;}
@@ -312,7 +313,7 @@
       <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
 
       <div class="sights-strip">
-        <div class="sight-chip sc-charyn">
+        <div class="sight-chip sc-charyn" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gCharyn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8935A"/><stop offset="1" stop-color="#7A2E16"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gCharyn)"/>
@@ -321,7 +322,7 @@
           </svg>
           <span class="sc-em">🏜️</span><span class="sc-label">Charyn Canyon</span>
         </div>
-        <div class="sight-chip sc-kolsai">
+        <div class="sight-chip sc-kolsai" onclick="document.getElementById('kolsai-detail').scrollIntoView({behavior:'smooth'})">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gKolsai" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FA79B"/><stop offset="1" stop-color="#0E2130"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gKolsai)"/>
@@ -330,7 +331,7 @@
           </svg>
           <span class="sc-em">🏔️</span><span class="sc-label">Kolsai Lakes</span>
         </div>
-        <div class="sight-chip sc-kaindy">
+        <div class="sight-chip sc-kaindy" onclick="document.getElementById('kaindy-detail').scrollIntoView({behavior:'smooth'})">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gKaindy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FB9D9"/><stop offset="1" stop-color="#0E3A52"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gKaindy)"/>
@@ -343,7 +344,7 @@
           </svg>
           <span class="sc-em">🌲</span><span class="sc-label">Kaindy Lake</span>
         </div>
-        <div class="sight-chip sc-bozzhyra">
+        <div class="sight-chip sc-bozzhyra" onclick="document.getElementById('bozzhyra-detail').scrollIntoView({behavior:'smooth'})">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gBozz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="1" stop-color="#B2853B"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gBozz)"/>
@@ -352,7 +353,7 @@
           </svg>
           <span class="sc-em">⛰️</span><span class="sc-label">Bozzhyra</span>
         </div>
-        <div class="sight-chip sc-shymbulak">
+        <div class="sight-chip sc-shymbulak" onclick="document.getElementById('shymbulak-detail').scrollIntoView({behavior:'smooth'})">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gShym" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AFC4DE"/><stop offset="1" stop-color="#26314F"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gShym)"/>
@@ -442,6 +443,86 @@
         <div class="spot">
           <div class="spot-name">Чарынский каньон</div>
           <div class="spot-note" data-i18n="spotCharyn">Мини-версия Гранд-Каньона. Долгий день, планировать заранее.</div>
+        </div>
+      </div>
+
+      <div id="charyn-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🏜️</span><span data-i18n="charynDetailTitle">Чарынский каньон — как спланировать</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="charynValleyName">Долина Замков</div>
+          <div class="spot-note" data-i18n="charynValley">Главный маршрут — тропа около 3 км по дну каньона мимо скал причудливой формы. Лёгкая прогулка на 2-3 часа.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="charynGetThere">~200 км от Алматы, 3-3.5 часа в пути. Едут на арендованной машине, с туром или на такси на весь день.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="whenToGo">Когда ехать</div>
+          <div class="spot-note" data-i18n="charynWhen">Летом лучше приезжать рано утром — тени в каньоне почти нет, днём очень жарко.</div>
+        </div>
+      </div>
+
+      <div id="kolsai-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🏔️</span><span data-i18n="kolsaiDetailTitle">Кольсайские озёра</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kolsaiFirstName">Первое озеро</div>
+          <div class="spot-note" data-i18n="kolsaiFirst">Доступно на машине, от парковки до берега — 30-60 минут пешком. Есть лодки и кафе.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kolsaiUpperName">Второе и третье озёра</div>
+          <div class="spot-note" data-i18n="kolsaiUpper">Только пешком, поход в одну сторону занимает несколько часов — вариант для тех, кто готов к треккингу.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="kolsaiGetThere">~300 км от Алматы, около 5 часов в пути через посёлок Саты. Дорога почти вся асфальтированная.</div>
+        </div>
+      </div>
+
+      <div id="kaindy-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🌲</span><span data-i18n="kaindyDetailTitle">Озеро Каинды</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kaindyForestName">Затопленный лес</div>
+          <div class="spot-note" data-i18n="kaindyForest">Стволы елей, погибших после того как озеро образовалось из-за схода оползня в 1911 году, торчат прямо из бирюзовой воды.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="kaindyGetThere">Обычно совмещают с Кольсайскими озёрами — от посёлка Саты последний участок дороги требует внедорожника.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kaindyWaterName">Холодная вода</div>
+          <div class="spot-note" data-i18n="kaindyWater">Даже летом температура воды около +6…+8°C — купание не для всех.</div>
+        </div>
+      </div>
+
+      <div id="bozzhyra-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">⛰️</span><span data-i18n="bozzhyraDetailTitle">Бозжыра</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="bozzhyraCliffsName">Меловые останцы</div>
+          <div class="spot-note" data-i18n="bozzhyraCliffs">Скальные формации в форме клыков и гребней в области Мангистау на западе страны — не похоже ни на что другое в Казахстане.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="bozzhyraGetThere">Самолётом до Актау (~2.5 часа от Алматы), затем ещё около 4 часов на машине, последний участок — по грунтовой дороге.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="planAheadName">Планировать заранее</div>
+          <div class="spot-note" data-i18n="bozzhyraPlan">Обычно едут с туром на несколько дней — самостоятельно без опыта поездок по бездорожью не стоит.</div>
+        </div>
+      </div>
+
+      <div id="shymbulak-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🎿</span><span data-i18n="shymbulakDetailTitle">Шымбулак</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="shymbulakGetThere">~25 км от центра Алматы. Доехать до Медеу на машине или автобусе, дальше — гондола наверх, около 15-25 минут.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="shymbulakWinterName">Зимой</div>
+          <div class="spot-note" data-i18n="shymbulakWinter">Горнолыжный сезон — с ноября по апрель, трассы для любого уровня.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="shymbulakSummerName">Летом</div>
+          <div class="spot-note" data-i18n="shymbulakSummer">Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.</div>
         </div>
       </div>
     </div>
@@ -636,6 +717,43 @@
     spotBigLakeName:{ru:"Большое Алматинское озеро",en:"Big Almaty Lake"},
     spotBigLake:{ru:"Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.",en:"A day trip into the mountains — turquoise water, best by car or tour."},
     spotCharyn:{ru:"Мини-версия Гранд-Каньона. Долгий день, планировать заранее.",en:"Kazakhstan's mini Grand Canyon. A long day, plan ahead."},
+
+    howToGet:{ru:"Как добраться",en:"How to get there"},
+    whenToGo:{ru:"Когда ехать",en:"When to go"},
+    planAheadName:{ru:"Планировать заранее",en:"Plan ahead"},
+
+    charynDetailTitle:{ru:"Чарынский каньон — как спланировать",en:"Charyn Canyon — planning your visit"},
+    charynValleyName:{ru:"Долина Замков",en:"Valley of Castles"},
+    charynValley:{ru:"Главный маршрут — тропа около 3 км по дну каньона мимо скал причудливой формы. Лёгкая прогулка на 2-3 часа.",en:"The main route is a roughly 3 km trail along the canyon floor past oddly shaped cliffs — an easy 2–3 hour walk."},
+    charynGetThere:{ru:"~200 км от Алматы, 3-3.5 часа в пути. Едут на арендованной машине, с туром или на такси на весь день.",en:"About 200 km from Almaty, a 3–3.5 hour drive. Most go by rental car, tour, or a full-day taxi."},
+    charynWhen:{ru:"Летом лучше приезжать рано утром — тени в каньоне почти нет, днём очень жарко.",en:"In summer, arrive early — there's almost no shade in the canyon, and midday gets very hot."},
+
+    kolsaiDetailTitle:{ru:"Кольсайские озёра",en:"Kolsai Lakes"},
+    kolsaiFirstName:{ru:"Первое озеро",en:"Lower lake (Kolsai-1)"},
+    kolsaiFirst:{ru:"Доступно на машине, от парковки до берега — 30-60 минут пешком. Есть лодки и кафе.",en:"Reachable by car; a 30–60 minute walk from the parking area to the shore. Boat rentals and cafés on site."},
+    kolsaiUpperName:{ru:"Второе и третье озёра",en:"Upper lakes (Kolsai-2 & 3)"},
+    kolsaiUpper:{ru:"Только пешком, поход в одну сторону занимает несколько часов — вариант для тех, кто готов к треккингу.",en:"On foot only — the hike to the upper lakes takes several hours each way, best for experienced trekkers."},
+    kolsaiGetThere:{ru:"~300 км от Алматы, около 5 часов в пути через посёлок Саты. Дорога почти вся асфальтированная.",en:"About 300 km from Almaty, roughly a 5-hour drive via the village of Saty. The road is paved almost the whole way."},
+
+    kaindyDetailTitle:{ru:"Озеро Каинды",en:"Kaindy Lake"},
+    kaindyForestName:{ru:"Затопленный лес",en:"The sunken forest"},
+    kaindyForest:{ru:"Стволы елей, погибших после того как озеро образовалось из-за схода оползня в 1911 году, торчат прямо из бирюзовой воды.",en:"Spruce trunks that died when a 1911 landslide formed the lake now rise straight out of the turquoise water."},
+    kaindyGetThere:{ru:"Обычно совмещают с Кольсайскими озёрами — от посёлка Саты последний участок дороги требует внедорожника.",en:"Usually combined with the Kolsai Lakes — the final stretch from Saty village needs a 4x4."},
+    kaindyWaterName:{ru:"Холодная вода",en:"Cold water"},
+    kaindyWater:{ru:"Даже летом температура воды около +6…+8°C — купание не для всех.",en:"Even in summer the water stays around 6–8°C — swimming isn't for everyone."},
+
+    bozzhyraDetailTitle:{ru:"Бозжыра",en:"Bozzhyra"},
+    bozzhyraCliffsName:{ru:"Меловые останцы",en:"The chalk formations"},
+    bozzhyraCliffs:{ru:"Скальные формации в форме клыков и гребней в области Мангистау на западе страны — не похоже ни на что другое в Казахстане.",en:"Fang- and ridge-shaped chalk formations in the Mangystau region, in the far west of the country — unlike anywhere else in Kazakhstan."},
+    bozzhyraGetThere:{ru:"Самолётом до Актау (~2.5 часа от Алматы), затем ещё около 4 часов на машине, последний участок — по грунтовой дороге.",en:"Fly to Aktau first (~2.5 hours from Almaty), then about 4 more hours by car, with a dirt-road stretch at the end."},
+    bozzhyraPlan:{ru:"Обычно едут с туром на несколько дней — самостоятельно без опыта поездок по бездорожью не стоит.",en:"Best visited as part of a multi-day tour — not recommended solo without off-road driving experience."},
+
+    shymbulakDetailTitle:{ru:"Шымбулак",en:"Shymbulak"},
+    shymbulakGetThere:{ru:"~25 км от центра Алматы. Доехать до Медеу на машине или автобусе, дальше — гондола наверх, около 15-25 минут.",en:"About 25 km from central Almaty. Drive or bus to Medeu, then a gondola ride up — roughly 15–25 minutes."},
+    shymbulakWinterName:{ru:"Зимой",en:"In winter"},
+    shymbulakWinter:{ru:"Горнолыжный сезон — с ноября по апрель, трассы для любого уровня.",en:"Ski season runs November to April, with slopes for every level."},
+    shymbulakSummerName:{ru:"Летом",en:"In summer"},
+    shymbulakSummer:{ru:"Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.",en:"The gondola runs year-round — mountain views and short hiking trails at the top, even without snow."},
 
     ratesEyebrow:{ru:"Курс и цены",en:"Rates & prices"},
     ratesTitle:{ru:"Сколько что стоит",en:"What things cost"},
