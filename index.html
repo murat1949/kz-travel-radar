@@ -65,7 +65,8 @@
   .city-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
   @media (max-width:480px){.city-grid{grid-template-columns:1fr;}}
   .city-tile{border-radius:14px;padding:16px;border:1px solid var(--line);background:var(--paper);cursor:pointer;transition:transform .15s;}
-  .city-tile:hover{transform:translateY(-2px);}
+  .city-tile:hover{transform:translateY(-3px);}
+  .city-tile:hover .city-banner svg{transform:scale(1.04);}
   .city-tile.live{background:var(--night);color:#fff;border-color:var(--night);}
   .city-tag{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-soft);}
   .city-tile.live .city-tag{color:#8FB0C4;}
@@ -166,20 +167,18 @@
   .cover-tags{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
   .cover-tags span{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:700;}
 
-  .city-banner{height:56px;border-radius:10px;margin-bottom:10px;display:flex;align-items:flex-end;padding:6px 8px;font-size:20px;}
-  .banner-almaty{background:linear-gradient(135deg,#3E7C7A,#12293B);}
-  .banner-astana{background:linear-gradient(135deg,#C98A2C,#5A3E7A);}
-  .banner-turkistan{background:linear-gradient(135deg,#B2853B,#6B4A2A);}
-  .banner-shymkent{background:linear-gradient(135deg,#8A4A9E,#2F8F86);}
+  .city-banner{position:relative;height:56px;border-radius:10px;margin-bottom:10px;overflow:hidden;display:flex;align-items:flex-end;padding:6px 8px;font-size:20px;}
+  .city-banner svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform .3s ease;}
+  .city-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent 55%);}
+  .city-banner .banner-em{position:relative;z-index:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));}
 
   .sights-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;margin-top:14px;}
-  .sight-chip{flex:0 0 auto;width:120px;border-radius:12px;padding:12px 10px;color:#fff;font-family:'Manrope';font-weight:700;font-size:12px;}
-  .sight-chip .sc-em{font-size:18px;display:block;margin-bottom:6px;}
-  .sc-charyn{background:linear-gradient(160deg,#D9722C,#8A3A1E);}
-  .sc-kolsai{background:linear-gradient(160deg,#2F8F86,#12293B);}
-  .sc-kaindy{background:linear-gradient(160deg,#3E7CC9,#1A3A50);}
-  .sc-bozzhyra{background:linear-gradient(160deg,#C98A2C,#7A3E2A);}
-  .sc-shymbulak{background:linear-gradient(160deg,#8FA8C9,#2C3E6F);}
+  .sight-chip{position:relative;flex:0 0 auto;width:120px;height:96px;border-radius:12px;padding:12px 10px;color:#fff;font-family:'Manrope';font-weight:700;font-size:12px;overflow:hidden;}
+  .sight-chip svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .sight-chip::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 5%,rgba(0,0,0,0) 65%);}
+  .sight-chip .sc-em,.sight-chip .sc-label{position:relative;z-index:1;}
+  .sight-chip .sc-em{font-size:18px;display:block;margin-bottom:6px;text-shadow:0 1px 4px rgba(0,0,0,.35);}
+  .sight-chip .sc-label{text-shadow:0 1px 3px rgba(0,0,0,.35);}
 
   .fab-wa{position:fixed;right:16px;bottom:78px;z-index:30;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:22px;box-shadow:0 10px 24px -6px rgba(0,0,0,0.4);}
   @media (min-width:640px){.fab-wa{right:calc(50% - 460px + 16px);}}
@@ -313,34 +312,112 @@
       <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
 
       <div class="sights-strip">
-        <div class="sight-chip sc-charyn"><span class="sc-em">🏜️</span>Charyn Canyon</div>
-        <div class="sight-chip sc-kolsai"><span class="sc-em">🏔️</span>Kolsai Lakes</div>
-        <div class="sight-chip sc-kaindy"><span class="sc-em">🌲</span>Kaindy Lake</div>
-        <div class="sight-chip sc-bozzhyra"><span class="sc-em">⛰️</span>Bozzhyra</div>
-        <div class="sight-chip sc-shymbulak"><span class="sc-em">🎿</span>Shymbulak</div>
+        <div class="sight-chip sc-charyn">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gCharyn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8935A"/><stop offset="1" stop-color="#7A2E16"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gCharyn)"/>
+            <polygon points="0,60 14,44 28,58 42,38 58,56 72,40 88,58 104,42 120,55 120,96 0,96" fill="#8A3A1E" opacity=".85"/>
+            <polygon points="0,74 18,62 34,72 50,58 66,70 84,56 100,72 120,64 120,96 0,96" fill="#5E2411"/>
+          </svg>
+          <span class="sc-em">🏜️</span><span class="sc-label">Charyn Canyon</span>
+        </div>
+        <div class="sight-chip sc-kolsai">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gKolsai" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FA79B"/><stop offset="1" stop-color="#0E2130"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gKolsai)"/>
+            <polygon points="0,48 20,20 34,38 50,14 66,36 82,18 100,40 120,26 120,70 0,70" fill="#1A3A50" opacity=".9"/>
+            <rect y="70" width="120" height="26" fill="#0E2130"/>
+          </svg>
+          <span class="sc-em">🏔️</span><span class="sc-label">Kolsai Lakes</span>
+        </div>
+        <div class="sight-chip sc-kaindy">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gKaindy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FB9D9"/><stop offset="1" stop-color="#0E3A52"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gKaindy)"/>
+            <rect y="52" width="120" height="44" fill="#12506B" opacity=".55"/>
+            <g stroke="#0A2A3C" stroke-width="3" stroke-linecap="round">
+              <line x1="18" y1="30" x2="14" y2="80"/><line x1="34" y1="20" x2="30" y2="80"/>
+              <line x1="52" y1="34" x2="50" y2="80"/><line x1="70" y1="16" x2="68" y2="80"/>
+              <line x1="88" y1="28" x2="88" y2="80"/><line x1="104" y1="22" x2="106" y2="80"/>
+            </g>
+          </svg>
+          <span class="sc-em">🌲</span><span class="sc-label">Kaindy Lake</span>
+        </div>
+        <div class="sight-chip sc-bozzhyra">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gBozz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="1" stop-color="#B2853B"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gBozz)"/>
+            <path d="M0,56 Q20,40 40,54 T80,50 T120,58 V96 H0 Z" fill="#C98A2C" opacity=".8"/>
+            <path d="M0,72 Q24,58 48,70 T96,66 T120,74 V96 H0 Z" fill="#7A5626"/>
+          </svg>
+          <span class="sc-em">⛰️</span><span class="sc-label">Bozzhyra</span>
+        </div>
+        <div class="sight-chip sc-shymbulak">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gShym" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AFC4DE"/><stop offset="1" stop-color="#26314F"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gShym)"/>
+            <polygon points="0,58 16,30 30,50 46,18 62,46 78,26 94,52 110,32 120,44 120,96 0,96" fill="#EDEFF4"/>
+            <polygon points="0,70 20,52 40,68 60,46 80,66 100,50 120,64 120,96 0,96" fill="#2C3E6F"/>
+            <line x1="10" y1="60" x2="90" y2="94" stroke="#D9483A" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span class="sc-em">🎿</span><span class="sc-label">Shymbulak</span>
+        </div>
       </div>
 
       <div class="city-grid">
         <div class="city-tile live" onclick="document.getElementById('almaty-detail').scrollIntoView({behavior:'smooth'})">
-          <div class="city-banner banner-almaty">🏔️</div>
+          <div class="city-banner banner-almaty">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gAlmaty" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3E9C90"/><stop offset="1" stop-color="#0E2130"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gAlmaty)"/>
+              <polygon points="0,30 40,8 70,26 110,4 150,24 190,10 230,28 270,12 300,22 300,56 0,56" fill="#12293B" opacity=".9"/>
+              <g fill="#0A1A26"><rect x="20" y="42" width="6" height="14"/><rect x="34" y="38" width="6" height="18"/><rect x="48" y="44" width="6" height="12"/><rect x="220" y="40" width="6" height="16"/><rect x="236" y="45" width="6" height="11"/></g>
+            </svg>
+            <span class="banner-em">🏔️</span>
+          </div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Алматы</div>
           <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
         </div>
         <div class="city-tile">
-          <div class="city-banner banner-astana">🏙️</div>
+          <div class="city-banner banner-astana">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gAstana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C98A2C"/><stop offset="1" stop-color="#4A2E63"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gAstana)"/>
+              <polygon points="60,56 90,10 120,56" fill="#3A2350" opacity=".85"/>
+              <line x1="180" y1="56" x2="180" y2="14" stroke="#3A2350" stroke-width="4"/>
+              <circle cx="180" cy="10" r="9" fill="#3A2350"/><circle cx="180" cy="10" r="4" fill="#F4B942"/>
+            </svg>
+            <span class="banner-em">🏙️</span>
+          </div>
           <div class="city-tag" data-i18n="tagSoon">Скоро</div>
           <div class="city-name">Астана</div>
           <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
         </div>
         <div class="city-tile">
-          <div class="city-banner banner-turkistan">🕌</div>
+          <div class="city-banner banner-turkistan">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gTurk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9B36B"/><stop offset="1" stop-color="#5A3E20"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gTurk)"/>
+              <path d="M110,56 V30 A30,20 0 0 1 170,30 V56 Z" fill="#4A3216" opacity=".9"/>
+              <circle cx="140" cy="20" r="9" fill="#4A3216"/>
+              <rect x="60" y="20" width="8" height="36" fill="#4A3216"/><rect x="232" y="20" width="8" height="36" fill="#4A3216"/>
+            </svg>
+            <span class="banner-em">🕌</span>
+          </div>
           <div class="city-tag" data-i18n="tagSoon">Скоро</div>
           <div class="city-name">Туркестан</div>
           <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
         </div>
         <div class="city-tile">
-          <div class="city-banner banner-shymkent">🌇</div>
+          <div class="city-banner banner-shymkent">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gShymk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A4A9E"/><stop offset="1" stop-color="#2F8F86"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gShymk)"/>
+              <path d="M0,40 Q60,20 120,38 T240,32 T300,40 V56 H0 Z" fill="#2C1E3A" opacity=".55"/>
+            </svg>
+            <span class="banner-em">🌇</span>
+          </div>
           <div class="city-tag" data-i18n="tagSoon">Скоро</div>
           <div class="city-name">Шымкент</div>
           <div class="city-note" data-i18n="shymkentNote">Юг, история, еда</div>
