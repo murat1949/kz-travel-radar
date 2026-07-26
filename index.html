@@ -380,7 +380,7 @@
           <div class="city-name">Алматы</div>
           <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
         </div>
-        <div class="city-tile">
+        <div class="city-tile live" onclick="document.getElementById('astana-detail').scrollIntoView({behavior:'smooth'})">
           <div class="city-banner banner-astana">
             <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
               <defs><linearGradient id="gAstana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C98A2C"/><stop offset="1" stop-color="#4A2E63"/></linearGradient></defs>
@@ -391,11 +391,11 @@
             </svg>
             <span class="banner-em">🏙️</span>
           </div>
-          <div class="city-tag" data-i18n="tagSoon">Скоро</div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Астана</div>
           <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
         </div>
-        <div class="city-tile">
+        <div class="city-tile live" onclick="document.getElementById('turkistan-detail').scrollIntoView({behavior:'smooth'})">
           <div class="city-banner banner-turkistan">
             <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
               <defs><linearGradient id="gTurk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9B36B"/><stop offset="1" stop-color="#5A3E20"/></linearGradient></defs>
@@ -406,11 +406,11 @@
             </svg>
             <span class="banner-em">🕌</span>
           </div>
-          <div class="city-tag" data-i18n="tagSoon">Скоро</div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Туркестан</div>
           <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
         </div>
-        <div class="city-tile">
+        <div class="city-tile live" onclick="document.getElementById('shymkent-detail').scrollIntoView({behavior:'smooth'})">
           <div class="city-banner banner-shymkent">
             <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
               <defs><linearGradient id="gShymk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A4A9E"/><stop offset="1" stop-color="#2F8F86"/></linearGradient></defs>
@@ -419,7 +419,7 @@
             </svg>
             <span class="banner-em">🌇</span>
           </div>
-          <div class="city-tag" data-i18n="tagSoon">Скоро</div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Шымкент</div>
           <div class="city-note" data-i18n="shymkentNote">Юг, история, еда</div>
         </div>
@@ -523,6 +523,58 @@
         <div class="spot">
           <div class="spot-name" data-i18n="shymbulakSummerName">Летом</div>
           <div class="spot-note" data-i18n="shymbulakSummer">Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.</div>
+        </div>
+      </div>
+
+      <div id="astana-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🏙️</span><span data-i18n="astanaDetailTitle">Астана — столица за 1-2 дня</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="baiterekName">Байтерек</div>
+          <div class="spot-note" data-i18n="baiterekNote">Башня-символ города, 97 метров. Смотровая площадка внутри золотого шара — лучше приезжать к закату.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="khanShatyrName">Хан Шатыр</div>
+          <div class="spot-note" data-i18n="khanShatyrNote">Огромный шатёр-центр по проекту Нормана Фостера — торговая галерея, кинотеатр и даже пляж внутри, работает круглый год.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="nurzholName">Бульвар Нурлы Жол</div>
+          <div class="spot-note" data-i18n="nurzholNote">Пешеходный бульвар между Байтереком и Хан Шатыром — фонтаны, скульптуры, удобно гулять пешком.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="astanaGetThere">Перелёт из Алматы — около 1.5-2 часов, либо ночной поезд. Свой аэропорт есть и в самой Астане.</div>
+        </div>
+      </div>
+
+      <div id="turkistan-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🕌</span><span data-i18n="turkistanDetailTitle">Туркестан</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="yasawiName">Мавзолей Ясави</div>
+          <div class="spot-note" data-i18n="yasawiNote">Памятник XIV века, построенный по указу Тамерлана в честь суфийского поэта Ходжи Ахмеда Ясави. Объект ЮНЕСКО, один из крупнейших сохранившихся памятников тимуридской архитектуры.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="turkistanGetThere">Обычно едут как день-трип из Шымкента — ~160 км, 2-2.5 часа на машине или маршрутке. Есть и прямые поезда из Алматы и Астаны.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="whenToGo">Когда ехать</div>
+          <div class="spot-note" data-i18n="turkistanWhen">На осмотр основных построек хватит 3-5 часов. Комфортнее весной и осенью — летом очень жарко.</div>
+        </div>
+      </div>
+
+      <div id="shymkent-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🌇</span><span data-i18n="shymkentDetailTitle">Шымкент</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="qyrgyBazaarName">Базар Кыргы</div>
+          <div class="spot-note" data-i18n="qyrgyBazaarNote">Большой, шумный, живой рынок в центре — свежие фрукты, специи, самса из тандыра. Хорошее место почувствовать город.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="abayParkName">Парк Абая</div>
+          <div class="spot-note" data-i18n="abayParkNote">Главный зелёный парк города — колесо обозрения, кафе, спокойная прогулка вечером.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="shymkentGatewayName">Ворота в Туркестан</div>
+          <div class="spot-note" data-i18n="shymkentGatewayNote">Шымкент — самая удобная база для однодневной поездки к мавзолею Ясави в Туркестане (~160 км, 2-2.5 часа).</div>
         </div>
       </div>
     </div>
@@ -754,6 +806,29 @@
     shymbulakWinter:{ru:"Горнолыжный сезон — с ноября по апрель, трассы для любого уровня.",en:"Ski season runs November to April, with slopes for every level."},
     shymbulakSummerName:{ru:"Летом",en:"In summer"},
     shymbulakSummer:{ru:"Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.",en:"The gondola runs year-round — mountain views and short hiking trails at the top, even without snow."},
+
+    astanaDetailTitle:{ru:"Астана — столица за 1-2 дня",en:"Astana — the capital in 1-2 days"},
+    baiterekName:{ru:"Байтерек",en:"Baiterek Tower"},
+    baiterekNote:{ru:"Башня-символ города, 97 метров. Смотровая площадка внутри золотого шара — лучше приезжать к закату.",en:"The city's signature tower, 97 metres tall. The observation deck sits inside a golden orb — best at sunset."},
+    khanShatyrName:{ru:"Хан Шатыр",en:"Khan Shatyr"},
+    khanShatyrNote:{ru:"Огромный шатёр-центр по проекту Нормана Фостера — торговая галерея, кинотеатр и даже пляж внутри, работает круглый год.",en:"A giant tent-shaped complex by Norman Foster — shops, a cinema, even an indoor beach, open year-round."},
+    nurzholName:{ru:"Бульвар Нурлы Жол",en:"Nurzhol Boulevard"},
+    nurzholNote:{ru:"Пешеходный бульвар между Байтереком и Хан Шатыром — фонтаны, скульптуры, удобно гулять пешком.",en:"A pedestrian boulevard linking Baiterek and Khan Shatyr — fountains, sculptures, an easy walk."},
+    astanaGetThere:{ru:"Перелёт из Алматы — около 1.5-2 часов, либо ночной поезд. Свой аэропорт есть и в самой Астане.",en:"About 1.5-2 hours by air from Almaty, or an overnight train. Astana has its own airport too."},
+
+    turkistanDetailTitle:{ru:"Туркестан",en:"Turkistan"},
+    yasawiName:{ru:"Мавзолей Ясави",en:"Yasawi Mausoleum"},
+    yasawiNote:{ru:"Памятник XIV века, построенный по указу Тамерлана в честь суфийского поэта Ходжи Ахмеда Ясави. Объект ЮНЕСКО, один из крупнейших сохранившихся памятников тимуридской архитектуры.",en:"A 14th-century monument built on Timur's order to honour the Sufi poet Khoja Ahmed Yasawi. A UNESCO site and one of the largest surviving Timurid-era structures."},
+    turkistanGetThere:{ru:"Обычно едут как день-трип из Шымкента — ~160 км, 2-2.5 часа на машине или маршрутке. Есть и прямые поезда из Алматы и Астаны.",en:"Usually visited as a day trip from Shymkent — about 160 km, 2-2.5 hours by car or shared taxi. Direct trains from Almaty and Astana also run here."},
+    turkistanWhen:{ru:"На осмотр основных построек хватит 3-5 часов. Комфортнее весной и осенью — летом очень жарко.",en:"3-5 hours is enough for the main sights. Spring and autumn are more comfortable — summer gets very hot."},
+
+    shymkentDetailTitle:{ru:"Шымкент",en:"Shymkent"},
+    qyrgyBazaarName:{ru:"Базар Кыргы",en:"Qyrgy Bazaar"},
+    qyrgyBazaarNote:{ru:"Большой, шумный, живой рынок в центре — свежие фрукты, специи, самса из тандыра. Хорошее место почувствовать город.",en:"A big, lively market in the centre — fresh fruit, spices, tandoor-baked samsa. A good way to feel the city's pulse."},
+    abayParkName:{ru:"Парк Абая",en:"Abay Park"},
+    abayParkNote:{ru:"Главный зелёный парк города — колесо обозрения, кафе, спокойная прогулка вечером.",en:"The city's main green park — a Ferris wheel, cafés, a relaxed evening stroll."},
+    shymkentGatewayName:{ru:"Ворота в Туркестан",en:"Gateway to Turkistan"},
+    shymkentGatewayNote:{ru:"Шымкент — самая удобная база для однодневной поездки к мавзолею Ясави в Туркестане (~160 км, 2-2.5 часа).",en:"Shymkent is the most convenient base for a day trip to the Yasawi Mausoleum in Turkistan (~160 km, 2-2.5 hours)."},
 
     ratesEyebrow:{ru:"Курс и цены",en:"Rates & prices"},
     ratesTitle:{ru:"Сколько что стоит",en:"What things cost"},
