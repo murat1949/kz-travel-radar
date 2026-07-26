@@ -691,8 +691,11 @@
       el.className = 'gate-msg' + (cls ? ' ' + cls : '');
     }
 
+    var TRUSTED_KEY = 'kztr_trusted_device';
+
     function unlock(){
       gate.classList.add('hide');
+      try{ localStorage.setItem(TRUSTED_KEY, '1'); } catch(e){}
     }
 
     function showSetPasswordStep(){
@@ -706,8 +709,23 @@
 
     (async function boot(){
       if(cameFromAuthLink) return;
-      var { data } = await sb.auth.getSession();
-      if(data && data.session) unlock();
+
+      // Already unlocked on this device before — open instantly, even
+      // offline, without waiting on a live session/network check at all.
+      var trusted = false;
+      try{ trusted = localStorage.getItem(TRUSTED_KEY) === '1'; } catch(e){}
+      if(trusted){
+        unlock();
+        return;
+      }
+
+      try{
+        var { data } = await sb.auth.getSession();
+        if(data && data.session) unlock();
+      } catch(e){
+        // Offline and never unlocked here before — nothing we can verify yet,
+        // the login form stays visible as-is.
+      }
     })();
 
     inviteBtn.addEventListener('click', async function(){

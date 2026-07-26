@@ -1,11 +1,13 @@
-const CACHE_NAME = 'kz-travel-radar-v1';
+const CACHE_NAME = 'kz-travel-radar-v2';
 const APP_SHELL = [
   './',
   './index.html',
+  './landing.html',
   './manifest.webmanifest',
   './pwa-install.js',
   './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/icon-512.png',
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'
 ];
 
 self.addEventListener('install', (event) => {
