@@ -75,6 +75,12 @@
   .city-tile.live .city-note{color:#C4D3DA;}
 
   .spot{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:10px;}
+  .spot.spot-link{cursor:pointer;transition:transform .15s,border-color .15s;}
+  .spot.spot-link:hover{transform:translateY(-2px);border-color:var(--gold);}
+  .spot.spot-link .spot-name{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .spot-link-hint{font-size:10.5px;font-weight:700;color:var(--gold-dark);white-space:nowrap;}
+  .back-to-top{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12px;font-weight:800;color:var(--gold-dark);cursor:pointer;}
+  .back-to-top:hover{text-decoration:underline;}
   .spot-name{font-family:'Manrope';font-weight:700;font-size:13.5px;}
   .spot-note{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5;}
 
@@ -177,7 +183,12 @@
   .sight-chip:hover{transform:translateY(-3px);}
 
   .gallery{display:flex;gap:8px;margin:12px 0;overflow-x:auto;}
-  .gallery img{width:104px;height:138px;object-fit:cover;border-radius:10px;border:1px solid var(--line);flex:0 0 auto;}
+  .gallery img{width:104px;height:138px;object-fit:cover;border-radius:10px;border:1px solid var(--line);flex:0 0 auto;cursor:pointer;}
+  .lightbox{position:fixed;inset:0;background:rgba(10,16,22,.92);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:100%;max-height:78vh;border-radius:10px;box-shadow:0 20px 50px -10px rgba(0,0,0,.6);}
+  .lightbox-close{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;width:42px;height:42px;border-radius:50%;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .lightbox-back{position:absolute;top:22px;left:18px;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;cursor:pointer;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:8px 16px;}
   .gallery-cap{font-size:11px;color:#8A8272;margin-top:-6px;margin-bottom:10px;}
   .video-slot{border:1.5px dashed var(--line);border-radius:12px;padding:22px 14px;text-align:center;margin:12px 0;background:#FBFAF6;}
   .video-slot .vs-icon{font-size:26px;display:block;margin-bottom:6px;}
@@ -448,8 +459,8 @@
           <div class="spot-name" data-i18n="spotBigLakeName">Большое Алматинское озеро</div>
           <div class="spot-note" data-i18n="spotBigLake">Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.</div>
         </div>
-        <div class="spot">
-          <div class="spot-name">Чарынский каньон</div>
+        <div class="spot spot-link" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="spot-name">Чарынский каньон<span class="spot-link-hint" data-i18n="spotLinkHint">Фото и подробнее ↓</span></div>
           <div class="spot-note" data-i18n="spotCharyn">Мини-версия Гранд-Каньона. Долгий день, планировать заранее.</div>
         </div>
       </div>
@@ -470,9 +481,9 @@
         </div>
 
         <div class="gallery">
-          <a href="./photos/charyn-1.jpg" target="_blank"><img src="./photos/charyn-1.jpg" alt="Чарынский каньон" loading="lazy"></a>
-          <a href="./photos/charyn-2.jpg" target="_blank"><img src="./photos/charyn-2.jpg" alt="Чарынский каньон" loading="lazy"></a>
-          <a href="./photos/charyn-3.jpg" target="_blank"><img src="./photos/charyn-3.jpg" alt="Чарынский каньон" loading="lazy"></a>
+          <img src="./photos/charyn-1.jpg" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/charyn-1.jpg')">
+          <img src="./photos/charyn-2.jpg" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/charyn-2.jpg')">
+          <img src="./photos/charyn-3.jpg" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/charyn-3.jpg')">
         </div>
         <div class="gallery-cap" data-i18n="charynGalleryCap">Реальные фото с места · тап — открыть крупнее</div>
 
@@ -481,6 +492,7 @@
           <div class="vs-title" data-i18n="videoSoonTitle">Здесь скоро будет видео</div>
           <div class="vs-note" data-i18n="videoSoonNote">Короткий ролик с места · видео требует подключения к интернету</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="kolsai-detail" class="card" style="margin-top:14px;">
@@ -497,6 +509,7 @@
           <div class="spot-name" data-i18n="howToGet">Как добраться</div>
           <div class="spot-note" data-i18n="kolsaiGetThere">~300 км от Алматы, около 5 часов в пути через посёлок Саты. Дорога почти вся асфальтированная.</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="kaindy-detail" class="card" style="margin-top:14px;">
@@ -513,6 +526,7 @@
           <div class="spot-name" data-i18n="kaindyWaterName">Холодная вода</div>
           <div class="spot-note" data-i18n="kaindyWater">Даже летом температура воды около +6…+8°C — купание не для всех.</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="bozzhyra-detail" class="card" style="margin-top:14px;">
@@ -529,6 +543,7 @@
           <div class="spot-name" data-i18n="planAheadName">Планировать заранее</div>
           <div class="spot-note" data-i18n="bozzhyraPlan">Обычно едут с туром на несколько дней — самостоятельно без опыта поездок по бездорожью не стоит.</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="shymbulak-detail" class="card" style="margin-top:14px;">
@@ -545,6 +560,7 @@
           <div class="spot-name" data-i18n="shymbulakSummerName">Летом</div>
           <div class="spot-note" data-i18n="shymbulakSummer">Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="astana-detail" class="card" style="margin-top:14px;">
@@ -565,6 +581,7 @@
           <div class="spot-name" data-i18n="howToGet">Как добраться</div>
           <div class="spot-note" data-i18n="astanaGetThere">Перелёт из Алматы — около 1.5-2 часов, либо ночной поезд. Свой аэропорт есть и в самой Астане.</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="turkistan-detail" class="card" style="margin-top:14px;">
@@ -581,6 +598,7 @@
           <div class="spot-name" data-i18n="whenToGo">Когда ехать</div>
           <div class="spot-note" data-i18n="turkistanWhen">На осмотр основных построек хватит 3-5 часов. Комфортнее весной и осенью — летом очень жарко.</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="shymkent-detail" class="card" style="margin-top:14px;">
@@ -597,6 +615,7 @@
           <div class="spot-name" data-i18n="shymkentGatewayName">Ворота в Туркестан</div>
           <div class="spot-note" data-i18n="shymkentGatewayNote">Шымкент — самая удобная база для однодневной поездки к мавзолею Ясави в Туркестане (~160 км, 2-2.5 часа).</div>
         </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
     </div>
 
@@ -803,6 +822,9 @@
     charynGalleryCap:{ru:"Реальные фото с места · тап — открыть крупнее",en:"Real photos from the spot · tap to open larger"},
     videoSoonTitle:{ru:"Здесь скоро будет видео",en:"Video coming soon here"},
     videoSoonNote:{ru:"Короткий ролик с места · видео требует подключения к интернету",en:"A short clip from the spot · video requires an internet connection"},
+    spotLinkHint:{ru:"Фото и подробнее ↓",en:"Photos & details ↓"},
+    backToTop:{ru:"Наверх, к городам и местам",en:"Back up to cities & sights"},
+    lightboxBack:{ru:"Назад",en:"Back"},
 
     kolsaiDetailTitle:{ru:"Кольсайские озёра",en:"Kolsai Lakes"},
     kolsaiFirstName:{ru:"Первое озеро",en:"Lower lake (Kolsai-1)"},
@@ -1094,6 +1116,22 @@
 </script>
 
 
+
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <div class="lightbox-back" onclick="closeLightbox()">← <span data-i18n="lightboxBack">Назад</span></div>
+  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+  <img id="lightbox-img" src="" alt="">
+</div>
+<script>
+  function openLightbox(src){
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+</script>
 
 <script src="./pwa-install.js" defer></script>
 </body>
