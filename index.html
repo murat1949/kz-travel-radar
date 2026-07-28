@@ -52,15 +52,15 @@
     100%{transform:scale(1);}
   }
   .cover-sun-glow.flash{animation:sunGlowFlash .8s ease-out;}
-  .cover-sun-caption{position:absolute;top:114px;right:16px;z-index:6;display:flex;align-items:center;gap:6px;white-space:nowrap;
-    background:rgba(10,20,10,0.75);border:1px solid rgba(30,255,140,0.75);border-radius:999px;
-    padding:6px 12px;box-shadow:0 4px 14px rgba(0,0,0,0.45);
-    transition:background .3s,border-color .3s;pointer-events:none;}
-  .cover-sun-caption-dot{width:7px;height:7px;border-radius:50%;background:#3AFF8C;flex:0 0 auto;
-    box-shadow:0 0 6px 2px rgba(58,255,140,0.8);animation:sunGlowPulse 2.2s ease-in-out infinite;}
-  .cover-sun-caption span{font-size:11px;font-weight:800;color:#fff;letter-spacing:.01em;line-height:1.2;}
-  .cover-sun-caption.is-offline{background:rgba(40,26,0,0.78);border-color:rgba(255,200,0,0.8);}
-  .cover-sun-caption.is-offline .cover-sun-caption-dot{background:#FFD600;box-shadow:0 0 6px 2px rgba(255,214,0,0.85);}
+  .cover-sun-caption{position:fixed;z-index:6;display:flex;align-items:center;gap:4px;white-space:nowrap;
+    background:rgba(10,20,10,0.78);border:1px solid rgba(30,255,140,0.8);border-radius:999px;
+    padding:3px 9px;box-shadow:0 3px 10px rgba(0,0,0,0.45);
+    transform:translateX(-50%);transition:background .3s,border-color .3s;pointer-events:none;}
+  .cover-sun-caption-dot{width:6px;height:6px;border-radius:50%;background:#3AFF8C;flex:0 0 auto;
+    box-shadow:0 0 5px 1px rgba(58,255,140,0.8);animation:sunGlowPulse 2.2s ease-in-out infinite;}
+  .cover-sun-caption span{font-size:9px;font-weight:800;color:#fff;letter-spacing:.04em;line-height:1;}
+  .cover-sun-caption.is-offline{background:rgba(40,26,0,0.8);border-color:rgba(255,200,0,0.85);}
+  .cover-sun-caption.is-offline .cover-sun-caption-dot{background:#FFD600;box-shadow:0 0 5px 1px rgba(255,214,0,0.85);}
   .cover-lang button{border:none;background:transparent;color:rgba(255,255,255,0.9);font-weight:700;font-size:12px;padding:7px 14px;border-radius:999px;transition:background .15s;}
   .cover-lang button.active{background:#fff;color:var(--night);}
 
@@ -875,13 +875,11 @@
     var img = document.getElementById('coverPhoto');
     var glow = document.getElementById('coverSunGlow');
     var caption = document.getElementById('coverSunCaption');
-    var dot = document.getElementById('coverSunCaptionDot');
-    var textEl = document.getElementById('coverSunCaptionText');
     if (!img || !glow || !img.complete || !img.naturalWidth) return;
     var rect = img.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
     var w = rect.width;
-    var size = w * 0.17;
+    var size = w * 0.13;
     var cx = rect.left + w * 0.493;
     var cy = rect.top + rect.height * 0.331;
     glow.style.width = size + 'px';
@@ -890,7 +888,19 @@
     glow.style.top = (cy - size / 2) + 'px';
 
     if (caption) {
-      caption.style.display = 'flex';
+      // Свободная полоса — между вырезом телефона на фото (кончается ≈25% высоты)
+      // и верхним краем свечения. Короткий однословный бейдж ставим прямо в неё.
+      var glowTop = cy - size / 2;
+      var notchBottom = rect.top + rect.height * 0.25;
+      var gapAvailable = glowTop - notchBottom;
+      var captionNeeded = 19;
+      if (gapAvailable >= captionNeeded) {
+        caption.style.display = 'flex';
+        caption.style.left = cx + 'px';
+        caption.style.top = (glowTop - captionNeeded + 3) + 'px';
+      } else {
+        caption.style.display = 'none';
+      }
     }
   }
   window.addEventListener('resize', positionSunGlow);
@@ -1029,8 +1039,8 @@
     appSubtitle:{ru:"Путешествие по Казахстану",en:"Kazakhstan Trip"},
     live:{ru:"LIVE",en:"LIVE"},
     offlineStatus:{ru:"ОФЛАЙН",en:"OFFLINE"},
-    coverOfflineClaim:{ru:"Работает даже без интернета",en:"Works even without internet"},
-    coverOfflineProof:{ru:"Сейчас офлайн — и работает!",en:"Offline right now — and it works!"},
+    coverOfflineClaim:{ru:"ОНЛАЙН",en:"ONLINE"},
+    coverOfflineProof:{ru:"ОФЛАЙН",en:"OFFLINE"},
     homeEyebrow:{ru:"Сегодня в поездке",en:"Today on your trip"},
     homeGreeting:{ru:"Ваша поездка на одном экране",en:"Your trip on one screen"},
     kpiDay:{ru:"День поездки",en:"Trip day"},
