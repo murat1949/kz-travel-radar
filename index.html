@@ -681,12 +681,12 @@
   </div>
 
   <div class="bottomnav">
-    <button class="nav-btn active" onclick="showScreen('home',this)"><span class="em">📊</span><span data-i18n="navHome">Главная</span></button>
-    <button class="nav-btn" onclick="showScreen('guide',this)"><span class="em">🧭</span><span data-i18n="navGuide">Путеводитель</span></button>
-    <button class="nav-btn" onclick="showScreen('rates',this)"><span class="em">💱</span><span data-i18n="navRates">Курс</span></button>
-    <button class="nav-btn" onclick="showScreen('safety',this)"><span class="em">🚨</span><span data-i18n="navSafety">Безопасность</span></button>
-    <button class="nav-btn" onclick="showScreen('phrases',this)"><span class="em">💬</span><span data-i18n="navPhrases">Фразы</span></button>
-    <button class="nav-btn" onclick="showScreen('notes',this)"><span class="em">📝</span><span data-i18n="navNotes">Заметки</span></button>
+    <button class="nav-btn active" data-screen="home" onclick="location.hash='home'"><span class="em">📊</span><span data-i18n="navHome">Главная</span></button>
+    <button class="nav-btn" data-screen="guide" onclick="location.hash='guide'"><span class="em">🧭</span><span data-i18n="navGuide">Путеводитель</span></button>
+    <button class="nav-btn" data-screen="rates" onclick="location.hash='rates'"><span class="em">💱</span><span data-i18n="navRates">Курс</span></button>
+    <button class="nav-btn" data-screen="safety" onclick="location.hash='safety'"><span class="em">🚨</span><span data-i18n="navSafety">Безопасность</span></button>
+    <button class="nav-btn" data-screen="phrases" onclick="location.hash='phrases'"><span class="em">💬</span><span data-i18n="navPhrases">Фразы</span></button>
+    <button class="nav-btn" data-screen="notes" onclick="location.hash='notes'"><span class="em">📝</span><span data-i18n="navNotes">Заметки</span></button>
   </div>
 
 </div>
@@ -694,13 +694,61 @@
 <a href="https://wa.me/77017438061?text=Здравствуйте! Смотрел прототип путеводителя по Казахстану, хочу поделиться идеей / вопросом" target="_blank" rel="noopener" class="fab-wa" title="WhatsApp">💬</a>
 
 <script>
-  function showScreen(name, btn){
+  var PLACE_SLUGS = ['almaty','charyn','kolsai','kaindy','bozzhyra','shymbulak','astana','turkistan','shymkent'];
+  var VALID_SCREENS = ['home','guide','rates','safety','phrases','notes'];
+
+  function displayGuideList(){
+    document.getElementById('guide-details').style.display = 'none';
+    document.getElementById('guide-list').style.display = 'block';
+  }
+  function displayPlace(id){
+    document.getElementById('guide-list').style.display = 'none';
+    var cards = document.querySelectorAll('#guide-details > .card');
+    for (var i = 0; i < cards.length; i++) { cards[i].style.display = 'none'; }
+    var el = document.getElementById(id);
+    if (el) { el.style.display = 'block'; }
+    document.getElementById('guide-details').style.display = 'block';
+  }
+
+  // Ссылки/кнопки в разметке вызывают эти функции — они просто меняют адрес,
+  // а applyRoute() ниже уже реально показывает нужный экран. Так кнопка "Назад"
+  // на телефоне и прямые ссылки на конкретное место работают сами по себе.
+  function showPlace(id){
+    var slug = id.replace('-detail','');
+    location.hash = 'guide/' + slug;
+  }
+  function showGuideList(){
+    location.hash = 'guide';
+  }
+
+  function applyRoute(){
+    var hash = location.hash.replace('#','') || 'home';
+    var parts = hash.split('/');
+    var screenName = VALID_SCREENS.indexOf(parts[0]) !== -1 ? parts[0] : 'home';
+    var placeSlug = parts[1];
+
     document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-    document.getElementById('screen-'+name).classList.add('active');
+    var screenEl = document.getElementById('screen-' + screenName);
+    if (screenEl) { screenEl.classList.add('active'); }
+
     document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
-    btn.classList.add('active');
+    var navBtn = document.querySelector('.nav-btn[data-screen="' + screenName + '"]');
+    if (navBtn) { navBtn.classList.add('active'); }
+
+    if (screenName === 'guide') {
+      if (placeSlug && PLACE_SLUGS.indexOf(placeSlug) !== -1) {
+        displayPlace(placeSlug + '-detail');
+      } else {
+        displayGuideList();
+      }
+    }
     window.scrollTo({top:0, behavior:'instant'});
   }
+
+  window.addEventListener('hashchange', applyRoute);
+  document.addEventListener('DOMContentLoaded', applyRoute);
+  // На случай если скрипт выполняется уже после DOMContentLoaded
+  if (document.readyState === 'interactive' || document.readyState === 'complete') { applyRoute(); }
 
   var rates = { USD: 480, EUR: 520, CNY: 67 };
   function convert(){
@@ -940,20 +988,6 @@
     forgotNeedEmail:{ru:"Сначала впишите email выше.",en:"Please enter your email above first."},
     forgotSent:{ru:"Проверьте почту — прислали ссылку для входа.",en:"Check your email — we sent a sign-in link."}
   };
-
-  function showPlace(id){
-    document.getElementById('guide-list').style.display = 'none';
-    var cards = document.querySelectorAll('#guide-details > .card');
-    for (var i = 0; i < cards.length; i++) { cards[i].style.display = 'none'; }
-    document.getElementById(id).style.display = 'block';
-    document.getElementById('guide-details').style.display = 'block';
-    window.scrollTo(0, 0);
-  }
-  function showGuideList(){
-    document.getElementById('guide-details').style.display = 'none';
-    document.getElementById('guide-list').style.display = 'block';
-    window.scrollTo(0, 0);
-  }
 
   function setLang(lang){
     document.getElementById('coverPhoto').src = './photos/cover-bg-' + lang + '.jpg';
