@@ -19,12 +19,22 @@
   }
 
   if ('serviceWorker' in navigator) {
+    let swRegistration = null;
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js').then((reg) => {
+      navigator.serviceWorker.register('./service-worker.js', { updateViaCache: 'none' }).then((reg) => {
+        swRegistration = reg;
         reg.update();
       }).catch((error) => {
         console.warn('Service worker \u043d\u0435 \u0437\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043e\u0432\u0430\u043d:', error);
       });
+    });
+
+    // Возвращаясь на вкладку (например, из WhatsApp) — снова проверяем,
+    // нет ли новой версии, а не только при самом первом открытии.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && swRegistration) {
+        swRegistration.update();
+      }
     });
 
     // Если появилась новая версия — страница сама обновится один раз,

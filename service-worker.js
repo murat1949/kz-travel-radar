@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kz-travel-radar-v8';
+const CACHE_NAME = 'kz-travel-radar-v9';
 const APP_SHELL = [
   './',
   './index.html',
@@ -29,7 +29,11 @@ const APP_SHELL = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) =>
-      Promise.allSettled(APP_SHELL.map((url) => cache.add(url)))
+      Promise.allSettled(
+        APP_SHELL.map((url) =>
+          fetch(url, { cache: 'reload' }).then((response) => cache.put(url, response))
+        )
+      )
     )
   );
   self.skipWaiting();
@@ -48,7 +52,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: 'reload' })
       .then((response) => {
         const copy = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
