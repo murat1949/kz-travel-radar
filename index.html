@@ -145,24 +145,15 @@
   /* COVER / SPLASH */
   .cover{
     position:fixed;inset:0;z-index:100;
-    --cover-photo: url('./photos/cover-bg-ru.jpg');
-    background:
-      linear-gradient(180deg, rgba(10,14,20,0.55) 0%, rgba(10,14,20,0.78) 55%, rgba(10,14,20,0.9) 100%),
-      radial-gradient(700px 500px at 15% -10%, rgba(255,255,255,0.12), transparent 60%),
-      linear-gradient(150deg, rgba(201,138,44,0.55) 0%, rgba(138,74,158,0.55) 45%, rgba(18,41,59,0.65) 100%),
-      var(--cover-photo);
-    background-size: auto, auto, auto, cover;
-    background-position: center, center, center, center;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    color:#fff;text-align:center;padding:32px;
+    background:#0A0E14;
+    display:flex;align-items:center;justify-content:center;
     transition:opacity .5s ease, visibility .5s ease;
   }
   .cover.hide{opacity:0;visibility:hidden;pointer-events:none;}
-  .cover-sun{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE9B0,#F4B942 60%,#C98A2C);margin-bottom:22px;box-shadow:0 0 40px rgba(255,200,90,0.5);}
-  .cover h1{font-size:clamp(22px,5.6vw,32px);line-height:1.22;max-width:360px;}
-  .cover p{margin-top:14px;font-size:15px;color:rgba(255,255,255,0.85);max-width:300px;}
-  .cover-mountains{position:absolute;bottom:0;left:0;right:0;height:120px;opacity:0.35;}
-  .cover-btn{margin-top:32px;background:#fff;color:var(--night);border:none;border-radius:999px;padding:14px 30px;font-weight:800;font-size:15px;box-shadow:0 12px 30px -8px rgba(0,0,0,0.4);}
+  .cover-photo{position:absolute;inset:0;margin:auto;max-width:100%;max-height:100%;width:auto;height:auto;display:block;}
+  /* Невидимая кликабельная зона строго поверх нарисованной кнопки "Войти/Enter" на фото.
+     Координаты в % от рамки картинки — не съезжают ни на одном экране. */
+  .cover-hit-btn{position:absolute;left:31%;top:70%;width:36%;height:8%;cursor:pointer;z-index:4;}
 
   /* NOTES */
   .note-input-row{display:flex;gap:8px;margin-top:6px;}
@@ -258,20 +249,12 @@
 
 <!-- COVER -->
 <div class="cover" id="cover">
+  <img class="cover-photo" id="coverPhoto" src="./photos/cover-bg-ru.jpg" alt="KZ Travel Radar">
   <div class="cover-lang">
     <button class="btn-ru active" onclick="setLang('ru')">RU</button>
     <button class="btn-en" onclick="setLang('en')">EN</button>
   </div>
-  <div class="cover-sun"></div>
-  <h1 data-i18n="coverTitle">Гид по Казахстану, который работает даже без интернета</h1>
-  <p data-i18n="coverSub">Города, курс валют, безопасность и ваши заметки — в одной панели.</p>
-  <div class="cover-tags">
-    <span data-i18n="tagRoutes">Маршруты</span>
-    <span data-i18n="tagAttractions">Достопримечательности</span>
-    <span data-i18n="tagSafety">Безопасность</span>
-    <span data-i18n="tagTips">Советы</span>
-  </div>
-  <button class="cover-btn" onclick="document.getElementById('cover').classList.add('hide')" data-i18n="coverBtn">Войти →</button>
+  <div class="cover-hit-btn" onclick="document.getElementById('cover').classList.add('hide')" aria-label="Enter"></div>
 </div>
 
 <div class="app">
@@ -967,7 +950,7 @@
   };
 
   function setLang(lang){
-    document.getElementById('cover').style.setProperty('--cover-photo', "url('./photos/cover-bg-" + lang + ".jpg')");
+    document.getElementById('coverPhoto').src = './photos/cover-bg-' + lang + '.jpg';
     __currentLang = lang;
     document.querySelectorAll('[data-i18n]').forEach(function(el){
       var key = el.getAttribute('data-i18n');
