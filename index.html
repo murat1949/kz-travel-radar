@@ -194,8 +194,8 @@
   .video-slot .vs-icon{font-size:26px;display:block;margin-bottom:6px;}
   .video-slot .vs-title{font-weight:800;font-size:13px;color:var(--ink);margin-bottom:3px;}
   .video-slot .vs-note{font-size:11px;color:#8A8272;}
-  .sight-chip svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
-  .sight-chip::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 5%,rgba(0,0,0,0) 65%);}
+  .sight-chip svg,.sight-chip img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;}
+  .sight-chip::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5) 5%,rgba(0,0,0,0) 60%);}
   .sight-chip .sc-em,.sight-chip .sc-label{position:relative;z-index:1;}
   .sight-chip .sc-em{font-size:18px;display:block;margin-bottom:6px;text-shadow:0 1px 4px rgba(0,0,0,.35);}
   .sight-chip .sc-label{text-shadow:0 1px 3px rgba(0,0,0,.35);}
@@ -333,29 +333,19 @@
 
       <div class="sights-strip">
         <div class="sight-chip sc-charyn" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
-          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
-            <defs><linearGradient id="gCharyn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8935A"/><stop offset="1" stop-color="#7A2E16"/></linearGradient></defs>
-            <rect width="120" height="96" fill="url(#gCharyn)"/>
-            <polygon points="0,60 14,44 28,58 42,38 58,56 72,40 88,58 104,42 120,55 120,96 0,96" fill="#8A3A1E" opacity=".85"/>
-            <polygon points="0,74 18,62 34,72 50,58 66,70 84,56 100,72 120,64 120,96 0,96" fill="#5E2411"/>
-          </svg>
+          <img src="./photos/thumb-charyn.jpg" alt="Charyn Canyon">
           <span class="sc-em">🏜️</span><span class="sc-label">Charyn Canyon</span>
         </div>
         <div class="sight-chip sc-kolsai" onclick="document.getElementById('kolsai-detail').scrollIntoView({behavior:'smooth'})">
-          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
-            <defs><linearGradient id="gKolsai" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FA79B"/><stop offset="1" stop-color="#0E2130"/></linearGradient></defs>
-            <rect width="120" height="96" fill="url(#gKolsai)"/>
-            <polygon points="0,48 20,20 34,38 50,14 66,36 82,18 100,40 120,26 120,70 0,70" fill="#1A3A50" opacity=".9"/>
-            <rect y="70" width="120" height="26" fill="#0E2130"/>
-          </svg>
+          <img src="./photos/thumb-kolsai.jpg" alt="Kolsai Lakes">
           <span class="sc-em">🏔️</span><span class="sc-label">Kolsai Lakes</span>
         </div>
         <div class="sight-chip sc-kaindy" onclick="document.getElementById('kaindy-detail').scrollIntoView({behavior:'smooth'})">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
-            <defs><linearGradient id="gKaindy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FB9D9"/><stop offset="1" stop-color="#0E3A52"/></linearGradient></defs>
+            <defs><linearGradient id="gKaindy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9BDCF0"/><stop offset="1" stop-color="#2E93B8"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gKaindy)"/>
-            <rect y="52" width="120" height="44" fill="#12506B" opacity=".55"/>
-            <g stroke="#0A2A3C" stroke-width="3" stroke-linecap="round">
+            <rect y="52" width="120" height="44" fill="#3AA3C4" opacity=".55"/>
+            <g stroke="#1B5C77" stroke-width="3" stroke-linecap="round">
               <line x1="18" y1="30" x2="14" y2="80"/><line x1="34" y1="20" x2="30" y2="80"/>
               <line x1="52" y1="34" x2="50" y2="80"/><line x1="70" y1="16" x2="68" y2="80"/>
               <line x1="88" y1="28" x2="88" y2="80"/><line x1="104" y1="22" x2="106" y2="80"/>
@@ -368,17 +358,17 @@
             <defs><linearGradient id="gBozz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="1" stop-color="#B2853B"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gBozz)"/>
             <path d="M0,56 Q20,40 40,54 T80,50 T120,58 V96 H0 Z" fill="#C98A2C" opacity=".8"/>
-            <path d="M0,72 Q24,58 48,70 T96,66 T120,74 V96 H0 Z" fill="#7A5626"/>
+            <path d="M0,72 Q24,58 48,70 T96,66 T120,74 V96 H0 Z" fill="#9C6B34" opacity=".9"/>
           </svg>
           <span class="sc-em">⛰️</span><span class="sc-label">Bozzhyra</span>
         </div>
         <div class="sight-chip sc-shymbulak" onclick="document.getElementById('shymbulak-detail').scrollIntoView({behavior:'smooth'})">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
-            <defs><linearGradient id="gShym" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AFC4DE"/><stop offset="1" stop-color="#26314F"/></linearGradient></defs>
+            <defs><linearGradient id="gShym" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D3E5F5"/><stop offset="1" stop-color="#6E88B8"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gShym)"/>
-            <polygon points="0,58 16,30 30,50 46,18 62,46 78,26 94,52 110,32 120,44 120,96 0,96" fill="#EDEFF4"/>
-            <polygon points="0,70 20,52 40,68 60,46 80,66 100,50 120,64 120,96 0,96" fill="#2C3E6F"/>
-            <line x1="10" y1="60" x2="90" y2="94" stroke="#D9483A" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="0,58 16,30 30,50 46,18 62,46 78,26 94,52 110,32 120,44 120,96 0,96" fill="#F5F8FC"/>
+            <polygon points="0,70 20,52 40,68 60,46 80,66 100,50 120,64 120,96 0,96" fill="#5A72A0"/>
+            <line x1="10" y1="60" x2="90" y2="94" stroke="#E8543F" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <span class="sc-em">🎿</span><span class="sc-label">Shymbulak</span>
         </div>
