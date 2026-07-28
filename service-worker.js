@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kz-travel-radar-v3';
+const CACHE_NAME = 'kz-travel-radar-v4';
 const APP_SHELL = [
   './',
   './index.html',
@@ -7,6 +7,17 @@ const APP_SHELL = [
   './pwa-install.js',
   './icons/icon-192.png',
   './icons/icon-512.png',
+  './photos/charyn-1.jpg',
+  './photos/charyn-2.jpg',
+  './photos/charyn-3.jpg',
+  './photos/0373408_charyn-canyon-in-south-east-kazakhstan-taken-in-august-2018taken-in-hdr-taken-in-hdr_800.jpeg',
+  './photos/%D1%871.png',
+  './photos/Kolsai-Lakes-1.jpg',
+  './photos/thumb-charyn.jpg',
+  './photos/thumb-kolsai.jpg',
+  './photos/cover-bg-ru.jpg',
+  './photos/cover-bg-en.jpg',
+  './images/hero-phone-ru.jpg',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'
 ];
 
