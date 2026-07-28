@@ -27,8 +27,10 @@
   .topbar .brand-text .t1{font-family:'Manrope';font-weight:800;font-size:14.5px;}
   .topbar .brand-text .t2{font-size:11px;color:#9FB0BA;}
   .topbar-right{display:flex;align-items:center;gap:10px;}
-  .live-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border-radius:999px;padding:6px 11px;font-size:10.5px;font-weight:700;color:#7FD9C9;}
+  .live-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border-radius:999px;padding:6px 11px;font-size:10.5px;font-weight:700;color:#7FD9C9;transition:color .2s,background .2s;}
   .live-dot{width:6px;height:6px;border-radius:50%;background:#3AD9A8;animation:pulse 1.8s infinite;}
+  .live-pill.offline{color:#F0C46A;background:rgba(240,196,106,0.12);}
+  .live-pill.offline .live-dot{background:#F0C46A;animation:none;}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
   .lang-switch{display:flex;background:rgba(255,255,255,0.08);border-radius:999px;padding:3px;}
   .lang-switch button{border:none;background:transparent;color:#9FB0BA;font-weight:700;font-size:11.5px;padding:6px 12px;border-radius:999px;transition:background .15s;}
@@ -54,6 +56,12 @@
   .guide-hero .greet-h{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4);}
   .guide-sub{margin-top:8px;font-size:13px;color:rgba(255,255,255,0.92);max-width:280px;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,.4);}
 
+  .guide-search{position:relative;display:flex;align-items:center;margin-top:14px;}
+  .guide-search .gs-icon{position:absolute;left:13px;font-size:14px;opacity:.6;pointer-events:none;}
+  .guide-search input{width:100%;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:11px 14px 11px 36px;font-size:13.5px;font-family:inherit;color:var(--ink);}
+  .guide-search input:focus{outline:none;border-color:var(--gold);}
+  .guide-empty{margin-top:16px;padding:16px;text-align:center;font-size:13px;color:var(--muted);background:var(--steppe);border-radius:12px;}
+
   .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
   .kpi{background:var(--steppe);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;}
   .kpi .num{font-family:'Manrope';font-weight:800;font-size:20px;color:var(--night);}
@@ -76,7 +84,14 @@
 
   .city-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
   @media (max-width:380px){.city-grid{grid-template-columns:1fr;}}
-  .city-tile{border-radius:14px;padding:16px;border:1px solid var(--line);background:var(--paper);cursor:pointer;transition:transform .15s;}
+  .wish-btn{position:absolute;top:8px;right:8px;z-index:6;width:26px;height:26px;border-radius:50%;border:none;
+    background:rgba(0,0,0,0.35);color:rgba(255,255,255,0.85);font-size:14px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s,color .15s;}
+  .wish-btn:hover{transform:scale(1.1);}
+  .wish-btn.on{background:#fff;color:var(--gold);}
+  .city-tile .wish-btn{top:10px;right:10px;background:rgba(255,255,255,0.85);color:var(--line);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  .city-tile .wish-btn.on{background:#fff;color:var(--gold);}
+  .city-tile{position:relative;border-radius:14px;padding:16px;border:1px solid var(--line);background:var(--paper);cursor:pointer;transition:transform .15s;}
   .city-tile:hover{transform:translateY(-3px);}
   .city-tile:hover .city-banner svg,.city-tile:hover .city-banner img{transform:scale(1.04);}
   .city-tile.live{background:var(--steppe);color:var(--ink);border-color:var(--line);}
@@ -179,6 +194,12 @@
   .note-del{background:none;border:none;color:var(--muted-soft);font-size:12px;font-weight:700;}
   .note-del:hover{color:#B23A2E;}
   .note-empty{text-align:center;color:var(--muted-soft);font-size:13px;padding:24px 0;}
+  .wishlist-title{font-family:'Manrope';font-weight:800;font-size:14px;color:var(--ink);margin-top:18px;margin-bottom:10px;}
+  .wish-item{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:8px;}
+  .wish-item-em{font-size:18px;flex:0 0 auto;}
+  .wish-item-name{flex:1;font-weight:700;font-size:13.5px;color:var(--ink);cursor:pointer;}
+  .wish-item-del{border:none;background:transparent;color:var(--muted-soft);font-size:14px;cursor:pointer;padding:4px 6px;}
+  .wish-item-del:hover{color:#C0392B;}
 
   .brand{cursor:pointer;}
   .cover-tags{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
@@ -281,7 +302,7 @@
       </div>
     </div>
     <div class="topbar-right">
-      <span class="live-pill"><i class="live-dot"></i> <span data-i18n="live">LIVE</span></span>
+      <span class="live-pill" id="netStatus"><i class="live-dot"></i> <span data-i18n="live">LIVE</span></span>
       <div class="lang-switch">
         <button id="btnRu" class="btn-ru active" onclick="setLang('ru')">RU</button>
         <button id="btnEn" class="btn-en" onclick="setLang('en')">EN</button>
@@ -342,16 +363,22 @@
         <div class="guide-sub" data-i18n="guideSub">Выберите направление и откройте для себя лучшие места нашей страны</div>
       </div>
 
+      <div class="guide-search">
+        <span class="gs-icon">🔎</span>
+        <input type="text" id="guideSearch" oninput="filterGuide(this.value)" data-i18n-ph="guideSearchPh" placeholder="Поиск по путеводителю...">
+      </div>
+      <div class="guide-empty" id="guideEmpty" style="display:none;" data-i18n="guideEmptyState">Ничего не нашлось. Попробуйте другое название.</div>
+
       <div class="sights-strip">
-        <div class="sight-chip sc-charyn" onclick="showPlace('charyn-detail')">
+        <div class="sight-chip sc-charyn" data-ru="Чарынский каньон" onclick="showPlace('charyn-detail')"><button class="wish-btn" data-place="charyn-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <img src="./photos/thumb-charyn.jpg" alt="Charyn Canyon">
           <span class="sc-em">🏜️</span><span class="sc-label">Charyn Canyon</span>
         </div>
-        <div class="sight-chip sc-kolsai" onclick="showPlace('kolsai-detail')">
+        <div class="sight-chip sc-kolsai" data-ru="Кольсайские озёра" onclick="showPlace('kolsai-detail')"><button class="wish-btn" data-place="kolsai-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <img src="./photos/thumb-kolsai.jpg" alt="Kolsai Lakes">
           <span class="sc-em">🏔️</span><span class="sc-label">Kolsai Lakes</span>
         </div>
-        <div class="sight-chip sc-kaindy" onclick="showPlace('kaindy-detail')">
+        <div class="sight-chip sc-kaindy" data-ru="Озеро Каинды" onclick="showPlace('kaindy-detail')"><button class="wish-btn" data-place="kaindy-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gKaindy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9BDCF0"/><stop offset="1" stop-color="#2E93B8"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gKaindy)"/>
@@ -364,7 +391,7 @@
           </svg>
           <span class="sc-em">🌲</span><span class="sc-label">Kaindy Lake</span>
         </div>
-        <div class="sight-chip sc-bozzhyra" onclick="showPlace('bozzhyra-detail')">
+        <div class="sight-chip sc-bozzhyra" data-ru="Бозжыра" onclick="showPlace('bozzhyra-detail')"><button class="wish-btn" data-place="bozzhyra-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gBozz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="1" stop-color="#B2853B"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gBozz)"/>
@@ -373,7 +400,7 @@
           </svg>
           <span class="sc-em">⛰️</span><span class="sc-label">Bozzhyra</span>
         </div>
-        <div class="sight-chip sc-shymbulak" onclick="showPlace('shymbulak-detail')">
+        <div class="sight-chip sc-shymbulak" data-ru="Шымбулак" onclick="showPlace('shymbulak-detail')"><button class="wish-btn" data-place="shymbulak-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gShym" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D3E5F5"/><stop offset="1" stop-color="#6E88B8"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gShym)"/>
@@ -386,25 +413,25 @@
       </div>
 
       <div class="city-grid">
-        <div class="city-tile live" onclick="showPlace('almaty-detail')">
+        <div class="city-tile live" onclick="showPlace('almaty-detail')"><button class="wish-btn" data-place="almaty-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <div class="city-banner"><img src="./photos/city-almaty.jpg" alt="Алматы"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Алматы</div>
           <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
         </div>
-        <div class="city-tile live" onclick="showPlace('astana-detail')">
+        <div class="city-tile live" onclick="showPlace('astana-detail')"><button class="wish-btn" data-place="astana-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <div class="city-banner"><img src="./photos/city-astana.jpg" alt="Астана"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Астана</div>
           <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
         </div>
-        <div class="city-tile live" onclick="showPlace('turkistan-detail')">
+        <div class="city-tile live" onclick="showPlace('turkistan-detail')"><button class="wish-btn" data-place="turkistan-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <div class="city-banner"><img src="./photos/city-turkistan.jpg" alt="Туркестан"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Туркестан</div>
           <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
         </div>
-        <div class="city-tile live" onclick="showPlace('shymkent-detail')">
+        <div class="city-tile live" onclick="showPlace('shymkent-detail')"><button class="wish-btn" data-place="shymkent-detail" onclick="event.stopPropagation();toggleWishlist(this)">★</button>
           <div class="city-banner"><img src="./photos/city-shymkent.jpg" alt="Шымкент"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Шымкент</div>
@@ -667,7 +694,10 @@
       <div class="greet" data-i18n="notesEyebrow">Заметки</div>
       <div class="greet-h" data-i18n="notesTitle">Идеи в дороге</div>
 
-      <div class="card">
+      <div class="wishlist-title" data-i18n="wishlistTitle">★ Хочу посетить</div>
+      <div id="wishlistBox"></div>
+
+      <div class="card" style="margin-top:22px;">
         <div class="note-input-row">
           <textarea id="noteInput" data-i18n-ph="notePlaceholder" placeholder="Записать идею или мысль..."></textarea>
           <button class="note-add-btn" onclick="addNote()" data-i18n="noteAdd">+</button>
@@ -696,6 +726,32 @@
 <script>
   var PLACE_SLUGS = ['almaty','charyn','kolsai','kaindy','bozzhyra','shymbulak','astana','turkistan','shymkent'];
   var VALID_SCREENS = ['home','guide','rates','safety','phrases','notes'];
+
+  function filterGuide(query){
+    query = query.trim().toLowerCase();
+    var visibleCount = 0;
+
+    document.querySelectorAll('.sight-chip').forEach(function(chip){
+      var label = chip.querySelector('.sc-label');
+      var text = (label ? label.textContent : '') + ' ' + (chip.getAttribute('data-ru') || '');
+      text = text.toLowerCase();
+      var match = !query || text.indexOf(query) !== -1;
+      chip.style.display = match ? '' : 'none';
+      if (match) { visibleCount++; }
+    });
+
+    document.querySelectorAll('.city-tile').forEach(function(tile){
+      var nameEl = tile.querySelector('.city-name');
+      var noteEl = tile.querySelector('.city-note');
+      var text = (nameEl ? nameEl.textContent : '') + ' ' + (noteEl ? noteEl.textContent : '');
+      text = text.toLowerCase();
+      var match = !query || text.indexOf(query) !== -1;
+      tile.style.display = match ? '' : 'none';
+      if (match) { visibleCount++; }
+    });
+
+    document.getElementById('guideEmpty').style.display = (query && visibleCount === 0) ? 'block' : 'none';
+  }
 
   function displayGuideList(){
     document.getElementById('guide-details').style.display = 'none';
@@ -745,10 +801,25 @@
     window.scrollTo({top:0, behavior:'instant'});
   }
 
+  function updateNetStatus(){
+    var pill = document.getElementById('netStatus');
+    if (!pill) return;
+    var label = pill.querySelector('span:not(.live-dot)');
+    if (navigator.onLine) {
+      pill.classList.remove('offline');
+      label.textContent = dict.live[__currentLang];
+    } else {
+      pill.classList.add('offline');
+      label.textContent = dict.offlineStatus[__currentLang];
+    }
+  }
+  window.addEventListener('online', updateNetStatus);
+  window.addEventListener('offline', updateNetStatus);
+
   window.addEventListener('hashchange', applyRoute);
-  document.addEventListener('DOMContentLoaded', applyRoute);
+  document.addEventListener('DOMContentLoaded', function(){ applyRoute(); updateNetStatus(); syncWishButtons(); renderWishlist(); });
   // На случай если скрипт выполняется уже после DOMContentLoaded
-  if (document.readyState === 'interactive' || document.readyState === 'complete') { applyRoute(); }
+  if (document.readyState === 'interactive' || document.readyState === 'complete') { applyRoute(); updateNetStatus(); syncWishButtons(); renderWishlist(); }
 
   var rates = { USD: 480, EUR: 520, CNY: 67 };
   function convert(){
@@ -762,6 +833,68 @@
     document.getElementById('result2').textContent = Math.round(amt*rates[from]).toLocaleString('ru-RU');
   }
   convert(); convert2();
+
+  // WISHLIST ("Хочу посетить")
+  var PLACE_INFO = {
+    'almaty-detail':{ru:'Алматы',en:'Almaty',em:'🏔️'},
+    'charyn-detail':{ru:'Чарынский каньон',en:'Charyn Canyon',em:'🏜️'},
+    'kolsai-detail':{ru:'Кольсайские озёра',en:'Kolsai Lakes',em:'🏔️'},
+    'kaindy-detail':{ru:'Озеро Каинды',en:'Kaindy Lake',em:'🌲'},
+    'bozzhyra-detail':{ru:'Бозжыра',en:'Bozzhyra',em:'⛰️'},
+    'shymbulak-detail':{ru:'Шымбулак',en:'Shymbulak',em:'🎿'},
+    'astana-detail':{ru:'Астана',en:'Astana',em:'🏙️'},
+    'turkistan-detail':{ru:'Туркестан',en:'Turkistan',em:'🕌'},
+    'shymkent-detail':{ru:'Шымкент',en:'Shymkent',em:'🌇'}
+  };
+  function loadWishlist(){
+    try{ return JSON.parse(localStorage.getItem('kz_wishlist') || '[]'); }
+    catch(e){ return []; }
+  }
+  function saveWishlist(list){
+    try{ localStorage.setItem('kz_wishlist', JSON.stringify(list)); }catch(e){}
+  }
+  function toggleWishlist(btn){
+    var id = btn.getAttribute('data-place');
+    var list = loadWishlist();
+    var idx = list.indexOf(id);
+    if (idx === -1) { list.push(id); } else { list.splice(idx, 1); }
+    saveWishlist(list);
+    syncWishButtons();
+    renderWishlist();
+  }
+  function syncWishButtons(){
+    var list = loadWishlist();
+    document.querySelectorAll('.wish-btn').forEach(function(btn){
+      var id = btn.getAttribute('data-place');
+      btn.classList.toggle('on', list.indexOf(id) !== -1);
+    });
+  }
+  function renderWishlist(){
+    var box = document.getElementById('wishlistBox');
+    if (!box) return;
+    var list = loadWishlist();
+    if (!list.length) {
+      box.innerHTML = '<div class="note-empty">' + dict.wishlistEmpty[__currentLang] + '</div>';
+      return;
+    }
+    box.innerHTML = list.map(function(id){
+      var info = PLACE_INFO[id];
+      if (!info) return '';
+      var name = info[__currentLang] || info.ru;
+      return '<div class="wish-item">'
+        + '<span class="wish-item-em">' + info.em + '</span>'
+        + '<span class="wish-item-name" onclick="location.hash=\'guide/' + id.replace('-detail','') + '\'">' + name + '</span>'
+        + '<button class="wish-item-del" onclick="removeWish(\'' + id + '\')">✕</button>'
+        + '</div>';
+    }).join('');
+  }
+  function removeWish(id){
+    var list = loadWishlist();
+    var idx = list.indexOf(id);
+    if (idx !== -1) { list.splice(idx, 1); saveWishlist(list); }
+    syncWishButtons();
+    renderWishlist();
+  }
 
   // NOTES
   function loadNotes(){
@@ -814,6 +947,7 @@
     appTitle:{ru:"Центр управления",en:"Control Center"},
     appSubtitle:{ru:"Путешествие по Казахстану",en:"Kazakhstan Trip"},
     live:{ru:"LIVE",en:"LIVE"},
+    offlineStatus:{ru:"ОФЛАЙН",en:"OFFLINE"},
     homeEyebrow:{ru:"Сегодня в поездке",en:"Today on your trip"},
     homeGreeting:{ru:"Ваша поездка на одном экране",en:"Your trip on one screen"},
     kpiDay:{ru:"День поездки",en:"Trip day"},
@@ -833,6 +967,10 @@
     guideEyebrow:{ru:"Путеводитель",en:"Guide"},
     guideTitle:{ru:"Города Казахстана",en:"Cities of Kazakhstan"},
     guideSub:{ru:"Выберите направление и откройте для себя лучшие места нашей страны",en:"Pick a destination and discover the best places our country has to offer"},
+    guideSearchPh:{ru:"Поиск по путеводителю...",en:"Search the guide..."},
+    guideEmptyState:{ru:"Ничего не нашлось. Попробуйте другое название.",en:"Nothing found. Try a different name."},
+    wishlistTitle:{ru:"★ Хочу посетить",en:"★ Want to visit"},
+    wishlistEmpty:{ru:"Пока пусто — нажмите ★ на любом месте в путеводителе, чтобы добавить сюда.",en:"Nothing yet — tap ★ on any place in the guide to add it here."},
     tagLive:{ru:"Готово",en:"Live"},
     tagSoon:{ru:"Скоро",en:"Coming soon"},
     almatyNote:{ru:"Горы, базары, кофейни",en:"Mountains, bazaars, coffee"},
@@ -1002,6 +1140,7 @@
     });
     document.querySelectorAll('.btn-ru').forEach(function(b){ b.classList.toggle('active', lang==='ru'); });
     document.querySelectorAll('.btn-en').forEach(function(b){ b.classList.toggle('active', lang==='en'); });
+    updateNetStatus();
   }
 
   // Auto-detect: Russian-language browsers get RU, everyone else gets EN by default.
