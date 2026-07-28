@@ -44,6 +44,15 @@
 
   .greet{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
   .greet-h{font-size:21px;margin-top:6px;}
+  .guide-hero{
+    position:relative;margin:0 -18px 14px;padding:26px 18px 22px;overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(10,20,28,.35) 0%, rgba(10,20,28,.72) 100%),
+      url('./photos/guide-header.jpg') center/cover;
+  }
+  .guide-hero .greet{color:#D9E8EE;}
+  .guide-hero .greet-h{color:#fff;}
+  .guide-sub{margin-top:8px;font-size:13px;color:rgba(255,255,255,0.88);max-width:420px;line-height:1.4;}
 
   .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
   .kpi{background:var(--steppe);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;}
@@ -65,14 +74,14 @@
   .feed-row .who{font-weight:600;}
   .feed-row .tag{color:var(--muted-soft);font-size:11px;}
 
-  .city-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+  .city-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+  @media (max-width:380px){.city-grid{grid-template-columns:1fr;}}
   .city-tile{border-radius:14px;padding:16px;border:1px solid var(--line);background:var(--paper);cursor:pointer;transition:transform .15s;}
   .city-tile:hover{transform:translateY(-3px);}
-  .city-tile:hover .city-banner svg{transform:scale(1.04);}
+  .city-tile:hover .city-banner svg,.city-tile:hover .city-banner img{transform:scale(1.04);}
   .city-tile.live{background:var(--night);color:#fff;border-color:var(--night);}
   .city-tile.photo{padding:0;overflow:hidden;position:relative;}
-  .city-tile.photo img{display:block;width:100%;height:auto;}
-  .city-tile.photo .city-status{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.92);color:var(--night);font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,0.25);}
+  .city-tile.photo .city-status{position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.92);color:var(--night);font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,0.25);z-index:1;}
   .city-tag{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-soft);}
   .city-tile.live .city-tag{color:#8FB0C4;}
   .city-name{font-family:'Manrope';font-weight:700;font-size:15.5px;margin-top:6px;}
@@ -174,7 +183,7 @@
   .cover-tags span{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:700;}
 
   .city-banner{position:relative;height:56px;border-radius:10px;margin-bottom:10px;overflow:hidden;display:flex;align-items:flex-end;padding:6px 8px;font-size:20px;}
-  .city-banner svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform .3s ease;}
+  .city-banner svg,.city-banner img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;transition:transform .3s ease;}
   .city-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent 55%);}
   .city-banner .banner-em{position:relative;z-index:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));}
 
@@ -324,8 +333,11 @@
     </div>
 
     <div class="screen" id="screen-guide">
-      <div class="greet" data-i18n="guideEyebrow">Путеводитель</div>
-      <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
+      <div class="guide-hero">
+        <div class="greet" data-i18n="guideEyebrow">Путеводитель</div>
+        <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
+        <div class="guide-sub" data-i18n="guideSub">Выберите направление и откройте для себя лучшие места нашей страны</div>
+      </div>
 
       <div class="sights-strip">
         <div class="sight-chip sc-charyn" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
@@ -371,21 +383,29 @@
       </div>
 
       <div class="city-grid">
-        <div class="city-tile photo" onclick="document.getElementById('almaty-detail').scrollIntoView({behavior:'smooth'})">
-          <img src="./photos/%D0%90%D0%BB%D0%BC%D0%B0%D1%82%D1%8B.png" alt="Алматы — горы, базары, кофейни">
-          <div class="city-status" data-i18n="tagLive">Готово</div>
+        <div class="city-tile live" onclick="document.getElementById('almaty-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner"><img src="./photos/cities/city-almaty.jpg" alt="Алматы"></div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Алматы</div>
+          <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
         </div>
-        <div class="city-tile photo" onclick="document.getElementById('astana-detail').scrollIntoView({behavior:'smooth'})">
-          <img src="./photos/%D0%90%D1%81%D1%82%D0%B0%D0%BD%D0%B0.png" alt="Астана — Байтерек, Хан Шатыр">
-          <div class="city-status" data-i18n="tagLive">Готово</div>
+        <div class="city-tile live" onclick="document.getElementById('astana-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner"><img src="./photos/cities/city-astana.jpg" alt="Астана"></div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Астана</div>
+          <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
         </div>
-        <div class="city-tile photo" onclick="document.getElementById('turkistan-detail').scrollIntoView({behavior:'smooth'})">
-          <img src="./photos/%D0%A2%D1%83%D1%80%D0%BA%D0%B5%D1%81%D1%82%D0%B0%D0%BD.png" alt="Туркестан — мавзолей Ясави">
-          <div class="city-status" data-i18n="tagLive">Готово</div>
+        <div class="city-tile live" onclick="document.getElementById('turkistan-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner"><img src="./photos/cities/city-turkistan.jpg" alt="Туркестан"></div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Туркестан</div>
+          <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
         </div>
-        <div class="city-tile photo" onclick="document.getElementById('shymkent-detail').scrollIntoView({behavior:'smooth'})">
-          <img src="./photos/%D0%A8%D1%8B%D0%BC%D1%81%D0%B5%D0%BD%D1%82.png" alt="Шымкент — юг, история, еда">
-          <div class="city-status" data-i18n="tagLive">Готово</div>
+        <div class="city-tile live" onclick="document.getElementById('shymkent-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner"><img src="./photos/cities/city-shymkent.jpg" alt="Шымкент"></div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Шымкент</div>
+          <div class="city-note" data-i18n="shymkentNote">Юг, история, еда</div>
         </div>
       </div>
 
@@ -755,6 +775,7 @@
 
     guideEyebrow:{ru:"Путеводитель",en:"Guide"},
     guideTitle:{ru:"Города Казахстана",en:"Cities of Kazakhstan"},
+    guideSub:{ru:"Выберите направление и откройте для себя лучшие места нашей страны",en:"Pick a destination and discover the best places our country has to offer"},
     tagLive:{ru:"Готово",en:"Live"},
     tagSoon:{ru:"Скоро",en:"Coming soon"},
     almatyNote:{ru:"Горы, базары, кофейни",en:"Mountains, bazaars, coffee"},
