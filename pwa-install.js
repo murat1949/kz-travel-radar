@@ -20,9 +20,20 @@
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js').catch((error) => {
+      navigator.serviceWorker.register('./service-worker.js').then((reg) => {
+        reg.update();
+      }).catch((error) => {
         console.warn('Service worker \u043d\u0435 \u0437\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043e\u0432\u0430\u043d:', error);
       });
+    });
+
+    // Если появилась новая версия — страница сама обновится один раз,
+    // без ручных действий пользователя (очистка кэша, инкогнито и т.п.)
+    let alreadyReloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (alreadyReloaded) return;
+      alreadyReloaded = true;
+      window.location.reload();
     });
   }
 
