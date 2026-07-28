@@ -36,28 +36,22 @@
   .lang-switch button{border:none;background:transparent;color:#9FB0BA;font-weight:700;font-size:11.5px;padding:6px 12px;border-radius:999px;transition:background .15s;}
   .lang-switch button.active{background:var(--gold);color:#fff;}
   .cover-lang{position:absolute;top:70px;right:16px;display:flex;background:#12293B;border:1px solid rgba(255,255,255,0.35);border-radius:999px;padding:3px;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,0.4);}
-  .cover-offline-badge{position:absolute;top:16px;left:16px;right:16px;display:inline-flex;align-items:center;gap:10px;
-    background:rgba(16,26,16,0.65);border:1.5px solid rgba(90,220,150,0.7);border-radius:999px;
-    padding:11px 16px 11px 14px;z-index:5;box-shadow:0 6px 20px rgba(0,0,0,0.4);width:fit-content;max-width:calc(100% - 32px);
-    transition:background .3s,border-color .3s;}
-  .cover-offline-dot{width:13px;height:13px;border-radius:50%;background:#3AD9A8;flex:0 0 auto;
-    animation:glowPulse 1.6s ease-in-out infinite;
-    box-shadow:0 0 6px 1px #3AD9A8, 0 0 16px 4px rgba(58,217,168,0.85), 0 0 28px 8px rgba(58,217,168,0.45);}
-  .cover-offline-text{font-size:13px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6);line-height:1.3;letter-spacing:.01em;}
-  .cover-offline-badge.is-offline{background:rgba(48,30,10,0.7);border-color:rgba(240,196,106,0.75);}
-  .cover-offline-badge.is-offline .cover-offline-dot{background:#F0C46A;
-    box-shadow:0 0 6px 1px #F0C46A, 0 0 16px 4px rgba(240,196,106,0.9), 0 0 28px 8px rgba(240,196,106,0.5);}
-  @keyframes glowPulse{
+  .cover-sun-glow{position:fixed;z-index:4;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle, rgba(58,217,168,0.55) 0%, rgba(58,217,168,0.28) 40%, transparent 72%);
+    animation:sunGlowPulse 2.2s ease-in-out infinite;
+    transition:background 0.4s ease;}
+  .cover-sun-glow.is-offline{
+    background:radial-gradient(circle, rgba(240,196,106,0.6) 0%, rgba(240,196,106,0.3) 40%, transparent 72%);}
+  @keyframes sunGlowPulse{
     0%,100%{opacity:1;transform:scale(1);}
-    50%{opacity:.55;transform:scale(0.82);}
+    50%{opacity:.6;transform:scale(0.88);}
   }
-  @keyframes badgeFlash{
+  @keyframes sunGlowFlash{
     0%{transform:scale(1);}
-    25%{transform:scale(1.06);box-shadow:0 6px 20px rgba(0,0,0,0.4),0 0 0 10px rgba(255,255,255,0.18);}
-    100%{transform:scale(1);box-shadow:0 6px 20px rgba(0,0,0,0.4);}
+    30%{transform:scale(1.45);opacity:1;}
+    100%{transform:scale(1);}
   }
-  .cover-offline-badge.flash{animation:badgeFlash .8s ease-out;}
-  @media (max-width:340px){.cover-offline-text{font-size:12px;}}
+  .cover-sun-glow.flash{animation:sunGlowFlash .8s ease-out;}
   .cover-lang button{border:none;background:transparent;color:rgba(255,255,255,0.9);font-weight:700;font-size:12px;padding:7px 14px;border-radius:999px;transition:background .15s;}
   .cover-lang button.active{background:#fff;color:var(--night);}
 
@@ -306,10 +300,7 @@
 <!-- COVER -->
 <div class="cover" id="cover">
   <img class="cover-photo" id="coverPhoto" src="./photos/cover-bg-ru.jpg" alt="KZ Travel Radar">
-  <div class="cover-offline-badge" id="coverNetStatus">
-    <i class="cover-offline-dot"></i>
-    <span class="cover-offline-text" id="coverNetStatusText">Работает даже без интернета</span>
-  </div>
+  <div class="cover-sun-glow" id="coverSunGlow"></div>
   <div class="cover-lang">
     <button class="btn-ru active" onclick="setLang('ru')">RU</button>
     <button class="btn-en" onclick="setLang('en')">EN</button>
@@ -840,16 +831,9 @@
       }
     }
 
-    var badge = document.getElementById('coverNetStatus');
-    var badgeText = document.getElementById('coverNetStatusText');
-    if (badge && badgeText) {
-      if (navigator.onLine) {
-        badge.classList.remove('is-offline');
-        badgeText.textContent = dict.coverOfflineClaim[__currentLang];
-      } else {
-        badge.classList.add('is-offline');
-        badgeText.textContent = dict.coverOfflineProof[__currentLang];
-      }
+    var glow = document.getElementById('coverSunGlow');
+    if (glow) {
+      glow.classList.toggle('is-offline', !navigator.onLine);
     }
   }
   window.addEventListener('online', updateNetStatus);
@@ -857,19 +841,38 @@
   window.addEventListener('online', flashCoverBadge);
   window.addEventListener('offline', flashCoverBadge);
   function flashCoverBadge(){
-    var badge = document.getElementById('coverNetStatus');
-    if (!badge) return;
-    badge.classList.remove('flash');
-    // форсируем реflow, чтобы анимацию можно было запустить повторно подряд
-    void badge.offsetWidth;
-    badge.classList.add('flash');
-    setTimeout(function(){ badge.classList.remove('flash'); }, 850);
+    var glow = document.getElementById('coverSunGlow');
+    if (!glow) return;
+    glow.classList.remove('flash');
+    void glow.offsetWidth; // форсируем реflow для повторного запуска анимации подряд
+    glow.classList.add('flash');
+    setTimeout(function(){ glow.classList.remove('flash'); }, 850);
   }
 
+  // Точные координаты золотого круга на фото обложки (в % от размера самой картинки,
+  // измерено по пикселям — 49.3% по горизонтали, 33.1% по вертикали, ширина ~9.7%).
+  function positionSunGlow(){
+    var img = document.getElementById('coverPhoto');
+    var glow = document.getElementById('coverSunGlow');
+    if (!img || !glow || !img.complete || !img.naturalWidth) return;
+    var rect = img.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    var size = rect.width * 0.16;
+    var cx = rect.left + rect.width * 0.493;
+    var cy = rect.top + rect.height * 0.331;
+    glow.style.width = size + 'px';
+    glow.style.height = size + 'px';
+    glow.style.left = (cx - size / 2) + 'px';
+    glow.style.top = (cy - size / 2) + 'px';
+  }
+  window.addEventListener('resize', positionSunGlow);
+  window.addEventListener('orientationchange', positionSunGlow);
+  document.getElementById('coverPhoto').addEventListener('load', positionSunGlow);
+
   window.addEventListener('hashchange', applyRoute);
-  document.addEventListener('DOMContentLoaded', function(){ applyRoute(); updateNetStatus(); syncWishButtons(); renderWishlist(); });
+  document.addEventListener('DOMContentLoaded', function(){ applyRoute(); updateNetStatus(); syncWishButtons(); renderWishlist(); positionSunGlow(); });
   // На случай если скрипт выполняется уже после DOMContentLoaded
-  if (document.readyState === 'interactive' || document.readyState === 'complete') { applyRoute(); updateNetStatus(); syncWishButtons(); renderWishlist(); }
+  if (document.readyState === 'interactive' || document.readyState === 'complete') { applyRoute(); updateNetStatus(); syncWishButtons(); renderWishlist(); positionSunGlow(); }
 
   var rates = { USD: 480, EUR: 520, CNY: 67 };
   function convert(){
