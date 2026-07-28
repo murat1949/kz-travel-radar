@@ -52,14 +52,14 @@
     100%{transform:scale(1);}
   }
   .cover-sun-glow.flash{animation:sunGlowFlash .8s ease-out;}
-  .cover-sun-caption{position:fixed;z-index:6;display:flex;align-items:center;gap:6px;white-space:nowrap;
-    background:rgba(10,20,10,0.72);border:1px solid rgba(30,255,140,0.75);border-radius:999px;
-    padding:5px 11px;box-shadow:0 4px 14px rgba(0,0,0,0.45);
-    transform:translateX(-50%);transition:background .3s,border-color .3s;pointer-events:none;}
+  .cover-sun-caption{position:absolute;top:114px;right:16px;z-index:6;display:flex;align-items:center;gap:6px;white-space:nowrap;
+    background:rgba(10,20,10,0.75);border:1px solid rgba(30,255,140,0.75);border-radius:999px;
+    padding:6px 12px;box-shadow:0 4px 14px rgba(0,0,0,0.45);
+    transition:background .3s,border-color .3s;pointer-events:none;}
   .cover-sun-caption-dot{width:7px;height:7px;border-radius:50%;background:#3AFF8C;flex:0 0 auto;
     box-shadow:0 0 6px 2px rgba(58,255,140,0.8);animation:sunGlowPulse 2.2s ease-in-out infinite;}
-  .cover-sun-caption span{font-size:10.5px;font-weight:800;color:#fff;letter-spacing:.01em;line-height:1;}
-  .cover-sun-caption.is-offline{background:rgba(40,26,0,0.75);border-color:rgba(255,200,0,0.8);}
+  .cover-sun-caption span{font-size:11px;font-weight:800;color:#fff;letter-spacing:.01em;line-height:1.2;}
+  .cover-sun-caption.is-offline{background:rgba(40,26,0,0.78);border-color:rgba(255,200,0,0.8);}
   .cover-sun-caption.is-offline .cover-sun-caption-dot{background:#FFD600;box-shadow:0 0 6px 2px rgba(255,214,0,0.85);}
   .cover-lang button{border:none;background:transparent;color:rgba(255,255,255,0.9);font-weight:700;font-size:12px;padding:7px 14px;border-radius:999px;transition:background .15s;}
   .cover-lang button.active{background:#fff;color:var(--night);}
@@ -311,7 +311,7 @@
   <img class="cover-photo" id="coverPhoto" src="./photos/cover-bg-ru.jpg" alt="KZ Travel Radar">
   <div class="cover-sun-glow" id="coverSunGlow"></div>
   <div class="cover-sun-caption" id="coverSunCaption">
-    <i class="cover-sun-caption-dot"></i>
+    <i class="cover-sun-caption-dot" id="coverSunCaptionDot"></i>
     <span id="coverSunCaptionText">Работает даже без интернета</span>
   </div>
   <div class="cover-lang">
@@ -875,11 +875,14 @@
     var img = document.getElementById('coverPhoto');
     var glow = document.getElementById('coverSunGlow');
     var caption = document.getElementById('coverSunCaption');
+    var dot = document.getElementById('coverSunCaptionDot');
+    var textEl = document.getElementById('coverSunCaptionText');
     if (!img || !glow || !img.complete || !img.naturalWidth) return;
     var rect = img.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
-    var size = rect.width * 0.19;
-    var cx = rect.left + rect.width * 0.493;
+    var w = rect.width;
+    var size = w * 0.17;
+    var cx = rect.left + w * 0.493;
     var cy = rect.top + rect.height * 0.331;
     glow.style.width = size + 'px';
     glow.style.height = size + 'px';
@@ -887,8 +890,7 @@
     glow.style.top = (cy - size / 2) + 'px';
 
     if (caption) {
-      caption.style.left = cx + 'px';
-      caption.style.top = (cy + size / 2 + 5) + 'px';
+      caption.style.display = 'flex';
     }
   }
   window.addEventListener('resize', positionSunGlow);
