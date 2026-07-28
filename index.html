@@ -95,6 +95,8 @@
   .spot-link-hint{font-size:10.5px;font-weight:700;color:var(--gold-dark);white-space:nowrap;}
   .back-to-top{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12px;font-weight:800;color:var(--gold-dark);cursor:pointer;}
   .back-to-top:hover{text-decoration:underline;}
+  .back-to-guide{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;font-size:13px;font-weight:800;color:var(--gold-dark);cursor:pointer;}
+  .back-to-guide:hover{text-decoration:underline;}
   .spot-name{font-family:'Manrope';font-weight:700;font-size:13.5px;}
   .spot-note{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5;}
 
@@ -333,6 +335,7 @@
     </div>
 
     <div class="screen" id="screen-guide">
+      <div id="guide-list">
       <div class="guide-hero">
         <div class="greet" data-i18n="guideEyebrow">Путеводитель</div>
         <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
@@ -340,15 +343,15 @@
       </div>
 
       <div class="sights-strip">
-        <div class="sight-chip sc-charyn" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="sight-chip sc-charyn" onclick="showPlace('charyn-detail')">
           <img src="./photos/thumb-charyn.jpg" alt="Charyn Canyon">
           <span class="sc-em">🏜️</span><span class="sc-label">Charyn Canyon</span>
         </div>
-        <div class="sight-chip sc-kolsai" onclick="document.getElementById('kolsai-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="sight-chip sc-kolsai" onclick="showPlace('kolsai-detail')">
           <img src="./photos/thumb-kolsai.jpg" alt="Kolsai Lakes">
           <span class="sc-em">🏔️</span><span class="sc-label">Kolsai Lakes</span>
         </div>
-        <div class="sight-chip sc-kaindy" onclick="document.getElementById('kaindy-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="sight-chip sc-kaindy" onclick="showPlace('kaindy-detail')">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gKaindy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9BDCF0"/><stop offset="1" stop-color="#2E93B8"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gKaindy)"/>
@@ -361,7 +364,7 @@
           </svg>
           <span class="sc-em">🌲</span><span class="sc-label">Kaindy Lake</span>
         </div>
-        <div class="sight-chip sc-bozzhyra" onclick="document.getElementById('bozzhyra-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="sight-chip sc-bozzhyra" onclick="showPlace('bozzhyra-detail')">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gBozz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="1" stop-color="#B2853B"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gBozz)"/>
@@ -370,7 +373,7 @@
           </svg>
           <span class="sc-em">⛰️</span><span class="sc-label">Bozzhyra</span>
         </div>
-        <div class="sight-chip sc-shymbulak" onclick="document.getElementById('shymbulak-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="sight-chip sc-shymbulak" onclick="showPlace('shymbulak-detail')">
           <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="gShym" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D3E5F5"/><stop offset="1" stop-color="#6E88B8"/></linearGradient></defs>
             <rect width="120" height="96" fill="url(#gShym)"/>
@@ -383,31 +386,35 @@
       </div>
 
       <div class="city-grid">
-        <div class="city-tile live" onclick="document.getElementById('almaty-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="city-tile live" onclick="showPlace('almaty-detail')">
           <div class="city-banner"><img src="./photos/city-almaty.jpg" alt="Алматы"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Алматы</div>
           <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
         </div>
-        <div class="city-tile live" onclick="document.getElementById('astana-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="city-tile live" onclick="showPlace('astana-detail')">
           <div class="city-banner"><img src="./photos/city-astana.jpg" alt="Астана"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Астана</div>
           <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
         </div>
-        <div class="city-tile live" onclick="document.getElementById('turkistan-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="city-tile live" onclick="showPlace('turkistan-detail')">
           <div class="city-banner"><img src="./photos/city-turkistan.jpg" alt="Туркестан"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Туркестан</div>
           <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
         </div>
-        <div class="city-tile live" onclick="document.getElementById('shymkent-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="city-tile live" onclick="showPlace('shymkent-detail')">
           <div class="city-banner"><img src="./photos/city-shymkent.jpg" alt="Шымкент"></div>
           <div class="city-tag" data-i18n="tagLive">Готово</div>
           <div class="city-name">Шымкент</div>
           <div class="city-note" data-i18n="shymkentNote">Юг, история, еда</div>
         </div>
       </div>
+      </div>
+
+      <div id="guide-details" style="display:none;">
+      <div class="back-to-guide" onclick="showGuideList()">← <span data-i18n="backToGuide">Назад к путеводителю</span></div>
 
       <div id="almaty-detail" class="card" style="margin-top:20px;">
         <div class="card-title"><span class="em">📍</span><span data-i18n="almatyDetailTitle">Алматы — первые 48 часов</span></div>
@@ -424,10 +431,11 @@
           <div class="spot-name" data-i18n="spotBigLakeName">Большое Алматинское озеро</div>
           <div class="spot-note" data-i18n="spotBigLake">Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.</div>
         </div>
-        <div class="spot spot-link" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
+        <div class="spot spot-link" onclick="showPlace('charyn-detail')">
           <div class="spot-name">Чарынский каньон<span class="spot-link-hint" data-i18n="spotLinkHint">Фото и подробнее ↓</span></div>
           <div class="spot-note" data-i18n="spotCharyn">Мини-версия Гранд-Каньона. Долгий день, планировать заранее.</div>
         </div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="charyn-detail" class="card" style="margin-top:14px;">
@@ -459,7 +467,7 @@
           <div class="vs-title" data-i18n="videoSoonTitle">Здесь скоро будет видео</div>
           <div class="vs-note" data-i18n="videoSoonNote">Короткий ролик с места · видео требует подключения к интернету</div>
         </div>
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="kolsai-detail" class="card" style="margin-top:14px;">
@@ -488,7 +496,7 @@
           <div class="vs-note" data-i18n="videoSoonNote">Короткий ролик с места · видео требует подключения к интернету</div>
         </div>
 
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="kaindy-detail" class="card" style="margin-top:14px;">
@@ -505,7 +513,7 @@
           <div class="spot-name" data-i18n="kaindyWaterName">Холодная вода</div>
           <div class="spot-note" data-i18n="kaindyWater">Даже летом температура воды около +6…+8°C — купание не для всех.</div>
         </div>
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="bozzhyra-detail" class="card" style="margin-top:14px;">
@@ -522,7 +530,7 @@
           <div class="spot-name" data-i18n="planAheadName">Планировать заранее</div>
           <div class="spot-note" data-i18n="bozzhyraPlan">Обычно едут с туром на несколько дней — самостоятельно без опыта поездок по бездорожью не стоит.</div>
         </div>
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="shymbulak-detail" class="card" style="margin-top:14px;">
@@ -539,7 +547,7 @@
           <div class="spot-name" data-i18n="shymbulakSummerName">Летом</div>
           <div class="spot-note" data-i18n="shymbulakSummer">Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.</div>
         </div>
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="astana-detail" class="card" style="margin-top:14px;">
@@ -560,7 +568,7 @@
           <div class="spot-name" data-i18n="howToGet">Как добраться</div>
           <div class="spot-note" data-i18n="astanaGetThere">Перелёт из Алматы — около 1.5-2 часов, либо ночной поезд. Свой аэропорт есть и в самой Астане.</div>
         </div>
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="turkistan-detail" class="card" style="margin-top:14px;">
@@ -577,7 +585,7 @@
           <div class="spot-name" data-i18n="whenToGo">Когда ехать</div>
           <div class="spot-note" data-i18n="turkistanWhen">На осмотр основных построек хватит 3-5 часов. Комфортнее весной и осенью — летом очень жарко.</div>
         </div>
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
       </div>
 
       <div id="shymkent-detail" class="card" style="margin-top:14px;">
@@ -594,7 +602,8 @@
           <div class="spot-name" data-i18n="shymkentGatewayName">Ворота в Туркестан</div>
           <div class="spot-note" data-i18n="shymkentGatewayNote">Шымкент — самая удобная база для однодневной поездки к мавзолею Ясави в Туркестане (~160 км, 2-2.5 часа).</div>
         </div>
-        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+        <div class="back-to-top" onclick="showGuideList()">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
       </div>
     </div>
 
@@ -805,6 +814,7 @@
     videoSoonNote:{ru:"Короткий ролик с места · видео требует подключения к интернету",en:"A short clip from the spot · video requires an internet connection"},
     spotLinkHint:{ru:"Фото и подробнее ↓",en:"Photos & details ↓"},
     backToTop:{ru:"Наверх, к городам и местам",en:"Back up to cities & sights"},
+    backToGuide:{ru:"Назад к путеводителю",en:"Back to guide"},
     lightboxBack:{ru:"Назад",en:"Back"},
 
     kolsaiDetailTitle:{ru:"Кольсайские озёра",en:"Kolsai Lakes"},
@@ -930,6 +940,20 @@
     forgotNeedEmail:{ru:"Сначала впишите email выше.",en:"Please enter your email above first."},
     forgotSent:{ru:"Проверьте почту — прислали ссылку для входа.",en:"Check your email — we sent a sign-in link."}
   };
+
+  function showPlace(id){
+    document.getElementById('guide-list').style.display = 'none';
+    var cards = document.querySelectorAll('#guide-details > .card');
+    for (var i = 0; i < cards.length; i++) { cards[i].style.display = 'none'; }
+    document.getElementById(id).style.display = 'block';
+    document.getElementById('guide-details').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+  function showGuideList(){
+    document.getElementById('guide-details').style.display = 'none';
+    document.getElementById('guide-list').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
 
   function setLang(lang){
     document.getElementById('coverPhoto').src = './photos/cover-bg-' + lang + '.jpg';
