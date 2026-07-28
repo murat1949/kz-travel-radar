@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Центр управления — Путешествие по Казахстану</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#12293B; --night-2:#1A3A50; --steppe:#F7F3EA; --paper:#FFFFFF;
+    --ink:#16202A; --muted:#5C6B75; --muted-soft:#94A2AB;
+    --gold:#C98A2C; --gold-dark:#A66F1F; --teal:#2F8F86; --line:#E4DFD1;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--steppe);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-0.01em;margin:0;}
+  button{font-family:inherit;cursor:pointer;}
+
+  .app{max-width:920px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);box-shadow:0 0 60px rgba(0,0,0,0.08);}
+
+  .topbar{background:var(--night);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;}
+  .topbar .brand{display:flex;align-items:center;gap:10px;}
+  .topbar .brand-ic{width:36px;height:36px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .topbar .brand-text{line-height:1.2;}
+  .topbar .brand-text .t1{font-family:'Manrope';font-weight:800;font-size:14.5px;}
+  .topbar .brand-text .t2{font-size:11px;color:#9FB0BA;}
+  .topbar-right{display:flex;align-items:center;gap:10px;}
+  .live-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border-radius:999px;padding:6px 11px;font-size:10.5px;font-weight:700;color:#7FD9C9;}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:#3AD9A8;animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .lang-switch{display:flex;background:rgba(255,255,255,0.08);border-radius:999px;padding:3px;}
+  .lang-switch button{border:none;background:transparent;color:#9FB0BA;font-weight:700;font-size:11.5px;padding:6px 12px;border-radius:999px;transition:background .15s;}
+  .lang-switch button.active{background:var(--gold);color:#fff;}
+
+  .content{flex:1;padding:20px 18px 100px;}
+  .screen{display:none;}
+  .screen.active{display:block; animation:fade .2s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .greet{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+  .greet-h{font-size:21px;margin-top:6px;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
+  .kpi{background:var(--steppe);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;}
+  .kpi .num{font-family:'Manrope';font-weight:800;font-size:20px;color:var(--night);}
+  .kpi .lbl{font-size:10.5px;color:var(--muted);margin-top:3px;}
+
+  .card{background:var(--steppe);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px;}
+  .card-title{display:flex;align-items:center;gap:8px;font-family:'Manrope';font-weight:700;font-size:14.5px;margin-bottom:10px;}
+  .card-title .em{font-size:17px;}
+
+  .conv-row{display:flex;gap:8px;align-items:center;margin-top:4px;}
+  .conv-row input{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;font-family:inherit;}
+  .conv-row select{border:1px solid var(--line);border-radius:10px;padding:10px 8px;font-size:14px;font-family:inherit;background:#fff;}
+  .conv-result{margin-top:12px;font-size:14px;color:var(--muted);}
+  .conv-result b{color:var(--night);font-family:'Manrope';font-size:16px;}
+
+  .feed-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);}
+  .feed-row:last-child{border-bottom:none;}
+  .feed-row .who{font-weight:600;}
+  .feed-row .tag{color:var(--muted-soft);font-size:11px;}
+
+  .city-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+  @media (max-width:480px){.city-grid{grid-template-columns:1fr;}}
+  .city-tile{border-radius:14px;padding:16px;border:1px solid var(--line);background:var(--paper);cursor:pointer;transition:transform .15s;}
+  .city-tile:hover{transform:translateY(-3px);}
+  .city-tile:hover .city-banner svg{transform:scale(1.04);}
+  .city-tile.live{background:var(--night);color:#fff;border-color:var(--night);}
+  .city-tag{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-soft);}
+  .city-tile.live .city-tag{color:#8FB0C4;}
+  .city-name{font-family:'Manrope';font-weight:700;font-size:15.5px;margin-top:6px;}
+  .city-note{font-size:12px;color:var(--muted);margin-top:5px;}
+  .city-tile.live .city-note{color:#C4D3DA;}
+
+  .spot{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:10px;}
+  .spot.spot-link{cursor:pointer;transition:transform .15s,border-color .15s;}
+  .spot.spot-link:hover{transform:translateY(-2px);border-color:var(--gold);}
+  .spot.spot-link .spot-name{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .spot-link-hint{font-size:10.5px;font-weight:700;color:var(--gold-dark);white-space:nowrap;}
+  .back-to-top{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12px;font-weight:800;color:var(--gold-dark);cursor:pointer;}
+  .back-to-top:hover{text-decoration:underline;}
+  .spot-name{font-family:'Manrope';font-weight:700;font-size:13.5px;}
+  .spot-note{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5;}
+
+  .emg-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .emg-row:last-child{border-bottom:none;}
+  .emg-row b{color:var(--gold-dark);font-family:'Manrope';}
+
+  .phrase-row{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:6px;padding:9px 0;border-bottom:1px solid var(--line);font-size:12.5px;align-items:center;}
+  .phrase-row:last-child{border-bottom:none;}
+  .phrase-row span:first-child{color:var(--muted);}
+  .phrase-row span:nth-child(2){font-weight:700;}
+  .phrase-row span:last-child{color:var(--teal);font-style:italic;font-size:11.5px;}
+
+  .cta-mini{margin-top:18px;text-align:center;}
+  .cta-mini a{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#fff;border-radius:999px;padding:12px 22px;font-weight:700;font-size:13.5px;text-decoration:none;}
+  .cta-mini a:hover{background:var(--gold-dark);}
+  .cta-mini p{font-size:12px;color:var(--muted);margin:8px 0 0;}
+
+  .bottomnav{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 4px;z-index:20;}
+  .nav-btn{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;color:var(--muted-soft);font-size:10.5px;font-weight:700;flex:1;border-radius:10px;}
+  .nav-btn .em{font-size:18px;}
+  .nav-btn.active{color:var(--night);background:var(--steppe);}
+
+  /* LOGIN / ACCESS SCREEN */
+  .gate{
+    position:fixed;inset:0;z-index:200;
+    background:
+      radial-gradient(700px 500px at 15% -10%, rgba(255,255,255,0.14), transparent 60%),
+      radial-gradient(600px 500px at 100% 110%, rgba(47,143,134,0.45), transparent 60%),
+      linear-gradient(150deg, #C98A2C 0%, #8A4A9E 45%, #12293B 100%);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    transition:opacity .4s ease, visibility .4s ease;
+  }
+  .gate.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .gate-card{width:100%;max-width:340px;background:#fff;border-radius:22px;padding:32px 26px;box-shadow:0 30px 60px -20px rgba(0,0,0,0.4);text-align:center;}
+  .gate-ic{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#F4B942,#C98A2C);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 18px;}
+  .gate-card h2{font-size:19px;color:var(--night);line-height:1.3;}
+  .gate-card p{margin-top:8px;font-size:13px;color:var(--muted);}
+  .gate-field{margin-top:18px;text-align:left;}
+  .gate-field label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .gate-field input{width:100%;border:1px solid var(--line);background:var(--steppe);color:var(--ink);border-radius:11px;padding:12px 13px;font-size:14.5px;font-family:inherit;}
+  .gate-field input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  .gate-field input::placeholder{color:var(--muted-soft);}
+  .gate-btn{margin-top:20px;background:var(--night);color:#fff;border:none;border-radius:12px;padding:13px 20px;font-weight:800;font-size:14.5px;width:100%;}
+  .gate-btn:disabled{opacity:.6;}
+  .gate-msg{margin-top:12px;font-size:12.5px;min-height:16px;}
+  .gate-msg.err{color:#B23A2E;}
+  .gate-msg.ok{color:#2F8F86;}
+  .gate-buy{margin-top:18px;font-size:12px;color:var(--muted);}
+  .gate-buy a{color:var(--gold-dark);font-weight:700;text-decoration:none;}
+
+  .gate-tabs{display:flex;gap:6px;margin-top:18px;background:var(--steppe);border-radius:11px;padding:4px;}
+  .gate-tab{flex:1;border:none;background:transparent;border-radius:8px;padding:9px 8px;font-size:12.5px;font-weight:700;color:var(--muted);font-family:inherit;cursor:pointer;}
+  .gate-tab.active{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+  .gate-hint{margin-top:14px;font-size:12px;color:var(--muted);text-align:left;}
+  .gate-btn-outline{background:#fff;border:1.5px solid var(--line);color:var(--ink);margin-top:12px;}
+
+  /* COVER / SPLASH */
+  .cover{
+    position:fixed;inset:0;z-index:100;
+    background:
+      radial-gradient(700px 500px at 15% -10%, rgba(255,255,255,0.18), transparent 60%),
+      radial-gradient(600px 500px at 100% 110%, rgba(47,143,134,0.55), transparent 60%),
+      linear-gradient(150deg, #C98A2C 0%, #8A4A9E 45%, #12293B 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#fff;text-align:center;padding:32px;
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  .cover.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .cover-sun{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE9B0,#F4B942 60%,#C98A2C);margin-bottom:22px;box-shadow:0 0 40px rgba(255,200,90,0.5);}
+  .cover h1{font-size:clamp(28px,7vw,40px);line-height:1.15;max-width:340px;}
+  .cover p{margin-top:14px;font-size:15px;color:rgba(255,255,255,0.85);max-width:300px;}
+  .cover-mountains{position:absolute;bottom:0;left:0;right:0;height:120px;opacity:0.35;}
+  .cover-btn{margin-top:32px;background:#fff;color:var(--night);border:none;border-radius:999px;padding:14px 30px;font-weight:800;font-size:15px;box-shadow:0 12px 30px -8px rgba(0,0,0,0.4);}
+
+  /* NOTES */
+  .note-input-row{display:flex;gap:8px;margin-top:6px;}
+  .note-input-row textarea{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;font-family:inherit;resize:none;min-height:44px;}
+  .note-add-btn{background:var(--gold);color:#fff;border:none;border-radius:12px;padding:0 18px;font-weight:700;font-size:13px;}
+  .note-item{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;position:relative;}
+  .note-item .note-text{font-size:14px;white-space:pre-wrap;word-break:break-word;}
+  .note-item .note-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+  .note-item .note-date{font-size:10.5px;color:var(--muted-soft);}
+  .note-del{background:none;border:none;color:var(--muted-soft);font-size:12px;font-weight:700;}
+  .note-del:hover{color:#B23A2E;}
+  .note-empty{text-align:center;color:var(--muted-soft);font-size:13px;padding:24px 0;}
+
+  .brand{cursor:pointer;}
+  .cover-tags{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .cover-tags span{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:700;}
+
+  .city-banner{position:relative;height:56px;border-radius:10px;margin-bottom:10px;overflow:hidden;display:flex;align-items:flex-end;padding:6px 8px;font-size:20px;}
+  .city-banner svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform .3s ease;}
+  .city-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent 55%);}
+  .city-banner .banner-em{position:relative;z-index:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));}
+
+  .sights-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;margin-top:14px;}
+  .sight-chip{position:relative;flex:0 0 auto;width:120px;height:96px;border-radius:12px;padding:12px 10px;color:#fff;font-family:'Manrope';font-weight:700;font-size:12px;overflow:hidden;cursor:pointer;transition:transform .15s;}
+  .sight-chip:hover{transform:translateY(-3px);}
+
+  .gallery{display:flex;gap:8px;margin:12px 0;overflow-x:auto;}
+  .gallery img{width:104px;height:138px;object-fit:cover;border-radius:10px;border:1px solid var(--line);flex:0 0 auto;cursor:pointer;}
+  .lightbox{position:fixed;inset:0;background:rgba(10,16,22,.92);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:100%;max-height:78vh;border-radius:10px;box-shadow:0 20px 50px -10px rgba(0,0,0,.6);}
+  .lightbox-close{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;width:42px;height:42px;border-radius:50%;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .lightbox-back{position:absolute;top:22px;left:18px;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;cursor:pointer;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:8px 16px;}
+  .gallery-cap{font-size:11px;color:#8A8272;margin-top:-6px;margin-bottom:10px;}
+  .video-slot{border:1.5px dashed var(--line);border-radius:12px;padding:22px 14px;text-align:center;margin:12px 0;background:#FBFAF6;}
+  .video-slot .vs-icon{font-size:26px;display:block;margin-bottom:6px;}
+  .video-slot .vs-title{font-weight:800;font-size:13px;color:var(--ink);margin-bottom:3px;}
+  .video-slot .vs-note{font-size:11px;color:#8A8272;}
+  .sight-chip svg,.sight-chip img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;}
+  .sight-chip::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5) 5%,rgba(0,0,0,0) 60%);}
+  .sight-chip .sc-em,.sight-chip .sc-label{position:relative;z-index:1;}
+  .sight-chip .sc-em{font-size:18px;display:block;margin-bottom:6px;text-shadow:0 1px 4px rgba(0,0,0,.35);}
+  .sight-chip .sc-label{text-shadow:0 1px 3px rgba(0,0,0,.35);}
+
+  .fab-wa{position:fixed;right:16px;bottom:78px;z-index:30;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:22px;box-shadow:0 10px 24px -6px rgba(0,0,0,0.4);}
+  @media (min-width:640px){.fab-wa{right:calc(50% - 460px + 16px);}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="manifest" href="./manifest.webmanifest">
+</head>
+<body>
+
+<!-- ACCESS SCREEN -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-ic">🧭</div>
+
+    <!-- Step shown for first-time visitors coming from the invite email link -->
+    <div id="gateStepInvite" style="display:none;">
+      <h2 data-i18n="inviteTitle">Придумайте пароль</h2>
+      <p data-i18n="inviteSub">Это разовая настройка — дальше входите с ним же.</p>
+      <div class="gate-field">
+        <label data-i18n="passLabel">Пароль</label>
+        <input id="invitePass" type="password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div class="gate-field">
+        <label data-i18n="pass2Label">Повторите пароль</label>
+        <input id="invitePass2" type="password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <button class="gate-btn" id="inviteBtn" data-i18n="inviteBtn">Сохранить и войти</button>
+      <div class="gate-msg" id="inviteMsg"></div>
+    </div>
+
+    <!-- Step shown for returning visitors -->
+    <div id="gateStepLogin">
+      <h2 data-i18n="gateTitle">Вход в ваш путеводитель</h2>
+      <p data-i18n="gateSub">Email и пароль, который вы придумали при первом входе.</p>
+      <div class="gate-field">
+        <label data-i18n="gateEmailLabel">Email</label>
+        <input id="gateEmail" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="gate-field">
+        <label data-i18n="passLabel">Пароль</label>
+        <input id="gatePass" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="gate-btn" id="gateBtn" data-i18n="gateBtn">Войти</button>
+      <div class="gate-msg" id="gateMsg"></div>
+      <div class="gate-buy"><a href="#" id="forgotLink" data-i18n="forgotLink">Забыли пароль?</a></div>
+      <div class="gate-buy" data-i18n="gateBuy">Ещё нет доступа? <a href="https://kvantor.gumroad.com/l/mkxxu" target="_blank" rel="noopener">Купить</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- COVER -->
+<div class="cover" id="cover">
+  <div class="cover-sun"></div>
+  <h1 data-i18n="coverTitle">Казахстан у вас в кармане</h1>
+  <p data-i18n="coverSub">Города, курс валют, безопасность и ваши заметки — в одной панели.</p>
+  <div class="cover-tags">
+    <span data-i18n="tagRoutes">Маршруты</span>
+    <span data-i18n="tagAttractions">Достопримечательности</span>
+    <span data-i18n="tagSafety">Безопасность</span>
+    <span data-i18n="tagTips">Советы</span>
+  </div>
+  <button class="cover-btn" onclick="document.getElementById('cover').classList.add('hide')" data-i18n="coverBtn">Войти →</button>
+</div>
+
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand" onclick="document.getElementById('cover').classList.remove('hide')">
+      <div class="brand-ic">🧭</div>
+      <div class="brand-text">
+        <div class="t1" data-i18n="appTitle">Центр управления</div>
+        <div class="t2" data-i18n="appSubtitle">Путешествие по Казахстану</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="live-pill"><i class="live-dot"></i> <span data-i18n="live">LIVE</span></span>
+      <div class="lang-switch">
+        <button id="btnRu" class="active" onclick="setLang('ru')">RU</button>
+        <button id="btnEn" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="screen active" id="screen-home">
+      <div class="greet" data-i18n="homeEyebrow">Сегодня в поездке</div>
+      <div class="greet-h" data-i18n="homeGreeting">Ваша поездка на одном экране</div>
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="num">3/7</div><div class="lbl" data-i18n="kpiDay">День поездки</div></div>
+        <div class="kpi"><div class="num">2</div><div class="lbl" data-i18n="kpiCities">Города в плане</div></div>
+        <div class="kpi"><div class="num">6</div><div class="lbl" data-i18n="kpiSaved">Мест сохранено</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">🤖</span><span data-i18n="tipTitle">Совет на сегодня</span></div>
+        <p style="margin:0;font-size:13.5px;color:var(--muted);" data-i18n="tipText">Едете в Чарынский каньон — возьмите воду и головной убор, тени там почти нет. Лучшее время — раннее утро.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">💱</span><span data-i18n="quickConvert">Быстрый обмен</span></div>
+        <div class="conv-row">
+          <input type="number" id="amt" value="100" oninput="convert()">
+          <select id="from" onchange="convert()">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="CNY">CNY</option>
+          </select>
+        </div>
+        <div class="conv-result">≈ <b id="result">48 000</b> <span data-i18n="tenge">тенге</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">📌</span><span data-i18n="savedSpots">Сохранённые места</span></div>
+        <div class="feed-row"><span class="who">Алматы · Кок-Тобе</span><span class="tag" data-i18n="tagSaved">сохранено</span></div>
+        <div class="feed-row"><span class="who">Алматы · Зелёный базар</span><span class="tag" data-i18n="tagSaved">сохранено</span></div>
+        <div class="feed-row"><span class="who" data-i18n="charyn">Чарынский каньон</span><span class="tag" data-i18n="tagTrip">поездка на день</span></div>
+      </div>
+
+      <div class="cta-mini">
+        <a href="https://wa.me/77017438061?text=Здравствуйте! Смотрел прототип путеводителя по Казахстану, хочу поделиться идеей / вопросом" target="_blank" rel="noopener">
+          <span data-i18n="ctaBtn">Написать в WhatsApp →</span>
+        </a>
+        <p data-i18n="ctaNote">Это бета — что добавить или поправить, пишите прямо сюда.</p>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-guide">
+      <div class="greet" data-i18n="guideEyebrow">Путеводитель</div>
+      <div class="greet-h" data-i18n="guideTitle">Города Казахстана</div>
+
+      <div class="sights-strip">
+        <div class="sight-chip sc-charyn" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
+          <img src="./photos/thumb-charyn.jpg" alt="Charyn Canyon">
+          <span class="sc-em">🏜️</span><span class="sc-label">Charyn Canyon</span>
+        </div>
+        <div class="sight-chip sc-kolsai" onclick="document.getElementById('kolsai-detail').scrollIntoView({behavior:'smooth'})">
+          <img src="./photos/thumb-kolsai.jpg" alt="Kolsai Lakes">
+          <span class="sc-em">🏔️</span><span class="sc-label">Kolsai Lakes</span>
+        </div>
+        <div class="sight-chip sc-kaindy" onclick="document.getElementById('kaindy-detail').scrollIntoView({behavior:'smooth'})">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gKaindy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9BDCF0"/><stop offset="1" stop-color="#2E93B8"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gKaindy)"/>
+            <rect y="52" width="120" height="44" fill="#3AA3C4" opacity=".55"/>
+            <g stroke="#1B5C77" stroke-width="3" stroke-linecap="round">
+              <line x1="18" y1="30" x2="14" y2="80"/><line x1="34" y1="20" x2="30" y2="80"/>
+              <line x1="52" y1="34" x2="50" y2="80"/><line x1="70" y1="16" x2="68" y2="80"/>
+              <line x1="88" y1="28" x2="88" y2="80"/><line x1="104" y1="22" x2="106" y2="80"/>
+            </g>
+          </svg>
+          <span class="sc-em">🌲</span><span class="sc-label">Kaindy Lake</span>
+        </div>
+        <div class="sight-chip sc-bozzhyra" onclick="document.getElementById('bozzhyra-detail').scrollIntoView({behavior:'smooth'})">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gBozz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0D9A8"/><stop offset="1" stop-color="#B2853B"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gBozz)"/>
+            <path d="M0,56 Q20,40 40,54 T80,50 T120,58 V96 H0 Z" fill="#C98A2C" opacity=".8"/>
+            <path d="M0,72 Q24,58 48,70 T96,66 T120,74 V96 H0 Z" fill="#9C6B34" opacity=".9"/>
+          </svg>
+          <span class="sc-em">⛰️</span><span class="sc-label">Bozzhyra</span>
+        </div>
+        <div class="sight-chip sc-shymbulak" onclick="document.getElementById('shymbulak-detail').scrollIntoView({behavior:'smooth'})">
+          <svg viewBox="0 0 120 96" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="gShym" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D3E5F5"/><stop offset="1" stop-color="#6E88B8"/></linearGradient></defs>
+            <rect width="120" height="96" fill="url(#gShym)"/>
+            <polygon points="0,58 16,30 30,50 46,18 62,46 78,26 94,52 110,32 120,44 120,96 0,96" fill="#F5F8FC"/>
+            <polygon points="0,70 20,52 40,68 60,46 80,66 100,50 120,64 120,96 0,96" fill="#5A72A0"/>
+            <line x1="10" y1="60" x2="90" y2="94" stroke="#E8543F" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span class="sc-em">🎿</span><span class="sc-label">Shymbulak</span>
+        </div>
+      </div>
+
+      <div class="city-grid">
+        <div class="city-tile live" onclick="document.getElementById('almaty-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner banner-almaty">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gAlmaty" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3E9C90"/><stop offset="1" stop-color="#0E2130"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gAlmaty)"/>
+              <polygon points="0,30 40,8 70,26 110,4 150,24 190,10 230,28 270,12 300,22 300,56 0,56" fill="#12293B" opacity=".9"/>
+              <g fill="#0A1A26"><rect x="20" y="42" width="6" height="14"/><rect x="34" y="38" width="6" height="18"/><rect x="48" y="44" width="6" height="12"/><rect x="220" y="40" width="6" height="16"/><rect x="236" y="45" width="6" height="11"/></g>
+            </svg>
+            <span class="banner-em">🏔️</span>
+          </div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Алматы</div>
+          <div class="city-note" data-i18n="almatyNote">Горы, базары, кофейни</div>
+        </div>
+        <div class="city-tile live" onclick="document.getElementById('astana-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner banner-astana">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gAstana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C98A2C"/><stop offset="1" stop-color="#4A2E63"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gAstana)"/>
+              <polygon points="60,56 90,10 120,56" fill="#3A2350" opacity=".85"/>
+              <line x1="180" y1="56" x2="180" y2="14" stroke="#3A2350" stroke-width="4"/>
+              <circle cx="180" cy="10" r="9" fill="#3A2350"/><circle cx="180" cy="10" r="4" fill="#F4B942"/>
+            </svg>
+            <span class="banner-em">🏙️</span>
+          </div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Астана</div>
+          <div class="city-note" data-i18n="astanaNote">Байтерек, Хан Шатыр</div>
+        </div>
+        <div class="city-tile live" onclick="document.getElementById('turkistan-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner banner-turkistan">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gTurk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9B36B"/><stop offset="1" stop-color="#5A3E20"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gTurk)"/>
+              <path d="M110,56 V30 A30,20 0 0 1 170,30 V56 Z" fill="#4A3216" opacity=".9"/>
+              <circle cx="140" cy="20" r="9" fill="#4A3216"/>
+              <rect x="60" y="20" width="8" height="36" fill="#4A3216"/><rect x="232" y="20" width="8" height="36" fill="#4A3216"/>
+            </svg>
+            <span class="banner-em">🕌</span>
+          </div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Туркестан</div>
+          <div class="city-note" data-i18n="turkistanNote">Мавзолей Ясави</div>
+        </div>
+        <div class="city-tile live" onclick="document.getElementById('shymkent-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="city-banner banner-shymkent">
+            <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="gShymk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A4A9E"/><stop offset="1" stop-color="#2F8F86"/></linearGradient></defs>
+              <rect width="300" height="56" fill="url(#gShymk)"/>
+              <path d="M0,40 Q60,20 120,38 T240,32 T300,40 V56 H0 Z" fill="#2C1E3A" opacity=".55"/>
+            </svg>
+            <span class="banner-em">🌇</span>
+          </div>
+          <div class="city-tag" data-i18n="tagLive">Готово</div>
+          <div class="city-name">Шымкент</div>
+          <div class="city-note" data-i18n="shymkentNote">Юг, история, еда</div>
+        </div>
+      </div>
+
+      <div id="almaty-detail" class="card" style="margin-top:20px;">
+        <div class="card-title"><span class="em">📍</span><span data-i18n="almatyDetailTitle">Алматы — первые 48 часов</span></div>
+
+        <div class="spot">
+          <div class="spot-name">Кок-Тобе</div>
+          <div class="spot-note" data-i18n="spotKokTobe">Канатная дорога наверх к закату. Лёгкая половина дня, хороший первый пункт.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="spotGreenBazaarName">Зелёный базар</div>
+          <div class="spot-note" data-i18n="spotGreenBazaar">Местный рынок — сухофрукты, мёд, ощущение настоящей жизни города.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="spotBigLakeName">Большое Алматинское озеро</div>
+          <div class="spot-note" data-i18n="spotBigLake">Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.</div>
+        </div>
+        <div class="spot spot-link" onclick="document.getElementById('charyn-detail').scrollIntoView({behavior:'smooth'})">
+          <div class="spot-name">Чарынский каньон<span class="spot-link-hint" data-i18n="spotLinkHint">Фото и подробнее ↓</span></div>
+          <div class="spot-note" data-i18n="spotCharyn">Мини-версия Гранд-Каньона. Долгий день, планировать заранее.</div>
+        </div>
+      </div>
+
+      <div id="charyn-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🏜️</span><span data-i18n="charynDetailTitle">Чарынский каньон — как спланировать</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="charynValleyName">Долина Замков</div>
+          <div class="spot-note" data-i18n="charynValley">Главный маршрут — тропа около 3 км по дну каньона мимо скал причудливой формы. Лёгкая прогулка на 2-3 часа.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="charynGetThere">~200 км от Алматы, 3-3.5 часа в пути. Едут на арендованной машине, с туром или на такси на весь день.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="whenToGo">Когда ехать</div>
+          <div class="spot-note" data-i18n="charynWhen">Летом лучше приезжать рано утром — тени в каньоне почти нет, днём очень жарко.</div>
+        </div>
+
+        <div class="gallery">
+          <img src="./photos/charyn-1.jpg" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/charyn-1.jpg')">
+          <img src="./photos/charyn-2.jpg" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/charyn-2.jpg')">
+          <img src="./photos/charyn-3.jpg" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/charyn-3.jpg')">
+          <img src="./photos/0373408_charyn-canyon-in-south-east-kazakhstan-taken-in-august-2018taken-in-hdr-taken-in-hdr_800.jpeg" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/0373408_charyn-canyon-in-south-east-kazakhstan-taken-in-august-2018taken-in-hdr-taken-in-hdr_800.jpeg')">
+          <img src="./photos/%D1%871.png" alt="Чарынский каньон" loading="lazy" onclick="openLightbox('./photos/%D1%871.png')">
+        </div>
+        <div class="gallery-cap" data-i18n="charynGalleryCap">Реальные фото с места · тап — открыть крупнее</div>
+
+        <div class="video-slot">
+          <span class="vs-icon">🎬</span>
+          <div class="vs-title" data-i18n="videoSoonTitle">Здесь скоро будет видео</div>
+          <div class="vs-note" data-i18n="videoSoonNote">Короткий ролик с места · видео требует подключения к интернету</div>
+        </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+
+      <div id="kolsai-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🏔️</span><span data-i18n="kolsaiDetailTitle">Кольсайские озёра</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kolsaiFirstName">Первое озеро</div>
+          <div class="spot-note" data-i18n="kolsaiFirst">Доступно на машине, от парковки до берега — 30-60 минут пешком. Есть лодки и кафе.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kolsaiUpperName">Второе и третье озёра</div>
+          <div class="spot-note" data-i18n="kolsaiUpper">Только пешком, поход в одну сторону занимает несколько часов — вариант для тех, кто готов к треккингу.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="kolsaiGetThere">~300 км от Алматы, около 5 часов в пути через посёлок Саты. Дорога почти вся асфальтированная.</div>
+        </div>
+
+        <div class="gallery">
+          <img src="./photos/Kolsai-Lakes-1.jpg" alt="Кольсайские озёра" loading="lazy" onclick="openLightbox('./photos/Kolsai-Lakes-1.jpg')">
+        </div>
+        <div class="gallery-cap" data-i18n="kolsaiGalleryCap">Фото места · тап — открыть крупнее</div>
+
+        <div class="video-slot">
+          <span class="vs-icon">🎬</span>
+          <div class="vs-title" data-i18n="videoSoonTitle">Здесь скоро будет видео</div>
+          <div class="vs-note" data-i18n="videoSoonNote">Короткий ролик с места · видео требует подключения к интернету</div>
+        </div>
+
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+
+      <div id="kaindy-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🌲</span><span data-i18n="kaindyDetailTitle">Озеро Каинды</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kaindyForestName">Затопленный лес</div>
+          <div class="spot-note" data-i18n="kaindyForest">Стволы елей, погибших после того как озеро образовалось из-за схода оползня в 1911 году, торчат прямо из бирюзовой воды.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="kaindyGetThere">Обычно совмещают с Кольсайскими озёрами — от посёлка Саты последний участок дороги требует внедорожника.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="kaindyWaterName">Холодная вода</div>
+          <div class="spot-note" data-i18n="kaindyWater">Даже летом температура воды около +6…+8°C — купание не для всех.</div>
+        </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+
+      <div id="bozzhyra-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">⛰️</span><span data-i18n="bozzhyraDetailTitle">Бозжыра</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="bozzhyraCliffsName">Меловые останцы</div>
+          <div class="spot-note" data-i18n="bozzhyraCliffs">Скальные формации в форме клыков и гребней в области Мангистау на западе страны — не похоже ни на что другое в Казахстане.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="bozzhyraGetThere">Самолётом до Актау (~2.5 часа от Алматы), затем ещё около 4 часов на машине, последний участок — по грунтовой дороге.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="planAheadName">Планировать заранее</div>
+          <div class="spot-note" data-i18n="bozzhyraPlan">Обычно едут с туром на несколько дней — самостоятельно без опыта поездок по бездорожью не стоит.</div>
+        </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+
+      <div id="shymbulak-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🎿</span><span data-i18n="shymbulakDetailTitle">Шымбулак</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="shymbulakGetThere">~25 км от центра Алматы. Доехать до Медеу на машине или автобусе, дальше — гондола наверх, около 15-25 минут.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="shymbulakWinterName">Зимой</div>
+          <div class="spot-note" data-i18n="shymbulakWinter">Горнолыжный сезон — с ноября по апрель, трассы для любого уровня.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="shymbulakSummerName">Летом</div>
+          <div class="spot-note" data-i18n="shymbulakSummer">Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.</div>
+        </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+
+      <div id="astana-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🏙️</span><span data-i18n="astanaDetailTitle">Астана — столица за 1-2 дня</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="baiterekName">Байтерек</div>
+          <div class="spot-note" data-i18n="baiterekNote">Башня-символ города, 97 метров. Смотровая площадка внутри золотого шара — лучше приезжать к закату.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="khanShatyrName">Хан Шатыр</div>
+          <div class="spot-note" data-i18n="khanShatyrNote">Огромный шатёр-центр по проекту Нормана Фостера — торговая галерея, кинотеатр и даже пляж внутри, работает круглый год.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="nurzholName">Бульвар Нурлы Жол</div>
+          <div class="spot-note" data-i18n="nurzholNote">Пешеходный бульвар между Байтереком и Хан Шатыром — фонтаны, скульптуры, удобно гулять пешком.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="astanaGetThere">Перелёт из Алматы — около 1.5-2 часов, либо ночной поезд. Свой аэропорт есть и в самой Астане.</div>
+        </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+
+      <div id="turkistan-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🕌</span><span data-i18n="turkistanDetailTitle">Туркестан</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="yasawiName">Мавзолей Ясави</div>
+          <div class="spot-note" data-i18n="yasawiNote">Памятник XIV века, построенный по указу Тамерлана в честь суфийского поэта Ходжи Ахмеда Ясави. Объект ЮНЕСКО, один из крупнейших сохранившихся памятников тимуридской архитектуры.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="howToGet">Как добраться</div>
+          <div class="spot-note" data-i18n="turkistanGetThere">Обычно едут как день-трип из Шымкента — ~160 км, 2-2.5 часа на машине или маршрутке. Есть и прямые поезда из Алматы и Астаны.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="whenToGo">Когда ехать</div>
+          <div class="spot-note" data-i18n="turkistanWhen">На осмотр основных построек хватит 3-5 часов. Комфортнее весной и осенью — летом очень жарко.</div>
+        </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+
+      <div id="shymkent-detail" class="card" style="margin-top:14px;">
+        <div class="card-title"><span class="em">🌇</span><span data-i18n="shymkentDetailTitle">Шымкент</span></div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="qyrgyBazaarName">Базар Кыргы</div>
+          <div class="spot-note" data-i18n="qyrgyBazaarNote">Большой, шумный, живой рынок в центре — свежие фрукты, специи, самса из тандыра. Хорошее место почувствовать город.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="abayParkName">Парк Абая</div>
+          <div class="spot-note" data-i18n="abayParkNote">Главный зелёный парк города — колесо обозрения, кафе, спокойная прогулка вечером.</div>
+        </div>
+        <div class="spot">
+          <div class="spot-name" data-i18n="shymkentGatewayName">Ворота в Туркестан</div>
+          <div class="spot-note" data-i18n="shymkentGatewayNote">Шымкент — самая удобная база для однодневной поездки к мавзолею Ясави в Туркестане (~160 км, 2-2.5 часа).</div>
+        </div>
+        <div class="back-to-top" onclick="document.getElementById('screen-guide').scrollIntoView({behavior:'smooth'})">↑ <span data-i18n="backToTop">Наверх, к городам и местам</span></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-rates">
+      <div class="greet" data-i18n="ratesEyebrow">Курс и цены</div>
+      <div class="greet-h" data-i18n="ratesTitle">Сколько что стоит</div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">💱</span><span data-i18n="convertTitle">Конвертер</span></div>
+        <div class="conv-row">
+          <input type="number" id="amt2" value="100" oninput="convert2()">
+          <select id="from2" onchange="convert2()">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="CNY">CNY</option>
+          </select>
+        </div>
+        <div class="conv-result">≈ <b id="result2">48 000</b> <span data-i18n="tenge">тенге</span></div>
+        <p style="font-size:11.5px;color:var(--muted-soft);margin-top:8px;" data-i18n="rateNote">Демонстрационный курс — актуальный курс проверяйте по прилёту.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">🧾</span><span data-i18n="pricesTitle">Ориентировочные цены</span></div>
+        <div class="emg-row"><span data-i18n="priceTaxi">Такси по городу</span><b>800–1500 ₸</b></div>
+        <div class="emg-row"><span data-i18n="priceCoffee">Кофе навынос</span><b>700–1200 ₸</b></div>
+        <div class="emg-row"><span data-i18n="priceLunch">Обед в кафе</span><b>2000–4000 ₸</b></div>
+        <div class="emg-row"><span data-i18n="priceSim">SIM-карта с интернетом</span><b>2000–3500 ₸</b></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-safety">
+      <div class="greet" data-i18n="safetyEyebrow">Безопасность</div>
+      <div class="greet-h" data-i18n="safetyTitle">На всякий случай</div>
+
+      <div class="card">
+        <div class="card-title"><span class="em">🚨</span><span data-i18n="emgTitle">Экстренные номера</span></div>
+        <div class="emg-row"><span data-i18n="emgAll">Все службы</span><b>112</b></div>
+        <div class="emg-row"><span data-i18n="emgPolice">Полиция</span><b>102</b></div>
+        <div class="emg-row"><span data-i18n="emgAmbulance">Скорая помощь</span><b>103</b></div>
+        <div class="emg-row"><span data-i18n="emgFire">Пожарная служба</span><b>101</b></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="em">🛂</span><span data-i18n="embassyTitle">Если что-то пошло не так</span></div>
+        <p style="margin:0;font-size:13px;color:var(--muted);" data-i18n="embassyText">Сохраните контакты посольства вашей страны заранее — на случай потери документов.</p>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-phrases">
+      <div class="greet" data-i18n="phrasesEyebrow">Разговорник</div>
+      <div class="greet-h" data-i18n="phrasesTitle">Часто нужные фразы</div>
+
+      <div class="card">
+        <div class="phrase-row"><span data-i18n="phHello">Здравствуйте</span><span>Sälem</span><span>сэ-ЛЕМ</span></div>
+        <div class="phrase-row"><span data-i18n="phThanks">Спасибо</span><span>Rakhmet</span><span>рах-МЕТ</span></div>
+        <div class="phrase-row"><span data-i18n="phYesNo">Да / Нет</span><span>Иä / Жоқ</span><span>и-Я / жок</span></div>
+        <div class="phrase-row"><span data-i18n="phExcuse">Извините</span><span>Кешіріңіз</span><span>ке-ши-ри-НИЗ</span></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-notes">
+      <div class="greet" data-i18n="notesEyebrow">Заметки</div>
+      <div class="greet-h" data-i18n="notesTitle">Идеи в дороге</div>
+
+      <div class="card">
+        <div class="note-input-row">
+          <textarea id="noteInput" data-i18n-ph="notePlaceholder" placeholder="Записать идею или мысль..."></textarea>
+          <button class="note-add-btn" onclick="addNote()" data-i18n="noteAdd">+</button>
+        </div>
+        <p style="font-size:11px;color:var(--muted-soft);margin:8px 0 0;" data-i18n="notesHint">Сохраняется прямо на этом телефоне, без интернета.</p>
+      </div>
+
+      <div id="notesList"></div>
+    </div>
+
+  </div>
+
+  <div class="bottomnav">
+    <button class="nav-btn active" onclick="showScreen('home',this)"><span class="em">📊</span><span data-i18n="navHome">Главная</span></button>
+    <button class="nav-btn" onclick="showScreen('guide',this)"><span class="em">🧭</span><span data-i18n="navGuide">Путеводитель</span></button>
+    <button class="nav-btn" onclick="showScreen('rates',this)"><span class="em">💱</span><span data-i18n="navRates">Курс</span></button>
+    <button class="nav-btn" onclick="showScreen('safety',this)"><span class="em">🚨</span><span data-i18n="navSafety">Безопасность</span></button>
+    <button class="nav-btn" onclick="showScreen('phrases',this)"><span class="em">💬</span><span data-i18n="navPhrases">Фразы</span></button>
+    <button class="nav-btn" onclick="showScreen('notes',this)"><span class="em">📝</span><span data-i18n="navNotes">Заметки</span></button>
+  </div>
+
+</div>
+
+<a href="https://wa.me/77017438061?text=Здравствуйте! Смотрел прототип путеводителя по Казахстану, хочу поделиться идеей / вопросом" target="_blank" rel="noopener" class="fab-wa" title="WhatsApp">💬</a>
+
+<script>
+  function showScreen(name, btn){
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('screen-'+name).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  var rates = { USD: 480, EUR: 520, CNY: 67 };
+  function convert(){
+    var amt = parseFloat(document.getElementById('amt').value) || 0;
+    var from = document.getElementById('from').value;
+    document.getElementById('result').textContent = Math.round(amt*rates[from]).toLocaleString('ru-RU');
+  }
+  function convert2(){
+    var amt = parseFloat(document.getElementById('amt2').value) || 0;
+    var from = document.getElementById('from2').value;
+    document.getElementById('result2').textContent = Math.round(amt*rates[from]).toLocaleString('ru-RU');
+  }
+  convert(); convert2();
+
+  // NOTES
+  function loadNotes(){
+    try{ return JSON.parse(localStorage.getItem('kz_notes') || '[]'); }
+    catch(e){ return []; }
+  }
+  function saveNotes(list){
+    try{ localStorage.setItem('kz_notes', JSON.stringify(list)); }catch(e){}
+  }
+  function renderNotes(){
+    var list = loadNotes();
+    var box = document.getElementById('notesList');
+    if(!list.length){
+      box.innerHTML = '<div class="note-empty" data-i18n="notesEmpty">Пока нет заметок — запишите первую мысль выше.</div>';
+      return;
+    }
+    box.innerHTML = list.slice().reverse().map(function(n, revIdx){
+      var idx = list.length - 1 - revIdx;
+      var d = new Date(n.t);
+      var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      return '<div class="note-item">'
+        + '<div class="note-text"></div>'
+        + '<div class="note-meta"><span class="note-date">'+dateStr+'</span>'
+        + '<button class="note-del" onclick="deleteNote('+idx+')" data-i18n="noteDelete">Удалить</button></div>'
+        + '</div>';
+    }).join('');
+    // set text safely (avoid HTML injection)
+    var items = box.querySelectorAll('.note-item .note-text');
+    list.slice().reverse().forEach(function(n, i){ items[i].textContent = n.text; });
+  }
+  function addNote(){
+    var input = document.getElementById('noteInput');
+    var val = input.value.trim();
+    if(!val) return;
+    var list = loadNotes();
+    list.push({text:val, t:Date.now()});
+    saveNotes(list);
+    input.value = '';
+    renderNotes();
+  }
+  function deleteNote(idx){
+    var list = loadNotes();
+    list.splice(idx,1);
+    saveNotes(list);
+    renderNotes();
+  }
+  renderNotes();
+
+  var dict = {
+    appTitle:{ru:"Центр управления",en:"Control Center"},
+    appSubtitle:{ru:"Путешествие по Казахстану",en:"Kazakhstan Trip"},
+    live:{ru:"LIVE",en:"LIVE"},
+    homeEyebrow:{ru:"Сегодня в поездке",en:"Today on your trip"},
+    homeGreeting:{ru:"Ваша поездка на одном экране",en:"Your trip on one screen"},
+    kpiDay:{ru:"День поездки",en:"Trip day"},
+    kpiCities:{ru:"Города в плане",en:"Cities planned"},
+    kpiSaved:{ru:"Мест сохранено",en:"Spots saved"},
+    tipTitle:{ru:"Совет на сегодня",en:"Tip for today"},
+    tipText:{ru:"Едете в Чарынский каньон — возьмите воду и головной убор, тени там почти нет. Лучшее время — раннее утро.",en:"Heading to Charyn Canyon — bring water and a hat, there's almost no shade. Early morning is best."},
+    quickConvert:{ru:"Быстрый обмен",en:"Quick convert"},
+    tenge:{ru:"тенге",en:"tenge (KZT)"},
+    savedSpots:{ru:"Сохранённые места",en:"Saved spots"},
+    tagSaved:{ru:"сохранено",en:"saved"},
+    tagTrip:{ru:"поездка на день",en:"day trip"},
+    charyn:{ru:"Чарынский каньон",en:"Charyn Canyon"},
+    ctaBtn:{ru:"Написать в WhatsApp →",en:"Message on WhatsApp →"},
+    ctaNote:{ru:"Это бета — что добавить или поправить, пишите прямо сюда.",en:"This is a beta — send feedback right here."},
+
+    guideEyebrow:{ru:"Путеводитель",en:"Guide"},
+    guideTitle:{ru:"Города Казахстана",en:"Cities of Kazakhstan"},
+    tagLive:{ru:"Готово",en:"Live"},
+    tagSoon:{ru:"Скоро",en:"Coming soon"},
+    almatyNote:{ru:"Горы, базары, кофейни",en:"Mountains, bazaars, coffee"},
+    astanaNote:{ru:"Байтерек, Хан Шатыр",en:"Baiterek, Khan Shatyr"},
+    turkistanNote:{ru:"Мавзолей Ясави",en:"Yasawi Mausoleum"},
+    shymkentNote:{ru:"Юг, история, еда",en:"South, history, food"},
+    almatyDetailTitle:{ru:"Алматы — первые 48 часов",en:"Almaty — first 48 hours"},
+    spotKokTobe:{ru:"Канатная дорога наверх к закату. Лёгкая половина дня, хороший первый пункт.",en:"Cable car up for sunset. An easy half-day, good first stop."},
+    spotGreenBazaarName:{ru:"Зелёный базар",en:"Green Bazaar"},
+    spotGreenBazaar:{ru:"Местный рынок — сухофрукты, мёд, ощущение настоящей жизни города.",en:"Local market — dried fruit, honey, a real feel for city life."},
+    spotBigLakeName:{ru:"Большое Алматинское озеро",en:"Big Almaty Lake"},
+    spotBigLake:{ru:"Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.",en:"A day trip into the mountains — turquoise water, best by car or tour."},
+    spotCharyn:{ru:"Мини-версия Гранд-Каньона. Долгий день, планировать заранее.",en:"Kazakhstan's mini Grand Canyon. A long day, plan ahead."},
+
+    howToGet:{ru:"Как добраться",en:"How to get there"},
+    whenToGo:{ru:"Когда ехать",en:"When to go"},
+    planAheadName:{ru:"Планировать заранее",en:"Plan ahead"},
+
+    charynDetailTitle:{ru:"Чарынский каньон — как спланировать",en:"Charyn Canyon — planning your visit"},
+    charynValleyName:{ru:"Долина Замков",en:"Valley of Castles"},
+    charynValley:{ru:"Главный маршрут — тропа около 3 км по дну каньона мимо скал причудливой формы. Лёгкая прогулка на 2-3 часа.",en:"The main route is a roughly 3 km trail along the canyon floor past oddly shaped cliffs — an easy 2–3 hour walk."},
+    charynGetThere:{ru:"~200 км от Алматы, 3-3.5 часа в пути. Едут на арендованной машине, с туром или на такси на весь день.",en:"About 200 km from Almaty, a 3–3.5 hour drive. Most go by rental car, tour, or a full-day taxi."},
+    charynWhen:{ru:"Летом лучше приезжать рано утром — тени в каньоне почти нет, днём очень жарко.",en:"In summer, arrive early — there's almost no shade in the canyon, and midday gets very hot."},
+    charynGalleryCap:{ru:"Реальные фото с места · тап — открыть крупнее",en:"Real photos from the spot · tap to open larger"},
+    kolsaiGalleryCap:{ru:"Фото места · тап — открыть крупнее",en:"Photos from the spot · tap to open larger"},
+    videoSoonTitle:{ru:"Здесь скоро будет видео",en:"Video coming soon here"},
+    videoSoonNote:{ru:"Короткий ролик с места · видео требует подключения к интернету",en:"A short clip from the spot · video requires an internet connection"},
+    spotLinkHint:{ru:"Фото и подробнее ↓",en:"Photos & details ↓"},
+    backToTop:{ru:"Наверх, к городам и местам",en:"Back up to cities & sights"},
+    lightboxBack:{ru:"Назад",en:"Back"},
+
+    kolsaiDetailTitle:{ru:"Кольсайские озёра",en:"Kolsai Lakes"},
+    kolsaiFirstName:{ru:"Первое озеро",en:"Lower lake (Kolsai-1)"},
+    kolsaiFirst:{ru:"Доступно на машине, от парковки до берега — 30-60 минут пешком. Есть лодки и кафе.",en:"Reachable by car; a 30–60 minute walk from the parking area to the shore. Boat rentals and cafés on site."},
+    kolsaiUpperName:{ru:"Второе и третье озёра",en:"Upper lakes (Kolsai-2 & 3)"},
+    kolsaiUpper:{ru:"Только пешком, поход в одну сторону занимает несколько часов — вариант для тех, кто готов к треккингу.",en:"On foot only — the hike to the upper lakes takes several hours each way, best for experienced trekkers."},
+    kolsaiGetThere:{ru:"~300 км от Алматы, около 5 часов в пути через посёлок Саты. Дорога почти вся асфальтированная.",en:"About 300 km from Almaty, roughly a 5-hour drive via the village of Saty. The road is paved almost the whole way."},
+
+    kaindyDetailTitle:{ru:"Озеро Каинды",en:"Kaindy Lake"},
+    kaindyForestName:{ru:"Затопленный лес",en:"The sunken forest"},
+    kaindyForest:{ru:"Стволы елей, погибших после того как озеро образовалось из-за схода оползня в 1911 году, торчат прямо из бирюзовой воды.",en:"Spruce trunks that died when a 1911 landslide formed the lake now rise straight out of the turquoise water."},
+    kaindyGetThere:{ru:"Обычно совмещают с Кольсайскими озёрами — от посёлка Саты последний участок дороги требует внедорожника.",en:"Usually combined with the Kolsai Lakes — the final stretch from Saty village needs a 4x4."},
+    kaindyWaterName:{ru:"Холодная вода",en:"Cold water"},
+    kaindyWater:{ru:"Даже летом температура воды около +6…+8°C — купание не для всех.",en:"Even in summer the water stays around 6–8°C — swimming isn't for everyone."},
+
+    bozzhyraDetailTitle:{ru:"Бозжыра",en:"Bozzhyra"},
+    bozzhyraCliffsName:{ru:"Меловые останцы",en:"The chalk formations"},
+    bozzhyraCliffs:{ru:"Скальные формации в форме клыков и гребней в области Мангистау на западе страны — не похоже ни на что другое в Казахстане.",en:"Fang- and ridge-shaped chalk formations in the Mangystau region, in the far west of the country — unlike anywhere else in Kazakhstan."},
+    bozzhyraGetThere:{ru:"Самолётом до Актау (~2.5 часа от Алматы), затем ещё около 4 часов на машине, последний участок — по грунтовой дороге.",en:"Fly to Aktau first (~2.5 hours from Almaty), then about 4 more hours by car, with a dirt-road stretch at the end."},
+    bozzhyraPlan:{ru:"Обычно едут с туром на несколько дней — самостоятельно без опыта поездок по бездорожью не стоит.",en:"Best visited as part of a multi-day tour — not recommended solo without off-road driving experience."},
+
+    shymbulakDetailTitle:{ru:"Шымбулак",en:"Shymbulak"},
+    shymbulakGetThere:{ru:"~25 км от центра Алматы. Доехать до Медеу на машине или автобусе, дальше — гондола наверх, около 15-25 минут.",en:"About 25 km from central Almaty. Drive or bus to Medeu, then a gondola ride up — roughly 15–25 minutes."},
+    shymbulakWinterName:{ru:"Зимой",en:"In winter"},
+    shymbulakWinter:{ru:"Горнолыжный сезон — с ноября по апрель, трассы для любого уровня.",en:"Ski season runs November to April, with slopes for every level."},
+    shymbulakSummerName:{ru:"Летом",en:"In summer"},
+    shymbulakSummer:{ru:"Гондола работает и без снега — виды на горы и короткие пешие маршруты наверху.",en:"The gondola runs year-round — mountain views and short hiking trails at the top, even without snow."},
+
+    astanaDetailTitle:{ru:"Астана — столица за 1-2 дня",en:"Astana — the capital in 1-2 days"},
+    baiterekName:{ru:"Байтерек",en:"Baiterek Tower"},
+    baiterekNote:{ru:"Башня-символ города, 97 метров. Смотровая площадка внутри золотого шара — лучше приезжать к закату.",en:"The city's signature tower, 97 metres tall. The observation deck sits inside a golden orb — best at sunset."},
+    khanShatyrName:{ru:"Хан Шатыр",en:"Khan Shatyr"},
+    khanShatyrNote:{ru:"Огромный шатёр-центр по проекту Нормана Фостера — торговая галерея, кинотеатр и даже пляж внутри, работает круглый год.",en:"A giant tent-shaped complex by Norman Foster — shops, a cinema, even an indoor beach, open year-round."},
+    nurzholName:{ru:"Бульвар Нурлы Жол",en:"Nurzhol Boulevard"},
+    nurzholNote:{ru:"Пешеходный бульвар между Байтереком и Хан Шатыром — фонтаны, скульптуры, удобно гулять пешком.",en:"A pedestrian boulevard linking Baiterek and Khan Shatyr — fountains, sculptures, an easy walk."},
+    astanaGetThere:{ru:"Перелёт из Алматы — около 1.5-2 часов, либо ночной поезд. Свой аэропорт есть и в самой Астане.",en:"About 1.5-2 hours by air from Almaty, or an overnight train. Astana has its own airport too."},
+
+    turkistanDetailTitle:{ru:"Туркестан",en:"Turkistan"},
+    yasawiName:{ru:"Мавзолей Ясави",en:"Yasawi Mausoleum"},
+    yasawiNote:{ru:"Памятник XIV века, построенный по указу Тамерлана в честь суфийского поэта Ходжи Ахмеда Ясави. Объект ЮНЕСКО, один из крупнейших сохранившихся памятников тимуридской архитектуры.",en:"A 14th-century monument built on Timur's order to honour the Sufi poet Khoja Ahmed Yasawi. A UNESCO site and one of the largest surviving Timurid-era structures."},
+    turkistanGetThere:{ru:"Обычно едут как день-трип из Шымкента — ~160 км, 2-2.5 часа на машине или маршрутке. Есть и прямые поезда из Алматы и Астаны.",en:"Usually visited as a day trip from Shymkent — about 160 km, 2-2.5 hours by car or shared taxi. Direct trains from Almaty and Astana also run here."},
+    turkistanWhen:{ru:"На осмотр основных построек хватит 3-5 часов. Комфортнее весной и осенью — летом очень жарко.",en:"3-5 hours is enough for the main sights. Spring and autumn are more comfortable — summer gets very hot."},
+
+    shymkentDetailTitle:{ru:"Шымкент",en:"Shymkent"},
+    qyrgyBazaarName:{ru:"Базар Кыргы",en:"Qyrgy Bazaar"},
+    qyrgyBazaarNote:{ru:"Большой, шумный, живой рынок в центре — свежие фрукты, специи, самса из тандыра. Хорошее место почувствовать город.",en:"A big, lively market in the centre — fresh fruit, spices, tandoor-baked samsa. A good way to feel the city's pulse."},
+    abayParkName:{ru:"Парк Абая",en:"Abay Park"},
+    abayParkNote:{ru:"Главный зелёный парк города — колесо обозрения, кафе, спокойная прогулка вечером.",en:"The city's main green park — a Ferris wheel, cafés, a relaxed evening stroll."},
+    shymkentGatewayName:{ru:"Ворота в Туркестан",en:"Gateway to Turkistan"},
+    shymkentGatewayNote:{ru:"Шымкент — самая удобная база для однодневной поездки к мавзолею Ясави в Туркестане (~160 км, 2-2.5 часа).",en:"Shymkent is the most convenient base for a day trip to the Yasawi Mausoleum in Turkistan (~160 km, 2-2.5 hours)."},
+
+    ratesEyebrow:{ru:"Курс и цены",en:"Rates & prices"},
+    ratesTitle:{ru:"Сколько что стоит",en:"What things cost"},
+    convertTitle:{ru:"Конвертер",en:"Converter"},
+    rateNote:{ru:"Демонстрационный курс — актуальный курс проверяйте по прилёту.",en:"Demo rate — check the live rate on arrival."},
+    pricesTitle:{ru:"Ориентировочные цены",en:"Typical prices"},
+    priceTaxi:{ru:"Такси по городу",en:"Taxi across town"},
+    priceCoffee:{ru:"Кофе навынос",en:"Coffee to go"},
+    priceLunch:{ru:"Обед в кафе",en:"Lunch at a café"},
+    priceSim:{ru:"SIM-карта с интернетом",en:"SIM card with data"},
+
+    safetyEyebrow:{ru:"Безопасность",en:"Safety"},
+    safetyTitle:{ru:"На всякий случай",en:"Just in case"},
+    emgTitle:{ru:"Экстренные номера",en:"Emergency numbers"},
+    emgAll:{ru:"Все службы",en:"All emergencies"},
+    emgPolice:{ru:"Полиция",en:"Police"},
+    emgAmbulance:{ru:"Скорая помощь",en:"Ambulance"},
+    emgFire:{ru:"Пожарная служба",en:"Fire"},
+    embassyTitle:{ru:"Если что-то пошло не так",en:"If something goes wrong"},
+    embassyText:{ru:"Сохраните контакты посольства вашей страны заранее — на случай потери документов.",en:"Save your embassy's contact details ahead of time, in case of lost documents."},
+
+    phrasesEyebrow:{ru:"Разговорник",en:"Phrasebook"},
+    phrasesTitle:{ru:"Часто нужные фразы",en:"Phrases you'll actually use"},
+    phHello:{ru:"Здравствуйте",en:"Hello"},
+    phThanks:{ru:"Спасибо",en:"Thank you"},
+    phYesNo:{ru:"Да / Нет",en:"Yes / No"},
+    phExcuse:{ru:"Извините",en:"Excuse me"},
+
+    navHome:{ru:"Главная",en:"Home"},
+    navGuide:{ru:"Путеводитель",en:"Guide"},
+    navRates:{ru:"Курс",en:"Rates"},
+    navSafety:{ru:"Безопасность",en:"Safety"},
+    navPhrases:{ru:"Фразы",en:"Phrases"},
+    navNotes:{ru:"Заметки",en:"Notes"},
+
+    coverTitle:{ru:"Казахстан у вас в кармане",en:"Kazakhstan, right in your pocket"},
+    coverSub:{ru:"Города, курс валют, безопасность и ваши заметки — в одной панели.",en:"Cities, exchange rates, safety and your own notes — in one dashboard."},
+    coverBtn:{ru:"Войти →",en:"Enter →"},
+    tagRoutes:{ru:"Маршруты",en:"Routes"},
+    tagAttractions:{ru:"Достопримечательности",en:"Attractions"},
+    tagSafety:{ru:"Безопасность",en:"Safety"},
+    tagTips:{ru:"Советы",en:"Local tips"},
+
+    notesEyebrow:{ru:"Заметки",en:"Notes"},
+    notesTitle:{ru:"Идеи в дороге",en:"Ideas on the road"},
+    notePlaceholder:{ru:"Записать идею или мысль...",en:"Jot down an idea or thought..."},
+    noteAdd:{ru:"+",en:"+"},
+    notesHint:{ru:"Сохраняется прямо на этом телефоне, без интернета.",en:"Saved right on this phone, no internet needed."},
+    notesEmpty:{ru:"Пока нет заметок — запишите первую мысль выше.",en:"No notes yet — jot down your first thought above."},
+    noteDelete:{ru:"Удалить",en:"Delete"},
+
+    gateTitle:{ru:"Вход в ваш путеводитель",en:"Sign in to your guide"},
+    gateSub:{ru:"Email и пароль, который вы придумали при первом входе.",en:"Email and the password you set on your first visit."},
+    gateEmailLabel:{ru:"Email",en:"Email"},
+    passLabel:{ru:"Пароль",en:"Password"},
+    pass2Label:{ru:"Повторите пароль",en:"Repeat password"},
+    gateBtn:{ru:"Войти",en:"Sign in"},
+    gateBuy:{ru:"Ещё нет доступа? Купить",en:"No access yet? Buy here"},
+    gateChecking:{ru:"Проверяем…",en:"Checking…"},
+    gateErrInvalid:{ru:"Неверный email или пароль.",en:"Wrong email or password."},
+    gateErrEmpty:{ru:"Заполните email и пароль.",en:"Please fill in email and password."},
+    gateErrNetwork:{ru:"Не удалось подключиться. Проверьте интернет и попробуйте снова.",en:"Couldn't connect. Check your connection and try again."},
+
+    inviteTitle:{ru:"Придумайте пароль",en:"Choose a password"},
+    inviteSub:{ru:"Это разовая настройка — дальше входите с ним же.",en:"One-time setup — you'll use it to sign in from now on."},
+    inviteBtn:{ru:"Сохранить и войти",en:"Save and continue"},
+    inviteErrMismatch:{ru:"Пароли не совпадают.",en:"Passwords don't match."},
+    inviteErrShort:{ru:"Пароль должен быть не короче 6 символов.",en:"Password must be at least 6 characters."},
+    inviteErrGeneric:{ru:"Не получилось сохранить пароль. Попробуйте ещё раз.",en:"Couldn't save the password. Please try again."},
+
+    forgotLink:{ru:"Забыли пароль?",en:"Forgot password?"},
+    forgotNeedEmail:{ru:"Сначала впишите email выше.",en:"Please enter your email above first."},
+    forgotSent:{ru:"Проверьте почту — прислали ссылку для входа.",en:"Check your email — we sent a sign-in link."}
+  };
+
+  function setLang(lang){
+    __currentLang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key] && dict[key][lang]) el.textContent = dict[key][lang];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-ph');
+      if(dict[key] && dict[key][lang]) el.setAttribute('placeholder', dict[key][lang]);
+    });
+    document.getElementById('btnRu').classList.toggle('active', lang==='ru');
+    document.getElementById('btnEn').classList.toggle('active', lang==='en');
+  }
+
+  // Auto-detect: Russian-language browsers get RU, everyone else gets EN by default.
+  var __currentLang = 'en';
+  (function(){
+    var browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    __currentLang = browserLang.indexOf('ru') === 0 ? 'ru' : 'en';
+    setLang(__currentLang);
+  })();
+
+  // ===== ACCESS SCREEN (Supabase Auth: email + password, invite/reset via link) =====
+  (function(){
+    // Capture this BEFORE creating the client — Supabase reads and strips
+    // the hash asynchronously right after the client exists, so by the time
+    // any of our own async code runs, window.location.hash may already be
+    // empty. Grabbing it synchronously, first thing, is the only reliable way.
+    var rawHash = window.location.hash || '';
+    var cameFromAuthLink = rawHash.indexOf('access_token=') !== -1 &&
+      (rawHash.indexOf('type=invite') !== -1 || rawHash.indexOf('type=recovery') !== -1);
+
+    var SUPABASE_URL = 'https://swpnpxhoaxcnllieejsn.supabase.co';
+    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3cG5weGhvYXhjbmxsaWVlanNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTA2OTMsImV4cCI6MjEwMDM2NjY5M30.vpAREIJqgM3SdfqzavSWYJ7uKblcYLdSVZ5iG6KsMc0';
+
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+    });
+
+    var gate = document.getElementById('gate');
+    var stepInvite = document.getElementById('gateStepInvite');
+    var stepLogin = document.getElementById('gateStepLogin');
+
+    var invitePass = document.getElementById('invitePass');
+    var invitePass2 = document.getElementById('invitePass2');
+    var inviteBtn = document.getElementById('inviteBtn');
+    var inviteMsg = document.getElementById('inviteMsg');
+
+    var gateEmail = document.getElementById('gateEmail');
+    var gatePass = document.getElementById('gatePass');
+    var gateBtn = document.getElementById('gateBtn');
+    var gateMsg = document.getElementById('gateMsg');
+
+    function showMsg(el, text, cls){
+      el.textContent = text || '';
+      el.className = 'gate-msg' + (cls ? ' ' + cls : '');
+    }
+
+    var TRUSTED_KEY = 'kztr_trusted_device';
+
+    function unlock(){
+      gate.classList.add('hide');
+      try{ localStorage.setItem(TRUSTED_KEY, '1'); } catch(e){}
+    }
+
+    function showSetPasswordStep(){
+      stepInvite.style.display = 'block';
+      stepLogin.style.display = 'none';
+    }
+
+    if(cameFromAuthLink){
+      showSetPasswordStep();
+    }
+
+    (async function boot(){
+      if(cameFromAuthLink) return;
+
+      // Already unlocked on this device before — open instantly, even
+      // offline, without waiting on a live session/network check at all.
+      var trusted = false;
+      try{ trusted = localStorage.getItem(TRUSTED_KEY) === '1'; } catch(e){}
+      if(trusted){
+        unlock();
+        return;
+      }
+
+      try{
+        var { data } = await sb.auth.getSession();
+        if(data && data.session) unlock();
+      } catch(e){
+        // Offline and never unlocked here before — nothing we can verify yet,
+        // the login form stays visible as-is.
+      }
+    })();
+
+    inviteBtn.addEventListener('click', async function(){
+      var p1 = invitePass.value || '';
+      var p2 = invitePass2.value || '';
+      if(p1.length < 6){ showMsg(inviteMsg, dict.inviteErrShort[__currentLang], 'err'); return; }
+      if(p1 !== p2){ showMsg(inviteMsg, dict.inviteErrMismatch[__currentLang], 'err'); return; }
+      inviteBtn.disabled = true;
+      showMsg(inviteMsg, dict.gateChecking[__currentLang], '');
+      try{
+        var { error } = await sb.auth.updateUser({ password: p1 });
+        if(error){
+          showMsg(inviteMsg, dict.inviteErrGeneric[__currentLang], 'err');
+        } else {
+          history.replaceState(null, '', window.location.pathname);
+          unlock();
+        }
+      } catch(e){
+        showMsg(inviteMsg, dict.gateErrNetwork[__currentLang], 'err');
+      } finally {
+        inviteBtn.disabled = false;
+      }
+    });
+
+    gateBtn.addEventListener('click', async function(){
+      var email = (gateEmail.value || '').trim();
+      var pass = gatePass.value || '';
+      if(!email || !pass){
+        showMsg(gateMsg, dict.gateErrEmpty[__currentLang], 'err');
+        return;
+      }
+      gateBtn.disabled = true;
+      showMsg(gateMsg, dict.gateChecking[__currentLang], '');
+      try{
+        var { error } = await sb.auth.signInWithPassword({ email: email, password: pass });
+        if(error){
+          showMsg(gateMsg, dict.gateErrInvalid[__currentLang], 'err');
+        } else {
+          unlock();
+        }
+      } catch(e){
+        showMsg(gateMsg, dict.gateErrNetwork[__currentLang], 'err');
+      } finally {
+        gateBtn.disabled = false;
+      }
+    });
+
+    [gateEmail, gatePass].forEach(function(el){
+      el.addEventListener('keydown', function(e){ if(e.key === 'Enter') gateBtn.click(); });
+    });
+
+    var forgotLink = document.getElementById('forgotLink');
+    forgotLink.addEventListener('click', async function(e){
+      e.preventDefault();
+      var email = (gateEmail.value || '').trim();
+      if(!email){
+        showMsg(gateMsg, dict.forgotNeedEmail[__currentLang], 'err');
+        return;
+      }
+      try{
+        await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
+        showMsg(gateMsg, dict.forgotSent[__currentLang], 'ok');
+      } catch(e){
+        showMsg(gateMsg, dict.gateErrNetwork[__currentLang], 'err');
+      }
+    });
+    [invitePass, invitePass2].forEach(function(el){
+      el.addEventListener('keydown', function(e){ if(e.key === 'Enter') inviteBtn.click(); });
+    });
+  })();
+</script>
+
+
+
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <div class="lightbox-back" onclick="closeLightbox()">← <span data-i18n="lightboxBack">Назад</span></div>
+  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+  <img id="lightbox-img" src="" alt="">
+</div>
+<script>
+  function openLightbox(src){
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+</script>
+
+<script src="./pwa-install.js" defer></script>
+</body>
+</html>
