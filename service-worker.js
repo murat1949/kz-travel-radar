@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kz-travel-radar-v7';
+const CACHE_NAME = 'kz-travel-radar-v8';
 const APP_SHELL = [
   './',
   './index.html',
@@ -17,10 +17,10 @@ const APP_SHELL = [
   './photos/thumb-kolsai.jpg',
   './photos/cover-bg-ru.jpg',
   './photos/cover-bg-en.jpg',
-  './photos/cities/city-almaty.jpg',
-  './photos/cities/city-astana.jpg',
-  './photos/cities/city-turkistan.jpg',
-  './photos/cities/city-shymkent.jpg',
+  './photos/city-almaty.jpg',
+  './photos/city-astana.jpg',
+  './photos/city-turkistan.jpg',
+  './photos/city-shymkent.jpg',
   './photos/guide-header.jpg',
   './images/hero-phone-ru.jpg',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'
