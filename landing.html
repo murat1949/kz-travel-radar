@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KZ Travel Radar — Казахстан у вас в кармане</title>
+<title>KZ Travel Radar — гид по Казахстану, который работает даже без интернета</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
   .hero h1{font-size:clamp(28px,4.6vw,42px);line-height:1.15;max-width:680px;margin:0 auto;}
   .hero .sub{margin-top:18px;color:#C9CFE0;font-size:17px;max-width:540px;margin-left:auto;margin-right:auto;}
   .hero .btn{margin-top:32px;}
+  .hero-shot{margin:44px auto 0;display:block;max-width:280px;width:100%;border-radius:20px;box-shadow:0 40px 80px -20px rgba(0,0,0,0.6);}
 
   .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
   @media (max-width:640px){.pain-grid{grid-template-columns:1fr;}}
@@ -65,30 +66,40 @@
   .price-card .btn{margin-top:22px;}
 
   footer{text-align:center;padding:36px 0;color:var(--muted);font-size:13px;}
+
+  .lang-switch{position:fixed;top:16px;right:16px;z-index:50;display:flex;background:rgba(18,41,59,0.92);border:1px solid rgba(255,255,255,0.25);border-radius:999px;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+  .lang-switch button{border:none;background:transparent;color:rgba(255,255,255,0.75);font-weight:700;font-size:12px;padding:7px 14px;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;}
+  .lang-switch button.active{background:var(--gold);color:#1A1300;}
 </style>
 </head>
 <body>
+
+<div class="lang-switch">
+  <button class="btn-ru active" onclick="setLang('ru')">RU</button>
+  <button class="btn-en" onclick="setLang('en')">EN</button>
+</div>
 
 <header class="hero">
   <div class="wrap">
     <div class="sun"></div>
     <p class="eyebrow" style="color:#D9B073;">KZ Travel Radar</p>
-    <h1>Первая поездка в Казахстан — а разбираться приходится на ходу?</h1>
-    <p class="sub">Города, курс валют, экстренные номера и разговорник — вместо десятка открытых вкладок и групп в чатах.</p>
-    <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn">Получить доступ →</a>
+    <h1 data-i18n="heroH1">Первая поездка в Казахстан — а разбираться приходится на ходу?</h1>
+    <p class="sub" data-i18n="heroSub">Города, курс валют, экстренные номера и разговорник — вместо десятка открытых вкладок и групп в чатах.</p>
+    <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn" data-i18n="heroBtn">Получить доступ →</a>
+    <img src="./photos/hero-phone-ru.jpg" alt="KZ Travel Radar — Kazakhstan travel guide" class="hero-shot" id="heroShot" loading="lazy">
   </div>
 </header>
 
 <section>
   <div class="wrap">
-    <div class="eyebrow">Знакомо?</div>
-    <h2 style="margin-top:10px;font-size:clamp(22px,3vw,30px);">Так выглядит поездка без подготовки</h2>
+    <div class="eyebrow" data-i18n="painEyebrow">Знакомо?</div>
+    <h2 style="margin-top:10px;font-size:clamp(22px,3vw,30px);" data-i18n="painH2">Так выглядит поездка без подготовки</h2>
 
     <div class="pain-grid">
-      <div class="pain-card"><div class="em">🌐</div><h3>10 вкладок в браузере</h3><p>Один сайт — про города, другой — про курс валют, третий — форум с советами трёхлетней давности.</p></div>
-      <div class="pain-card"><div class="em">💱</div><h3>Непонятно, сколько что стоит</h3><p>Такси, кофе, обед — цены на глаз, легко переплатить, не зная ориентиров.</p></div>
-      <div class="pain-card"><div class="em">🗣️</div><h3>Языковой барьер</h3><p>Простое «спасибо» или «сколько стоит» — а искать в интернете каждый раз неудобно.</p></div>
-      <div class="pain-card"><div class="em">📶</div><h3>Не всегда есть интернет</h3><p>В горах или в дороге связь пропадает — а важные номера и заметки нужны именно тогда.</p></div>
+      <div class="pain-card"><div class="em">🌐</div><h3 data-i18n="pain1H3">10 вкладок в браузере</h3><p data-i18n="pain1P">Один сайт — про города, другой — про курс валют, третий — форум с советами трёхлетней давности.</p></div>
+      <div class="pain-card"><div class="em">💱</div><h3 data-i18n="pain2H3">Непонятно, сколько что стоит</h3><p data-i18n="pain2P">Такси, кофе, обед — цены на глаз, легко переплатить, не зная ориентиров.</p></div>
+      <div class="pain-card"><div class="em">🗣️</div><h3 data-i18n="pain3H3">Языковой барьер</h3><p data-i18n="pain3P">Простое «спасибо» или «сколько стоит» — а искать в интернете каждый раз неудобно.</p></div>
+      <div class="pain-card"><div class="em">📶</div><h3 data-i18n="pain4H3">Не всегда есть интернет</h3><p data-i18n="pain4P">В горах или в дороге связь пропадает — а важные номера и заметки нужны именно тогда.</p></div>
     </div>
   </div>
 </section>
@@ -98,10 +109,10 @@
 <section style="padding-top:0;">
   <div class="wrap">
     <div class="solution">
-      <div class="eyebrow" style="color:#D9B073;">Решение</div>
-      <h2 style="margin-top:12px;">Один путеводитель — и всё под рукой</h2>
-      <p>Города Казахстана, курс валют, безопасность и мини-разговорник — в одной панели на телефоне. Работает даже без интернета.</p>
-      <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn">Открыть путеводитель →</a>
+      <div class="eyebrow" style="color:#D9B073;" data-i18n="solEyebrow">Решение</div>
+      <h2 style="margin-top:12px;" data-i18n="solH2">Один путеводитель — и всё под рукой</h2>
+      <p data-i18n="solP">Города Казахстана, курс валют, безопасность и мини-разговорник — в одной панели на телефоне. Работает даже без интернета.</p>
+      <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn" data-i18n="solBtn">Открыть путеводитель →</a>
     </div>
   </div>
 </section>
@@ -111,40 +122,40 @@
 
     <div class="feature-row">
       <div>
-        <div class="eyebrow">Путеводитель</div>
-        <h3>Города — как от местного друга</h3>
-        <p>Алматы разобран подробно: куда сходить в первые 48 часов, что смотреть, куда ехать на день. Без воды, только по делу.</p>
+        <div class="eyebrow" data-i18n="f1Eyebrow">Путеводитель</div>
+        <h3 data-i18n="f1H3">Города — как от местного друга</h3>
+        <p data-i18n="f1P">Алматы разобран подробно: куда сходить в первые 48 часов, что смотреть, куда ехать на день. Без воды, только по делу.</p>
       </div>
       <div class="mini-shot">
-        <div class="mini-row"><span>Кок-Тобе</span><b>Закат, канатка</b></div>
-        <div class="mini-row"><span>Зелёный базар</span><b>Мёд, сухофрукты</b></div>
-        <div class="mini-row"><span>Чарынский каньон</span><b>Поездка на день</b></div>
+        <div class="mini-row"><span data-i18n="f1Row1a">Кок-Тобе</span><b data-i18n="f1Row1b">Закат, канатка</b></div>
+        <div class="mini-row"><span data-i18n="f1Row2a">Зелёный базар</span><b data-i18n="f1Row2b">Мёд, сухофрукты</b></div>
+        <div class="mini-row"><span data-i18n="f1Row3a">Чарынский каньон</span><b data-i18n="f1Row3b">Поездка на день</b></div>
       </div>
     </div>
 
     <div class="feature-row rev">
       <div class="mini-shot">
-        <div class="mini-row"><span>Такси по городу</span><b>800–1500 ₸</b></div>
-        <div class="mini-row"><span>Кофе навынос</span><b>700–1200 ₸</b></div>
-        <div class="mini-row"><span>SIM с интернетом</span><b>2000–3500 ₸</b></div>
+        <div class="mini-row"><span data-i18n="f2Row1a">Такси по городу</span><b>800–1500 ₸</b></div>
+        <div class="mini-row"><span data-i18n="f2Row2a">Кофе навынос</span><b>700–1200 ₸</b></div>
+        <div class="mini-row"><span data-i18n="f2Row3a">SIM с интернетом</span><b>2000–3500 ₸</b></div>
       </div>
       <div>
-        <div class="eyebrow">Курс и цены</div>
-        <h3>Не переплачивать по незнанию</h3>
-        <p>Конвертер валют и ориентировочные цены на всё привычное — такси, кофе, обед, связь.</p>
+        <div class="eyebrow" data-i18n="f2Eyebrow">Курс и цены</div>
+        <h3 data-i18n="f2H3">Не переплачивать по незнанию</h3>
+        <p data-i18n="f2P">Конвертер валют и ориентировочные цены на всё привычное — такси, кофе, обед, связь.</p>
       </div>
     </div>
 
     <div class="feature-row">
       <div>
-        <div class="eyebrow">Безопасность</div>
-        <h3>На всякий случай — под рукой</h3>
-        <p>Экстренные номера и что делать, если что-то пошло не так — без поиска в панике в последний момент.</p>
+        <div class="eyebrow" data-i18n="f3Eyebrow">Безопасность</div>
+        <h3 data-i18n="f3H3">На всякий случай — под рукой</h3>
+        <p data-i18n="f3P">Экстренные номера и что делать, если что-то пошло не так — без поиска в панике в последний момент.</p>
       </div>
       <div class="mini-shot">
-        <div class="mini-row"><span>Все службы</span><b>112</b></div>
-        <div class="mini-row"><span>Полиция</span><b>102</b></div>
-        <div class="mini-row"><span>Скорая помощь</span><b>103</b></div>
+        <div class="mini-row"><span data-i18n="f3Row1a">Все службы</span><b>112</b></div>
+        <div class="mini-row"><span data-i18n="f3Row2a">Полиция</span><b>102</b></div>
+        <div class="mini-row"><span data-i18n="f3Row3a">Скорая помощь</span><b>103</b></div>
       </div>
     </div>
 
@@ -153,31 +164,117 @@
 
 <section style="padding-top:0;">
   <div class="wrap">
-    <div class="eyebrow">Как это работает</div>
-    <h2 style="margin-top:10px;font-size:clamp(22px,3vw,30px);">Оплатили — и уже пользуетесь</h2>
+    <div class="eyebrow" data-i18n="howEyebrow">Как это работает</div>
+    <h2 style="margin-top:10px;font-size:clamp(22px,3vw,30px);" data-i18n="howH2">Оплатили — и уже пользуетесь</h2>
 
     <div class="timer-row">
-      <div class="timer-step"><div class="n">~1 мин</div><div class="l">Оплата на Gumroad</div></div>
-      <div class="timer-step"><div class="n">~10 сек</div><div class="l">Письмо с доступом</div></div>
-      <div class="timer-step"><div class="n">~1 мин</div><div class="l">Свой пароль и вход</div></div>
-      <div class="timer-step"><div class="n">Готово</div><div class="l">Путеводитель открыт</div></div>
+      <div class="timer-step"><div class="n" data-i18n="step1n">~1 мин</div><div class="l" data-i18n="step1l">Оплата на Gumroad</div></div>
+      <div class="timer-step"><div class="n" data-i18n="step2n">~10 сек</div><div class="l" data-i18n="step2l">Письмо с доступом</div></div>
+      <div class="timer-step"><div class="n" data-i18n="step3n">~1 мин</div><div class="l" data-i18n="step3l">Свой пароль и вход</div></div>
+      <div class="timer-step"><div class="n" data-i18n="step4n">Готово</div><div class="l" data-i18n="step4l">Путеводитель открыт</div></div>
     </div>
 
     <div class="price-card">
-      <div class="eyebrow">Доступ навсегда</div>
+      <div class="eyebrow" data-i18n="priceEyebrow">Доступ навсегда</div>
       <div class="amount" style="margin-top:10px;">$12</div>
       <ul>
-        <li>✓ Полный путеводитель по Казахстану</li>
-        <li>✓ RU / EN переключение языка</li>
-        <li>✓ Работает даже без интернета</li>
-        <li>✓ Свои заметки в дороге</li>
+        <li data-i18n="priceLi1">✓ Полный путеводитель по Казахстану</li>
+        <li data-i18n="priceLi2">✓ RU / EN переключение языка</li>
+        <li data-i18n="priceLi3">✓ Работает даже без интернета</li>
+        <li data-i18n="priceLi4">✓ Свои заметки в дороге</li>
       </ul>
-      <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn">Купить и открыть →</a>
+      <a href="https://kvantor.gumroad.com/l/mkxxu" class="btn" data-i18n="priceBtn">Купить и открыть →</a>
     </div>
   </div>
 </section>
 
 <footer>MN Systems · KZ Travel Radar</footer>
+
+<script>
+  var dict = {
+    heroH1:{ru:"Первая поездка в Казахстан — а разбираться приходится на ходу?",en:"First trip to Kazakhstan — figuring it out as you go?"},
+    heroSub:{ru:"Города, курс валют, экстренные номера и разговорник — вместо десятка открытых вкладок и групп в чатах.",en:"Cities, exchange rates, emergency numbers and a phrasebook — instead of a dozen open tabs and chat groups."},
+    heroBtn:{ru:"Получить доступ →",en:"Get access →"},
+
+    painEyebrow:{ru:"Знакомо?",en:"Sound familiar?"},
+    painH2:{ru:"Так выглядит поездка без подготовки",en:"This is what an unprepared trip looks like"},
+    pain1H3:{ru:"10 вкладок в браузере",en:"10 browser tabs"},
+    pain1P:{ru:"Один сайт — про города, другой — про курс валют, третий — форум с советами трёхлетней давности.",en:"One site for cities, another for exchange rates, a third — a forum with three-year-old advice."},
+    pain2H3:{ru:"Непонятно, сколько что стоит",en:"No idea what anything costs"},
+    pain2P:{ru:"Такси, кофе, обед — цены на глаз, легко переплатить, не зная ориентиров.",en:"Taxi, coffee, lunch — guessing prices, easy to overpay without a reference point."},
+    pain3H3:{ru:"Языковой барьер",en:"Language barrier"},
+    pain3P:{ru:"Простое «спасибо» или «сколько стоит» — а искать в интернете каждый раз неудобно.",en:"Even a simple “thank you” or “how much” — awkward to look up every single time."},
+    pain4H3:{ru:"Не всегда есть интернет",en:"Internet isn't always there"},
+    pain4P:{ru:"В горах или в дороге связь пропадает — а важные номера и заметки нужны именно тогда.",en:"Signal drops in the mountains or on the road — right when you need those numbers and notes most."},
+
+    solEyebrow:{ru:"Решение",en:"The solution"},
+    solH2:{ru:"Один путеводитель — и всё под рукой",en:"One guide — everything within reach"},
+    solP:{ru:"Города Казахстана, курс валют, безопасность и мини-разговорник — в одной панели на телефоне. Работает даже без интернета.",en:"Kazakhstan's cities, exchange rates, safety info and a mini phrasebook — in one panel on your phone. Works even without internet."},
+    solBtn:{ru:"Открыть путеводитель →",en:"Open the guide →"},
+
+    f1Eyebrow:{ru:"Путеводитель",en:"Guide"},
+    f1H3:{ru:"Города — как от местного друга",en:"Cities — like tips from a local friend"},
+    f1P:{ru:"Алматы разобран подробно: куда сходить в первые 48 часов, что смотреть, куда ехать на день. Без воды, только по делу.",en:"Almaty covered in detail: where to go in your first 48 hours, what to see, day-trip ideas. No fluff, just what matters."},
+    f1Row1a:{ru:"Кок-Тобе",en:"Kok-Tobe"}, f1Row1b:{ru:"Закат, канатка",en:"Sunset, cable car"},
+    f1Row2a:{ru:"Зелёный базар",en:"Green Bazaar"}, f1Row2b:{ru:"Мёд, сухофрукты",en:"Honey, dried fruit"},
+    f1Row3a:{ru:"Чарынский каньон",en:"Charyn Canyon"}, f1Row3b:{ru:"Поездка на день",en:"Day trip"},
+
+    f2Eyebrow:{ru:"Курс и цены",en:"Rates & prices"},
+    f2H3:{ru:"Не переплачивать по незнанию",en:"Don't overpay from not knowing"},
+    f2P:{ru:"Конвертер валют и ориентировочные цены на всё привычное — такси, кофе, обед, связь.",en:"A currency converter and ballpark prices for everyday things — taxis, coffee, lunch, mobile data."},
+    f2Row1a:{ru:"Такси по городу",en:"Taxi around town"},
+    f2Row2a:{ru:"Кофе навынос",en:"Coffee to go"},
+    f2Row3a:{ru:"SIM с интернетом",en:"SIM with data"},
+
+    f3Eyebrow:{ru:"Безопасность",en:"Safety"},
+    f3H3:{ru:"На всякий случай — под рукой",en:"Just in case — right at hand"},
+    f3P:{ru:"Экстренные номера и что делать, если что-то пошло не так — без поиска в панике в последний момент.",en:"Emergency numbers and what to do if something goes wrong — no last-minute panic searching."},
+    f3Row1a:{ru:"Все службы",en:"All services"},
+    f3Row2a:{ru:"Полиция",en:"Police"},
+    f3Row3a:{ru:"Скорая помощь",en:"Ambulance"},
+
+    howEyebrow:{ru:"Как это работает",en:"How it works"},
+    howH2:{ru:"Оплатили — и уже пользуетесь",en:"Pay — and you're already using it"},
+    step1n:{ru:"~1 мин",en:"~1 min"}, step1l:{ru:"Оплата на Gumroad",en:"Pay on Gumroad"},
+    step2n:{ru:"~10 сек",en:"~10 sec"}, step2l:{ru:"Письмо с доступом",en:"Access email arrives"},
+    step3n:{ru:"~1 мин",en:"~1 min"}, step3l:{ru:"Свой пароль и вход",en:"Set password & sign in"},
+    step4n:{ru:"Готово",en:"Done"}, step4l:{ru:"Путеводитель открыт",en:"Guide is open"},
+
+    priceEyebrow:{ru:"Доступ навсегда",en:"Lifetime access"},
+    priceLi1:{ru:"✓ Полный путеводитель по Казахстану",en:"✓ Full Kazakhstan travel guide"},
+    priceLi2:{ru:"✓ RU / EN переключение языка",en:"✓ RU / EN language toggle"},
+    priceLi3:{ru:"✓ Работает даже без интернета",en:"✓ Works even without internet"},
+    priceLi4:{ru:"✓ Свои заметки в дороге",en:"✓ Your own notes on the go"},
+    priceBtn:{ru:"Купить и открыть →",en:"Buy and open →"}
+  };
+
+  var titles = {
+    ru:"KZ Travel Radar — гид по Казахстану, который работает даже без интернета",
+    en:"KZ Travel Radar — the Kazakhstan travel guide that works even without internet"
+  };
+
+  function setLang(lang){
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if (dict[key] && dict[key][lang]) el.textContent = dict[key][lang];
+    });
+    document.querySelectorAll('.btn-ru').forEach(function(b){ b.classList.toggle('active', lang==='ru'); });
+    document.querySelectorAll('.btn-en').forEach(function(b){ b.classList.toggle('active', lang==='en'); });
+    document.title = titles[lang];
+    document.documentElement.lang = lang;
+    var heroShot = document.getElementById('heroShot');
+    if (heroShot) { heroShot.src = './photos/hero-phone-' + lang + '.jpg'; }
+    try { localStorage.setItem('kztr_landing_lang', lang); } catch(e){}
+  }
+
+  (function(){
+    var saved = null;
+    try { saved = localStorage.getItem('kztr_landing_lang'); } catch(e){}
+    if (saved === 'ru' || saved === 'en') { setLang(saved); return; }
+    var browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    setLang(browserLang.indexOf('ru') === 0 ? 'ru' : 'en');
+  })();
+</script>
 
 </body>
 </html>
