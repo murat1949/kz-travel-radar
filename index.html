@@ -129,6 +129,7 @@
   .city-tile.live .city-note{color:var(--muted);}
 
   .spot{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:10px;}
+  .spot-photo{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block;margin-bottom:8px;}
   .spot.spot-link{cursor:pointer;transition:transform .15s,border-color .15s;}
   .spot.spot-link:hover{transform:translateY(-2px);border-color:var(--gold);}
   .spot.spot-link .spot-name{display:flex;align-items:center;justify-content:space-between;gap:8px;}
@@ -457,14 +458,17 @@
         <div class="card-title"><span class="em">📍</span><span data-i18n="almatyDetailTitle">Алматы — первые 48 часов</span></div>
 
         <div class="spot">
+          <img class="spot-photo" src="./photos/koktobe.jpg" alt="Кок-Тобе">
           <div class="spot-name">Кок-Тобе</div>
           <div class="spot-note" data-i18n="spotKokTobe">Канатная дорога наверх к закату. Лёгкая половина дня, хороший первый пункт.</div>
         </div>
         <div class="spot">
+          <img class="spot-photo" src="./photos/zeleny-bazaar.jpg" alt="Зелёный базар">
           <div class="spot-name" data-i18n="spotGreenBazaarName">Зелёный базар</div>
           <div class="spot-note" data-i18n="spotGreenBazaar">Местный рынок — сухофрукты, мёд, ощущение настоящей жизни города.</div>
         </div>
         <div class="spot">
+          <img class="spot-photo" src="./photos/big-almaty-lake.jpg" alt="Большое Алматинское озеро">
           <div class="spot-name" data-i18n="spotBigLakeName">Большое Алматинское озеро</div>
           <div class="spot-note" data-i18n="spotBigLake">Поездка в горы на день — бирюзовая вода, лучше на машине или с туром.</div>
         </div>
@@ -590,6 +594,7 @@
       <div id="astana-detail" class="card" style="margin-top:14px;">
         <div class="card-title"><span class="em">🏙️</span><span data-i18n="astanaDetailTitle">Астана — столица за 1-2 дня</span></div>
         <div class="spot">
+          <img class="spot-photo" src="./photos/baiterek-closeup.jpg" alt="Байтерек">
           <div class="spot-name" data-i18n="baiterekName">Байтерек</div>
           <div class="spot-note" data-i18n="baiterekNote">Башня-символ города, 97 метров. Смотровая площадка внутри золотого шара — лучше приезжать к закату.</div>
         </div>
@@ -611,6 +616,7 @@
       <div id="turkistan-detail" class="card" style="margin-top:14px;">
         <div class="card-title"><span class="em">🕌</span><span data-i18n="turkistanDetailTitle">Туркестан</span></div>
         <div class="spot">
+          <img class="spot-photo" src="./photos/yasawi-closeup.jpg" alt="Мавзолей Ясави">
           <div class="spot-name" data-i18n="yasawiName">Мавзолей Ясави</div>
           <div class="spot-note" data-i18n="yasawiNote">Памятник XIV века, построенный по указу Тамерлана в честь суфийского поэта Ходжи Ахмеда Ясави. Объект ЮНЕСКО, один из крупнейших сохранившихся памятников тимуридской архитектуры.</div>
         </div>
@@ -628,6 +634,7 @@
       <div id="shymkent-detail" class="card" style="margin-top:14px;">
         <div class="card-title"><span class="em">🌇</span><span data-i18n="shymkentDetailTitle">Шымкент</span></div>
         <div class="spot">
+          <img class="spot-photo" src="./photos/qyrgy-bazaar.jpg" alt="Базар Кыргы">
           <div class="spot-name" data-i18n="qyrgyBazaarName">Базар Кыргы</div>
           <div class="spot-note" data-i18n="qyrgyBazaarNote">Большой, шумный, живой рынок в центре — свежие фрукты, специи, самса из тандыра. Хорошее место почувствовать город.</div>
         </div>
